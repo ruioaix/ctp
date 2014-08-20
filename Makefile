@@ -1,9 +1,12 @@
-all : run
+all : trade 
 
-run : main.c *.h
+trade : trade.c *.h
+	g++ $< lib/linux64/thostmduserapi.so -o $@
+
+quoation : quoation.c *.h
 	g++ $< lib/linux64/thostmduserapi.so -o $@
 
 .PHONY : clean all 
 
 clean : 
-	$(RM) *.o *.con a.out run
+	@$(RM) *.o *.con a.out trade quoation

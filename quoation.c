@@ -24,7 +24,7 @@ class CSimpleHandler : public CThostFtdcMdSpi
 		{
 			CThostFtdcReqUserLoginField reqUserLogin;
 			// get BrokerID
-			printf("BrokerID:");
+			printf("BrokerID:\n");
 			scanf("%s", &g_chBrokerID);
 			strcpy(reqUserLogin. BrokerID, g_chBrokerID);
 			// get userid
@@ -96,14 +96,24 @@ int main()
 	// register an event handler instance
 	pUserApi->RegisterSpi(&sh);
 
+	printf("regbefore\n");fflush(stdout);
+
 	// register the CTP front address and port
-	pUserApi->RegisterFront("tcp://222.66.97.241:41213");
+	//pUserApi->RegisterFront("tcp://222.66.97.241:41213");
+	pUserApi->RegisterFront("tcp://172.16.0.31:57205");
+
+	printf("regafter\n");fflush(stdout);
+
 	// start the connection between client and CTP server
 	pUserApi->Init();
+
+	printf("initafter\n");fflush(stdout);
 
 	// waiting for the quotation data
 	//WaitForSingleObject(g_hEvent, INFINITE);
 	// release API instance
 	pUserApi->Release();
+
+	printf("releaseafter\n");fflush(stdout);
 	return 0;
 }
