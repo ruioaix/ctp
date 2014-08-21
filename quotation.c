@@ -1,6 +1,7 @@
 // tradeapitest.cpp :
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #include <stdlib.h>
 //#include <windows.h>
 #include "ThostFtdcMdApi.h"
@@ -8,9 +9,15 @@
 // Create a manual reset event with no signal
 //HANDLE g_hEvent = CreateEvent(NULL, true, false, NULL);
 // participant ID
-TThostFtdcBrokerIDType g_chBrokerID;
+
+#define bid 9016766
+#define uid 9016766
+#define pswd 1111111
+
+char g_chBrokerID[100];
 // user id
-TThostFtdcUserIDType g_chUserID;
+char g_chUserID[100];
+char g_pswd[100];
 
 class CSimpleHandler : public CThostFtdcMdSpi
 {
@@ -24,16 +31,17 @@ class CSimpleHandler : public CThostFtdcMdSpi
 		{
 			CThostFtdcReqUserLoginField reqUserLogin;
 			// get BrokerID
-			printf("BrokerID:\n");
-			scanf("%s", &g_chBrokerID);
-			strcpy(reqUserLogin. BrokerID, g_chBrokerID);
+			printf("BrokerID: %d\n", bid); fflush(stdout);
+			sprintf(g_chBrokerID, "%d", bid);
+			strcpy(reqUserLogin.BrokerID, g_chBrokerID);
 			// get userid
-			printf("userid:");
-			scanf("%s", &g_chUserID);
+			printf("userid: %d\n", uid); fflush(stdout);
+			sprintf(g_chUserID, "%d", uid);
 			strcpy(reqUserLogin.UserID, g_chUserID);
 			// get password
-			printf("password:");
-			scanf("%s", &reqUserLogin.Password);
+			printf("password: %d\n", pswd); fflush(stdout);
+			sprintf(g_pswd, "%d", pswd);
+			strcpy(reqUserLogin.Password, g_pswd);
 			// send the login request
 			m_pUserApi->ReqUserLogin(&reqUserLogin, 0);
 		}
@@ -58,9 +66,16 @@ class CSimpleHandler : public CThostFtdcMdSpi
 			}
 			// login success, then subscribe the quotation information
 			char * Instrumnet[]={"IF0809","IF0812"};
-			m_pUserApi->SubscribeMarketData (Instrumnet,2);
+			m_pUserApi->SubscribeMarketData(Instrumnet,2);
 			//or unsubscribe the quotation
-			m_pUserApi->UnSubscribeMarketData (Instrumnet,2);
+			//m_pUserApi->UnSubscribeMarketData (Instrumnet,2);
+		}
+
+		virtual void OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+		{
+			printf("OnRspSubMarketData:\n");
+			printf("ErrorCode=[%d], ErrorMsg=[%s]\n", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+			printf("RequestID=[%d], Chain=[%d]\n", nRequestID, bIsLast);
 		}
 
 		// quotation return
@@ -71,6 +86,11 @@ class CSimpleHandler : public CThostFtdcMdSpi
 			// set the flag when the quotation data received.
 			//SetEvent(g_hEvent);
 		};
+		
+		///询价通知
+		virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp)
+		{
+		}
 
 		// the error notification caused by client request
 		virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
@@ -88,7 +108,6 @@ class CSimpleHandler : public CThostFtdcMdSpi
 
 int main()
 {
-	printf("begin\n");
 	// create a CThostFtdcMdApi instance
 	CThostFtdcMdApi *pUserApi = CThostFtdcMdApi::CreateFtdcMdApi();
 	// create an event handler instance
@@ -96,24 +115,19 @@ int main()
 	// register an event handler instance
 	pUserApi->RegisterSpi(&sh);
 
-	printf("regbefore\n");fflush(stdout);
-
 	// register the CTP front address and port
-	//pUserApi->RegisterFront("tcp://222.66.97.241:41213");
-	pUserApi->RegisterFront("tcp://172.16.0.31:57205");
-
-	printf("regafter\n");fflush(stdout);
+	pUserApi->RegisterFront("tcp://222.66.97.241:41213");
+	//pUserApi->RegisterFront("tcp://172.16.0.31:57205");
 
 	// start the connection between client and CTP server
 	pUserApi->Init();
 
-	printf("initafter\n");fflush(stdout);
+	sleep(3);	
 
 	// waiting for the quotation data
 	//WaitForSingleObject(g_hEvent, INFINITE);
 	// release API instance
 	pUserApi->Release();
 
-	printf("releaseafter\n");fflush(stdout);
 	return 0;
 }
