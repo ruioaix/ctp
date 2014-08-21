@@ -1,12 +1,23 @@
-all : trade
+examples := examples
+API := API
 
-trade : trade.c *.h
-	g++ $< lib/linux64/thosttraderapi.so -o $@
+examples_sources := $(wildcard $(examples)/*/*.c)
+examples_dirs := $(sort $(dir $(examples_sources)))
+examples_dirsname := $(patsubst $(examples)/%/,%,$(examples_dirs))
 
-quotation : quotation.c *.h
-	g++ $< lib/linux64/thostmduserapi.so -o $@
+.PHONY : all clean $(examples) $(examples_dirsname) 
 
-.PHONY : clean all 
+all : $(examples) 
 
-clean : 
-	@$(RM) *.o *.con a.out trade quotation
+$(examples) : 
+	@$(MAKE) -C $@ all
+
+$(examples_dirsname) : 
+	@$(MAKE) -C $(examples) $@
+
+clean :
+	@$(RM) *.con
+	@for d in $(examples); \
+		do \
+		$(MAKE) -C $$d clean; \
+		done
