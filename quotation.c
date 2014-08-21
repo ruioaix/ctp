@@ -65,10 +65,11 @@ class CSimpleHandler : public CThostFtdcMdSpi
 				exit(-1);
 			}
 			// login success, then subscribe the quotation information
-			char * Instrumnet[]={"IF0809","IF0812"};
+			char * Instrumnet[]={"IF1409","IF1410"};
 			m_pUserApi->SubscribeMarketData(Instrumnet,2);
 			//or unsubscribe the quotation
 			//m_pUserApi->UnSubscribeMarketData (Instrumnet,2);
+			m_pUserApi->SubscribeForQuoteRsp(Instrumnet, 2);
 		}
 
 		virtual void OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -78,20 +79,27 @@ class CSimpleHandler : public CThostFtdcMdSpi
 			printf("RequestID=[%d], Chain=[%d]\n", nRequestID, bIsLast);
 		}
 
-		// quotation return
-		virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData, CThostFtdcRspInfoField *pRspInfo)
+		virtual void OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 		{
-			//output the order insert result
+			printf("OnRtnForQuoteRsp:\n");
 			printf("ErrorCode=[%d], ErrorMsg=[%s]\n", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
-			// set the flag when the quotation data received.
-			//SetEvent(g_hEvent);
-		};
-		
-		///询价通知
-		virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp)
-		{
+			printf("RequestID=[%d], Chain=[%d]\n", nRequestID, bIsLast);
 		}
 
+		// quotation return
+		virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
+		{
+			//output the order insert result
+			printf("DMD InstrumentID: %s\n", pDepthMarketData->InstrumentID);
+			// set the flag when the quotation data received.
+			//SetEvent(g_hEvent);
+		}
+
+		virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp)
+		{
+			printf("FQR InstrumentID: %s\n", pForQuoteRsp->InstrumentID);
+		}
+		
 		// the error notification caused by client request
 		virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
 			printf("OnRspError:\n");
@@ -122,7 +130,7 @@ int main()
 	// start the connection between client and CTP server
 	pUserApi->Init();
 
-	sleep(3);	
+	sleep(10);	
 
 	// waiting for the quotation data
 	//WaitForSingleObject(g_hEvent, INFINITE);
