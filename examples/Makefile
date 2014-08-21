@@ -6,6 +6,11 @@ dirsname := $(patsubst %/,%,$(dirs))
 
 all : $(dirsname)
 
+
+#	@echo $(sources)
+#	@echo $(dirs)
+#	@echo $(dirsname)
+
 $(dirsname) :
 	@$(MAKE) -C $@ -f ../Makefile.sub.mk all
 
