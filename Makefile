@@ -1,17 +1,11 @@
-all : trade
+all : trade quotation
 
-#trade : trade.c *.h
-#	g++ $< -lthostmduserapi -lthosttraderapi -o $@
-#
-#quotation : quotation.c *.h
-#	g++ $< -lthostmduserapi -o $@
+trade : trade.c 
+	g++ $< -lthosttraderapi -o $@
 
-trade : trade.o 
-	gcc $< -lthosttraderapi -lstdc++ -lthostmduserapi -o $@
-#	gcc $< -lthosttraderapi -lstdc++ -o $@
-
-%.o : %.c
-	g++ -c $< -o $@
+quotation : quotation.c
+	g++ $< -lthostmduserapi -o $@
+	
 
 .PHONY : clean all 
 
