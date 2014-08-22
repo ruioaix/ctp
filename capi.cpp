@@ -106,6 +106,7 @@ void MD_Connect(void* pMdUserApi,
 		&&szInvestorId
 		&&szPassword)
 	{
+		printf("xxx\n");
 		MD_GetApi(pMdUserApi)->Connect(szPath,szAddresses,szBrokerId,szInvestorId,szPassword);
 	}
 }

@@ -77,7 +77,7 @@ void CMdUserApi::Connect(const string& szPath,
 			token = strtok( NULL, _QUANTBOXC2CTP_SEPS_);
 		}
 		delete[] buf;
-		
+		printf("before init\n");
 		//初始化连接
 		m_pApi->Init();
 	}
@@ -334,6 +334,7 @@ void CMdUserApi::OnFrontConnected()
 
 void CMdUserApi::OnFrontDisconnected(int nReason)
 {
+	(*m_fnOnFrontDisconnected)(this, nReason);
 	CThostFtdcRspInfoField RspInfo;
 	//连接失败返回的信息是拼接而成，主要是为了统一输出
 	RspInfo.ErrorID = nReason;
