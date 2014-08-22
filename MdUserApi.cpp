@@ -324,6 +324,8 @@ void CMdUserApi::UnsubscribeQuote(const string& szInstrumentIDs)
 void CMdUserApi::OnFrontConnected()
 {
 	//连接成功后自动请求登录
+	(*m_fnOnFrontConnected)(this);
+
 	ReqUserLogin();
 }
 

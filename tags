@@ -676,295 +676,577 @@ BusinessUnit	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcBusinessUnitType	Busi
 BusinessUnit	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcBusinessUnitType	BusinessUnit;$/;"	m	struct:CThostFtdcQuoteActionField
 BusinessUnit	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcBusinessUnitType	BusinessUnit;$/;"	m	struct:CThostFtdcQuoteField
 BusinessUnit	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcBusinessUnitType	BusinessUnit;$/;"	m	struct:CThostFtdcTradeField
-CCTPMsgQueue	CTPMsgQueue.h	/^	CCTPMsgQueue(void)$/;"	f	class:CCTPMsgQueue
-CCTPMsgQueue	CTPMsgQueue.h	/^class CCTPMsgQueue$/;"	c
-CTP_C_API_CCTPMSGQUEUE	CTPMsgQueue.h	2;"	d
+CMdUserApi	MdUserApi.cpp	/^CMdUserApi::CMdUserApi(void)$/;"	f	class:CMdUserApi
+CMdUserApi	MdUserApi.h	/^class CMdUserApi :$/;"	c
 CTP_C_API_HEADER_H	header.h	8;"	d
+CTP_C_API_MDUSERAPI_H	MdUserApi.h	2;"	d
+CTP_C_API_TOOLKIT_H	toolkit.h	2;"	d
 CThostFtdcAccountregisterField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcAccountregisterField$/;"	s
+CThostFtdcAccountregisterField	header.h	/^typedef struct CThostFtdcAccountregisterField			CThostFtdcAccountregisterField;$/;"	t	typeref:struct:CThostFtdcAccountregisterField
 CThostFtdcAuthenticationInfoField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcAuthenticationInfoField$/;"	s
+CThostFtdcAuthenticationInfoField	header.h	/^typedef struct CThostFtdcAuthenticationInfoField			CThostFtdcAuthenticationInfoField;$/;"	t	typeref:struct:CThostFtdcAuthenticationInfoField
 CThostFtdcBrokerDepositField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcBrokerDepositField$/;"	s
+CThostFtdcBrokerDepositField	header.h	/^typedef struct CThostFtdcBrokerDepositField			CThostFtdcBrokerDepositField;$/;"	t	typeref:struct:CThostFtdcBrokerDepositField
 CThostFtdcBrokerField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcBrokerField$/;"	s
+CThostFtdcBrokerField	header.h	/^typedef struct CThostFtdcBrokerField			CThostFtdcBrokerField;$/;"	t	typeref:struct:CThostFtdcBrokerField
 CThostFtdcBrokerSyncField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcBrokerSyncField$/;"	s
+CThostFtdcBrokerSyncField	header.h	/^typedef struct CThostFtdcBrokerSyncField			CThostFtdcBrokerSyncField;$/;"	t	typeref:struct:CThostFtdcBrokerSyncField
 CThostFtdcBrokerTradingAlgosField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcBrokerTradingAlgosField$/;"	s
+CThostFtdcBrokerTradingAlgosField	header.h	/^typedef struct CThostFtdcBrokerTradingAlgosField			CThostFtdcBrokerTradingAlgosField;$/;"	t	typeref:struct:CThostFtdcBrokerTradingAlgosField
 CThostFtdcBrokerTradingParamsField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcBrokerTradingParamsField$/;"	s
+CThostFtdcBrokerTradingParamsField	header.h	/^typedef struct CThostFtdcBrokerTradingParamsField			CThostFtdcBrokerTradingParamsField;$/;"	t	typeref:struct:CThostFtdcBrokerTradingParamsField
 CThostFtdcBrokerUserEventField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcBrokerUserEventField$/;"	s
+CThostFtdcBrokerUserEventField	header.h	/^typedef struct CThostFtdcBrokerUserEventField			CThostFtdcBrokerUserEventField;$/;"	t	typeref:struct:CThostFtdcBrokerUserEventField
 CThostFtdcBrokerUserField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcBrokerUserField$/;"	s
+CThostFtdcBrokerUserField	header.h	/^typedef struct CThostFtdcBrokerUserField			CThostFtdcBrokerUserField;$/;"	t	typeref:struct:CThostFtdcBrokerUserField
 CThostFtdcBrokerUserFunctionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcBrokerUserFunctionField$/;"	s
+CThostFtdcBrokerUserFunctionField	header.h	/^typedef struct CThostFtdcBrokerUserFunctionField			CThostFtdcBrokerUserFunctionField;$/;"	t	typeref:struct:CThostFtdcBrokerUserFunctionField
 CThostFtdcBrokerUserOTPParamField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcBrokerUserOTPParamField$/;"	s
+CThostFtdcBrokerUserOTPParamField	header.h	/^typedef struct CThostFtdcBrokerUserOTPParamField			CThostFtdcBrokerUserOTPParamField;$/;"	t	typeref:struct:CThostFtdcBrokerUserOTPParamField
 CThostFtdcBrokerUserPasswordField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcBrokerUserPasswordField$/;"	s
+CThostFtdcBrokerUserPasswordField	header.h	/^typedef struct CThostFtdcBrokerUserPasswordField			CThostFtdcBrokerUserPasswordField;$/;"	t	typeref:struct:CThostFtdcBrokerUserPasswordField
 CThostFtdcBrokerUserRightAssignField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcBrokerUserRightAssignField$/;"	s
+CThostFtdcBrokerUserRightAssignField	header.h	/^typedef struct CThostFtdcBrokerUserRightAssignField			CThostFtdcBrokerUserRightAssignField;$/;"	t	typeref:struct:CThostFtdcBrokerUserRightAssignField
 CThostFtdcBrokerWithdrawAlgorithmField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcBrokerWithdrawAlgorithmField$/;"	s
+CThostFtdcBrokerWithdrawAlgorithmField	header.h	/^typedef struct CThostFtdcBrokerWithdrawAlgorithmField			CThostFtdcBrokerWithdrawAlgorithmField;$/;"	t	typeref:struct:CThostFtdcBrokerWithdrawAlgorithmField
 CThostFtdcCFMMCBrokerKeyField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcCFMMCBrokerKeyField$/;"	s
+CThostFtdcCFMMCBrokerKeyField	header.h	/^typedef struct CThostFtdcCFMMCBrokerKeyField			CThostFtdcCFMMCBrokerKeyField;$/;"	t	typeref:struct:CThostFtdcCFMMCBrokerKeyField
 CThostFtdcCFMMCTradingAccountKeyField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcCFMMCTradingAccountKeyField$/;"	s
+CThostFtdcCFMMCTradingAccountKeyField	header.h	/^typedef struct CThostFtdcCFMMCTradingAccountKeyField			CThostFtdcCFMMCTradingAccountKeyField;$/;"	t	typeref:struct:CThostFtdcCFMMCTradingAccountKeyField
 CThostFtdcCancelAccountField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcCancelAccountField$/;"	s
+CThostFtdcCancelAccountField	header.h	/^typedef struct CThostFtdcCancelAccountField			CThostFtdcCancelAccountField;$/;"	t	typeref:struct:CThostFtdcCancelAccountField
 CThostFtdcChangeAccountField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcChangeAccountField$/;"	s
+CThostFtdcChangeAccountField	header.h	/^typedef struct CThostFtdcChangeAccountField			CThostFtdcChangeAccountField;$/;"	t	typeref:struct:CThostFtdcChangeAccountField
 CThostFtdcCombinationLegField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcCombinationLegField$/;"	s
+CThostFtdcCombinationLegField	header.h	/^typedef struct CThostFtdcCombinationLegField			CThostFtdcCombinationLegField;$/;"	t	typeref:struct:CThostFtdcCombinationLegField
 CThostFtdcCommPhaseField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcCommPhaseField$/;"	s
+CThostFtdcCommPhaseField	header.h	/^typedef struct CThostFtdcCommPhaseField			CThostFtdcCommPhaseField;$/;"	t	typeref:struct:CThostFtdcCommPhaseField
 CThostFtdcCommRateModelField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcCommRateModelField$/;"	s
+CThostFtdcCommRateModelField	header.h	/^typedef struct CThostFtdcCommRateModelField			CThostFtdcCommRateModelField;$/;"	t	typeref:struct:CThostFtdcCommRateModelField
 CThostFtdcContractBankField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcContractBankField$/;"	s
+CThostFtdcContractBankField	header.h	/^typedef struct CThostFtdcContractBankField			CThostFtdcContractBankField;$/;"	t	typeref:struct:CThostFtdcContractBankField
 CThostFtdcCurrTransferIdentityField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcCurrTransferIdentityField$/;"	s
+CThostFtdcCurrTransferIdentityField	header.h	/^typedef struct CThostFtdcCurrTransferIdentityField			CThostFtdcCurrTransferIdentityField;$/;"	t	typeref:struct:CThostFtdcCurrTransferIdentityField
 CThostFtdcCurrentTimeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcCurrentTimeField$/;"	s
+CThostFtdcCurrentTimeField	header.h	/^typedef struct CThostFtdcCurrentTimeField			CThostFtdcCurrentTimeField;$/;"	t	typeref:struct:CThostFtdcCurrentTimeField
 CThostFtdcDRTransferField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcDRTransferField$/;"	s
+CThostFtdcDRTransferField	header.h	/^typedef struct CThostFtdcDRTransferField			CThostFtdcDRTransferField;$/;"	t	typeref:struct:CThostFtdcDRTransferField
 CThostFtdcDepositResultInformField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcDepositResultInformField$/;"	s
+CThostFtdcDepositResultInformField	header.h	/^typedef struct CThostFtdcDepositResultInformField			CThostFtdcDepositResultInformField;$/;"	t	typeref:struct:CThostFtdcDepositResultInformField
 CThostFtdcDepthMarketDataField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcDepthMarketDataField$/;"	s
+CThostFtdcDepthMarketDataField	header.h	/^typedef struct CThostFtdcDepthMarketDataField			CThostFtdcDepthMarketDataField;$/;"	t	typeref:struct:CThostFtdcDepthMarketDataField
 CThostFtdcDiscountField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcDiscountField$/;"	s
+CThostFtdcDiscountField	header.h	/^typedef struct CThostFtdcDiscountField			CThostFtdcDiscountField;$/;"	t	typeref:struct:CThostFtdcDiscountField
 CThostFtdcDisseminationField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcDisseminationField$/;"	s
+CThostFtdcDisseminationField	header.h	/^typedef struct CThostFtdcDisseminationField			CThostFtdcDisseminationField;$/;"	t	typeref:struct:CThostFtdcDisseminationField
 CThostFtdcEWarrantOffsetField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcEWarrantOffsetField$/;"	s
+CThostFtdcEWarrantOffsetField	header.h	/^typedef struct CThostFtdcEWarrantOffsetField			CThostFtdcEWarrantOffsetField;$/;"	t	typeref:struct:CThostFtdcEWarrantOffsetField
 CThostFtdcErrExecOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcErrExecOrderActionField$/;"	s
+CThostFtdcErrExecOrderActionField	header.h	/^typedef struct CThostFtdcErrExecOrderActionField			CThostFtdcErrExecOrderActionField;$/;"	t	typeref:struct:CThostFtdcErrExecOrderActionField
 CThostFtdcErrExecOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcErrExecOrderField$/;"	s
+CThostFtdcErrExecOrderField	header.h	/^typedef struct CThostFtdcErrExecOrderField			CThostFtdcErrExecOrderField;$/;"	t	typeref:struct:CThostFtdcErrExecOrderField
 CThostFtdcErrOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcErrOrderActionField$/;"	s
+CThostFtdcErrOrderActionField	header.h	/^typedef struct CThostFtdcErrOrderActionField			CThostFtdcErrOrderActionField;$/;"	t	typeref:struct:CThostFtdcErrOrderActionField
 CThostFtdcErrOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcErrOrderField$/;"	s
+CThostFtdcErrOrderField	header.h	/^typedef struct CThostFtdcErrOrderField			CThostFtdcErrOrderField;$/;"	t	typeref:struct:CThostFtdcErrOrderField
 CThostFtdcErrorConditionalOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcErrorConditionalOrderField$/;"	s
+CThostFtdcErrorConditionalOrderField	header.h	/^typedef struct CThostFtdcErrorConditionalOrderField			CThostFtdcErrorConditionalOrderField;$/;"	t	typeref:struct:CThostFtdcErrorConditionalOrderField
 CThostFtdcExchangeExecOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExchangeExecOrderActionField$/;"	s
+CThostFtdcExchangeExecOrderActionField	header.h	/^typedef struct CThostFtdcExchangeExecOrderActionField			CThostFtdcExchangeExecOrderActionField;$/;"	t	typeref:struct:CThostFtdcExchangeExecOrderActionField
 CThostFtdcExchangeExecOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExchangeExecOrderField$/;"	s
+CThostFtdcExchangeExecOrderField	header.h	/^typedef struct CThostFtdcExchangeExecOrderField			CThostFtdcExchangeExecOrderField;$/;"	t	typeref:struct:CThostFtdcExchangeExecOrderField
 CThostFtdcExchangeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExchangeField$/;"	s
+CThostFtdcExchangeField	header.h	/^typedef struct CThostFtdcExchangeField			CThostFtdcExchangeField;$/;"	t	typeref:struct:CThostFtdcExchangeField
 CThostFtdcExchangeForQuoteField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExchangeForQuoteField$/;"	s
+CThostFtdcExchangeForQuoteField	header.h	/^typedef struct CThostFtdcExchangeForQuoteField			CThostFtdcExchangeForQuoteField;$/;"	t	typeref:struct:CThostFtdcExchangeForQuoteField
 CThostFtdcExchangeMarginRateAdjustField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExchangeMarginRateAdjustField$/;"	s
+CThostFtdcExchangeMarginRateAdjustField	header.h	/^typedef struct CThostFtdcExchangeMarginRateAdjustField			CThostFtdcExchangeMarginRateAdjustField;$/;"	t	typeref:struct:CThostFtdcExchangeMarginRateAdjustField
 CThostFtdcExchangeMarginRateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExchangeMarginRateField$/;"	s
+CThostFtdcExchangeMarginRateField	header.h	/^typedef struct CThostFtdcExchangeMarginRateField			CThostFtdcExchangeMarginRateField;$/;"	t	typeref:struct:CThostFtdcExchangeMarginRateField
 CThostFtdcExchangeOrderActionErrorField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExchangeOrderActionErrorField$/;"	s
+CThostFtdcExchangeOrderActionErrorField	header.h	/^typedef struct CThostFtdcExchangeOrderActionErrorField			CThostFtdcExchangeOrderActionErrorField;$/;"	t	typeref:struct:CThostFtdcExchangeOrderActionErrorField
 CThostFtdcExchangeOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExchangeOrderActionField$/;"	s
+CThostFtdcExchangeOrderActionField	header.h	/^typedef struct CThostFtdcExchangeOrderActionField			CThostFtdcExchangeOrderActionField;$/;"	t	typeref:struct:CThostFtdcExchangeOrderActionField
 CThostFtdcExchangeOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExchangeOrderField$/;"	s
+CThostFtdcExchangeOrderField	header.h	/^typedef struct CThostFtdcExchangeOrderField			CThostFtdcExchangeOrderField;$/;"	t	typeref:struct:CThostFtdcExchangeOrderField
 CThostFtdcExchangeOrderInsertErrorField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExchangeOrderInsertErrorField$/;"	s
+CThostFtdcExchangeOrderInsertErrorField	header.h	/^typedef struct CThostFtdcExchangeOrderInsertErrorField			CThostFtdcExchangeOrderInsertErrorField;$/;"	t	typeref:struct:CThostFtdcExchangeOrderInsertErrorField
 CThostFtdcExchangeQuoteActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExchangeQuoteActionField$/;"	s
+CThostFtdcExchangeQuoteActionField	header.h	/^typedef struct CThostFtdcExchangeQuoteActionField			CThostFtdcExchangeQuoteActionField;$/;"	t	typeref:struct:CThostFtdcExchangeQuoteActionField
 CThostFtdcExchangeQuoteField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExchangeQuoteField$/;"	s
+CThostFtdcExchangeQuoteField	header.h	/^typedef struct CThostFtdcExchangeQuoteField			CThostFtdcExchangeQuoteField;$/;"	t	typeref:struct:CThostFtdcExchangeQuoteField
 CThostFtdcExchangeRateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExchangeRateField$/;"	s
+CThostFtdcExchangeRateField	header.h	/^typedef struct CThostFtdcExchangeRateField			CThostFtdcExchangeRateField;$/;"	t	typeref:struct:CThostFtdcExchangeRateField
 CThostFtdcExchangeSequenceField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExchangeSequenceField$/;"	s
+CThostFtdcExchangeSequenceField	header.h	/^typedef struct CThostFtdcExchangeSequenceField			CThostFtdcExchangeSequenceField;$/;"	t	typeref:struct:CThostFtdcExchangeSequenceField
 CThostFtdcExchangeTradeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExchangeTradeField$/;"	s
+CThostFtdcExchangeTradeField	header.h	/^typedef struct CThostFtdcExchangeTradeField			CThostFtdcExchangeTradeField;$/;"	t	typeref:struct:CThostFtdcExchangeTradeField
 CThostFtdcExecOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExecOrderActionField$/;"	s
+CThostFtdcExecOrderActionField	header.h	/^typedef struct CThostFtdcExecOrderActionField			CThostFtdcExecOrderActionField;$/;"	t	typeref:struct:CThostFtdcExecOrderActionField
 CThostFtdcExecOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcExecOrderField$/;"	s
+CThostFtdcExecOrderField	header.h	/^typedef struct CThostFtdcExecOrderField			CThostFtdcExecOrderField;$/;"	t	typeref:struct:CThostFtdcExecOrderField
 CThostFtdcFensUserInfoField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcFensUserInfoField$/;"	s
+CThostFtdcFensUserInfoField	header.h	/^typedef struct CThostFtdcFensUserInfoField			CThostFtdcFensUserInfoField;$/;"	t	typeref:struct:CThostFtdcFensUserInfoField
 CThostFtdcForQuoteField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcForQuoteField$/;"	s
+CThostFtdcForQuoteField	header.h	/^typedef struct CThostFtdcForQuoteField			CThostFtdcForQuoteField;$/;"	t	typeref:struct:CThostFtdcForQuoteField
 CThostFtdcForQuoteRspField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcForQuoteRspField$/;"	s
+CThostFtdcForQuoteRspField	header.h	/^typedef struct CThostFtdcForQuoteRspField			CThostFtdcForQuoteRspField;$/;"	t	typeref:struct:CThostFtdcForQuoteRspField
 CThostFtdcForceUserLogoutField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcForceUserLogoutField$/;"	s
+CThostFtdcForceUserLogoutField	header.h	/^typedef struct CThostFtdcForceUserLogoutField			CThostFtdcForceUserLogoutField;$/;"	t	typeref:struct:CThostFtdcForceUserLogoutField
 CThostFtdcFrontStatusField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcFrontStatusField$/;"	s
+CThostFtdcFrontStatusField	header.h	/^typedef struct CThostFtdcFrontStatusField			CThostFtdcFrontStatusField;$/;"	t	typeref:struct:CThostFtdcFrontStatusField
 CThostFtdcFutureSignIOField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcFutureSignIOField$/;"	s
+CThostFtdcFutureSignIOField	header.h	/^typedef struct CThostFtdcFutureSignIOField			CThostFtdcFutureSignIOField;$/;"	t	typeref:struct:CThostFtdcFutureSignIOField
 CThostFtdcIndexPriceField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcIndexPriceField$/;"	s
+CThostFtdcIndexPriceField	header.h	/^typedef struct CThostFtdcIndexPriceField			CThostFtdcIndexPriceField;$/;"	t	typeref:struct:CThostFtdcIndexPriceField
 CThostFtdcInputExecOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInputExecOrderActionField$/;"	s
+CThostFtdcInputExecOrderActionField	header.h	/^typedef struct CThostFtdcInputExecOrderActionField			CThostFtdcInputExecOrderActionField;$/;"	t	typeref:struct:CThostFtdcInputExecOrderActionField
 CThostFtdcInputExecOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInputExecOrderField$/;"	s
+CThostFtdcInputExecOrderField	header.h	/^typedef struct CThostFtdcInputExecOrderField			CThostFtdcInputExecOrderField;$/;"	t	typeref:struct:CThostFtdcInputExecOrderField
 CThostFtdcInputForQuoteField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInputForQuoteField$/;"	s
+CThostFtdcInputForQuoteField	header.h	/^typedef struct CThostFtdcInputForQuoteField			CThostFtdcInputForQuoteField;$/;"	t	typeref:struct:CThostFtdcInputForQuoteField
 CThostFtdcInputOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInputOrderActionField$/;"	s
+CThostFtdcInputOrderActionField	header.h	/^typedef struct CThostFtdcInputOrderActionField			CThostFtdcInputOrderActionField;$/;"	t	typeref:struct:CThostFtdcInputOrderActionField
 CThostFtdcInputOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInputOrderField$/;"	s
+CThostFtdcInputOrderField	header.h	/^typedef struct CThostFtdcInputOrderField			CThostFtdcInputOrderField;$/;"	t	typeref:struct:CThostFtdcInputOrderField
 CThostFtdcInputQuoteActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInputQuoteActionField$/;"	s
+CThostFtdcInputQuoteActionField	header.h	/^typedef struct CThostFtdcInputQuoteActionField			CThostFtdcInputQuoteActionField;$/;"	t	typeref:struct:CThostFtdcInputQuoteActionField
 CThostFtdcInputQuoteField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInputQuoteField$/;"	s
+CThostFtdcInputQuoteField	header.h	/^typedef struct CThostFtdcInputQuoteField			CThostFtdcInputQuoteField;$/;"	t	typeref:struct:CThostFtdcInputQuoteField
 CThostFtdcInstrumentCommissionRateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInstrumentCommissionRateField$/;"	s
+CThostFtdcInstrumentCommissionRateField	header.h	/^typedef struct CThostFtdcInstrumentCommissionRateField			CThostFtdcInstrumentCommissionRateField;$/;"	t	typeref:struct:CThostFtdcInstrumentCommissionRateField
 CThostFtdcInstrumentField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInstrumentField$/;"	s
+CThostFtdcInstrumentField	header.h	/^typedef struct CThostFtdcInstrumentField			CThostFtdcInstrumentField;$/;"	t	typeref:struct:CThostFtdcInstrumentField
 CThostFtdcInstrumentMarginRateAdjustField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInstrumentMarginRateAdjustField$/;"	s
+CThostFtdcInstrumentMarginRateAdjustField	header.h	/^typedef struct CThostFtdcInstrumentMarginRateAdjustField			CThostFtdcInstrumentMarginRateAdjustField;$/;"	t	typeref:struct:CThostFtdcInstrumentMarginRateAdjustField
 CThostFtdcInstrumentMarginRateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInstrumentMarginRateField$/;"	s
+CThostFtdcInstrumentMarginRateField	header.h	/^typedef struct CThostFtdcInstrumentMarginRateField			CThostFtdcInstrumentMarginRateField;$/;"	t	typeref:struct:CThostFtdcInstrumentMarginRateField
 CThostFtdcInstrumentStatusField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInstrumentStatusField$/;"	s
+CThostFtdcInstrumentStatusField	header.h	/^typedef struct CThostFtdcInstrumentStatusField			CThostFtdcInstrumentStatusField;$/;"	t	typeref:struct:CThostFtdcInstrumentStatusField
 CThostFtdcInstrumentTradingRightField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInstrumentTradingRightField$/;"	s
+CThostFtdcInstrumentTradingRightField	header.h	/^typedef struct CThostFtdcInstrumentTradingRightField			CThostFtdcInstrumentTradingRightField;$/;"	t	typeref:struct:CThostFtdcInstrumentTradingRightField
 CThostFtdcInvestorAccountField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInvestorAccountField$/;"	s
+CThostFtdcInvestorAccountField	header.h	/^typedef struct CThostFtdcInvestorAccountField			CThostFtdcInvestorAccountField;$/;"	t	typeref:struct:CThostFtdcInvestorAccountField
 CThostFtdcInvestorField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInvestorField$/;"	s
+CThostFtdcInvestorField	header.h	/^typedef struct CThostFtdcInvestorField			CThostFtdcInvestorField;$/;"	t	typeref:struct:CThostFtdcInvestorField
 CThostFtdcInvestorGroupField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInvestorGroupField$/;"	s
+CThostFtdcInvestorGroupField	header.h	/^typedef struct CThostFtdcInvestorGroupField			CThostFtdcInvestorGroupField;$/;"	t	typeref:struct:CThostFtdcInvestorGroupField
 CThostFtdcInvestorPositionCombineDetailField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInvestorPositionCombineDetailField$/;"	s
+CThostFtdcInvestorPositionCombineDetailField	header.h	/^typedef struct CThostFtdcInvestorPositionCombineDetailField			CThostFtdcInvestorPositionCombineDetailField;$/;"	t	typeref:struct:CThostFtdcInvestorPositionCombineDetailField
 CThostFtdcInvestorPositionDetailField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInvestorPositionDetailField$/;"	s
+CThostFtdcInvestorPositionDetailField	header.h	/^typedef struct CThostFtdcInvestorPositionDetailField			CThostFtdcInvestorPositionDetailField;$/;"	t	typeref:struct:CThostFtdcInvestorPositionDetailField
 CThostFtdcInvestorPositionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInvestorPositionField$/;"	s
+CThostFtdcInvestorPositionField	header.h	/^typedef struct CThostFtdcInvestorPositionField			CThostFtdcInvestorPositionField;$/;"	t	typeref:struct:CThostFtdcInvestorPositionField
 CThostFtdcInvestorProductGroupMarginField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInvestorProductGroupMarginField$/;"	s
+CThostFtdcInvestorProductGroupMarginField	header.h	/^typedef struct CThostFtdcInvestorProductGroupMarginField			CThostFtdcInvestorProductGroupMarginField;$/;"	t	typeref:struct:CThostFtdcInvestorProductGroupMarginField
 CThostFtdcInvestorWithdrawAlgorithmField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcInvestorWithdrawAlgorithmField$/;"	s
+CThostFtdcInvestorWithdrawAlgorithmField	header.h	/^typedef struct CThostFtdcInvestorWithdrawAlgorithmField			CThostFtdcInvestorWithdrawAlgorithmField;$/;"	t	typeref:struct:CThostFtdcInvestorWithdrawAlgorithmField
 CThostFtdcLinkManField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcLinkManField$/;"	s
+CThostFtdcLinkManField	header.h	/^typedef struct CThostFtdcLinkManField			CThostFtdcLinkManField;$/;"	t	typeref:struct:CThostFtdcLinkManField
 CThostFtdcLoadSettlementInfoField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcLoadSettlementInfoField$/;"	s
+CThostFtdcLoadSettlementInfoField	header.h	/^typedef struct CThostFtdcLoadSettlementInfoField			CThostFtdcLoadSettlementInfoField;$/;"	t	typeref:struct:CThostFtdcLoadSettlementInfoField
 CThostFtdcLoginForbiddenUserField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcLoginForbiddenUserField$/;"	s
+CThostFtdcLoginForbiddenUserField	header.h	/^typedef struct CThostFtdcLoginForbiddenUserField			CThostFtdcLoginForbiddenUserField;$/;"	t	typeref:struct:CThostFtdcLoginForbiddenUserField
 CThostFtdcLoginInfoField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcLoginInfoField$/;"	s
+CThostFtdcLoginInfoField	header.h	/^typedef struct CThostFtdcLoginInfoField			CThostFtdcLoginInfoField;$/;"	t	typeref:struct:CThostFtdcLoginInfoField
 CThostFtdcLogoutAllField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcLogoutAllField$/;"	s
+CThostFtdcLogoutAllField	header.h	/^typedef struct CThostFtdcLogoutAllField			CThostFtdcLogoutAllField;$/;"	t	typeref:struct:CThostFtdcLogoutAllField
 CThostFtdcMDTraderOfferField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcMDTraderOfferField$/;"	s
+CThostFtdcMDTraderOfferField	header.h	/^typedef struct CThostFtdcMDTraderOfferField			CThostFtdcMDTraderOfferField;$/;"	t	typeref:struct:CThostFtdcMDTraderOfferField
 CThostFtdcManualSyncBrokerUserOTPField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcManualSyncBrokerUserOTPField$/;"	s
+CThostFtdcManualSyncBrokerUserOTPField	header.h	/^typedef struct CThostFtdcManualSyncBrokerUserOTPField			CThostFtdcManualSyncBrokerUserOTPField;$/;"	t	typeref:struct:CThostFtdcManualSyncBrokerUserOTPField
 CThostFtdcMarginModelField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcMarginModelField$/;"	s
+CThostFtdcMarginModelField	header.h	/^typedef struct CThostFtdcMarginModelField			CThostFtdcMarginModelField;$/;"	t	typeref:struct:CThostFtdcMarginModelField
 CThostFtdcMarketDataAsk23Field	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcMarketDataAsk23Field$/;"	s
+CThostFtdcMarketDataAsk23Field	header.h	/^typedef struct CThostFtdcMarketDataAsk23Field			CThostFtdcMarketDataAsk23Field;$/;"	t	typeref:struct:CThostFtdcMarketDataAsk23Field
 CThostFtdcMarketDataAsk45Field	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcMarketDataAsk45Field$/;"	s
+CThostFtdcMarketDataAsk45Field	header.h	/^typedef struct CThostFtdcMarketDataAsk45Field			CThostFtdcMarketDataAsk45Field;$/;"	t	typeref:struct:CThostFtdcMarketDataAsk45Field
 CThostFtdcMarketDataAveragePriceField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcMarketDataAveragePriceField$/;"	s
+CThostFtdcMarketDataAveragePriceField	header.h	/^typedef struct CThostFtdcMarketDataAveragePriceField			CThostFtdcMarketDataAveragePriceField;$/;"	t	typeref:struct:CThostFtdcMarketDataAveragePriceField
 CThostFtdcMarketDataBaseField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcMarketDataBaseField$/;"	s
+CThostFtdcMarketDataBaseField	header.h	/^typedef struct CThostFtdcMarketDataBaseField			CThostFtdcMarketDataBaseField;$/;"	t	typeref:struct:CThostFtdcMarketDataBaseField
 CThostFtdcMarketDataBestPriceField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcMarketDataBestPriceField$/;"	s
+CThostFtdcMarketDataBestPriceField	header.h	/^typedef struct CThostFtdcMarketDataBestPriceField			CThostFtdcMarketDataBestPriceField;$/;"	t	typeref:struct:CThostFtdcMarketDataBestPriceField
 CThostFtdcMarketDataBid23Field	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcMarketDataBid23Field$/;"	s
+CThostFtdcMarketDataBid23Field	header.h	/^typedef struct CThostFtdcMarketDataBid23Field			CThostFtdcMarketDataBid23Field;$/;"	t	typeref:struct:CThostFtdcMarketDataBid23Field
 CThostFtdcMarketDataBid45Field	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcMarketDataBid45Field$/;"	s
+CThostFtdcMarketDataBid45Field	header.h	/^typedef struct CThostFtdcMarketDataBid45Field			CThostFtdcMarketDataBid45Field;$/;"	t	typeref:struct:CThostFtdcMarketDataBid45Field
 CThostFtdcMarketDataExchangeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcMarketDataExchangeField$/;"	s
+CThostFtdcMarketDataExchangeField	header.h	/^typedef struct CThostFtdcMarketDataExchangeField			CThostFtdcMarketDataExchangeField;$/;"	t	typeref:struct:CThostFtdcMarketDataExchangeField
 CThostFtdcMarketDataField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcMarketDataField$/;"	s
+CThostFtdcMarketDataField	header.h	/^typedef struct CThostFtdcMarketDataField			CThostFtdcMarketDataField;$/;"	t	typeref:struct:CThostFtdcMarketDataField
 CThostFtdcMarketDataLastMatchField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcMarketDataLastMatchField$/;"	s
+CThostFtdcMarketDataLastMatchField	header.h	/^typedef struct CThostFtdcMarketDataLastMatchField			CThostFtdcMarketDataLastMatchField;$/;"	t	typeref:struct:CThostFtdcMarketDataLastMatchField
 CThostFtdcMarketDataStaticField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcMarketDataStaticField$/;"	s
+CThostFtdcMarketDataStaticField	header.h	/^typedef struct CThostFtdcMarketDataStaticField			CThostFtdcMarketDataStaticField;$/;"	t	typeref:struct:CThostFtdcMarketDataStaticField
 CThostFtdcMarketDataUpdateTimeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcMarketDataUpdateTimeField$/;"	s
+CThostFtdcMarketDataUpdateTimeField	header.h	/^typedef struct CThostFtdcMarketDataUpdateTimeField			CThostFtdcMarketDataUpdateTimeField;$/;"	t	typeref:struct:CThostFtdcMarketDataUpdateTimeField
 CThostFtdcMdApi	cpp_api/ThostFtdcMdApi.h	/^class MD_API_EXPORT CThostFtdcMdApi$/;"	c
 CThostFtdcMdSpi	cpp_api/ThostFtdcMdApi.h	/^class CThostFtdcMdSpi$/;"	c
 CThostFtdcMulticastGroupInfoField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcMulticastGroupInfoField$/;"	s
+CThostFtdcMulticastGroupInfoField	header.h	/^typedef struct CThostFtdcMulticastGroupInfoField			CThostFtdcMulticastGroupInfoField;$/;"	t	typeref:struct:CThostFtdcMulticastGroupInfoField
 CThostFtdcNoticeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcNoticeField$/;"	s
+CThostFtdcNoticeField	header.h	/^typedef struct CThostFtdcNoticeField			CThostFtdcNoticeField;$/;"	t	typeref:struct:CThostFtdcNoticeField
 CThostFtdcNotifyFutureSignInField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcNotifyFutureSignInField$/;"	s
+CThostFtdcNotifyFutureSignInField	header.h	/^typedef struct CThostFtdcNotifyFutureSignInField			CThostFtdcNotifyFutureSignInField;$/;"	t	typeref:struct:CThostFtdcNotifyFutureSignInField
 CThostFtdcNotifyFutureSignOutField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcNotifyFutureSignOutField$/;"	s
+CThostFtdcNotifyFutureSignOutField	header.h	/^typedef struct CThostFtdcNotifyFutureSignOutField			CThostFtdcNotifyFutureSignOutField;$/;"	t	typeref:struct:CThostFtdcNotifyFutureSignOutField
 CThostFtdcNotifyQueryAccountField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcNotifyQueryAccountField$/;"	s
+CThostFtdcNotifyQueryAccountField	header.h	/^typedef struct CThostFtdcNotifyQueryAccountField			CThostFtdcNotifyQueryAccountField;$/;"	t	typeref:struct:CThostFtdcNotifyQueryAccountField
 CThostFtdcNotifySyncKeyField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcNotifySyncKeyField$/;"	s
+CThostFtdcNotifySyncKeyField	header.h	/^typedef struct CThostFtdcNotifySyncKeyField			CThostFtdcNotifySyncKeyField;$/;"	t	typeref:struct:CThostFtdcNotifySyncKeyField
 CThostFtdcOpenAccountField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcOpenAccountField$/;"	s
+CThostFtdcOpenAccountField	header.h	/^typedef struct CThostFtdcOpenAccountField			CThostFtdcOpenAccountField;$/;"	t	typeref:struct:CThostFtdcOpenAccountField
 CThostFtdcOptionInstrCommRateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcOptionInstrCommRateField$/;"	s
+CThostFtdcOptionInstrCommRateField	header.h	/^typedef struct CThostFtdcOptionInstrCommRateField			CThostFtdcOptionInstrCommRateField;$/;"	t	typeref:struct:CThostFtdcOptionInstrCommRateField
 CThostFtdcOptionInstrDeltaField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcOptionInstrDeltaField$/;"	s
+CThostFtdcOptionInstrDeltaField	header.h	/^typedef struct CThostFtdcOptionInstrDeltaField			CThostFtdcOptionInstrDeltaField;$/;"	t	typeref:struct:CThostFtdcOptionInstrDeltaField
 CThostFtdcOptionInstrMarginAdjustField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcOptionInstrMarginAdjustField$/;"	s
+CThostFtdcOptionInstrMarginAdjustField	header.h	/^typedef struct CThostFtdcOptionInstrMarginAdjustField			CThostFtdcOptionInstrMarginAdjustField;$/;"	t	typeref:struct:CThostFtdcOptionInstrMarginAdjustField
 CThostFtdcOptionInstrMiniMarginField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcOptionInstrMiniMarginField$/;"	s
+CThostFtdcOptionInstrMiniMarginField	header.h	/^typedef struct CThostFtdcOptionInstrMiniMarginField			CThostFtdcOptionInstrMiniMarginField;$/;"	t	typeref:struct:CThostFtdcOptionInstrMiniMarginField
 CThostFtdcOptionInstrTradeCostField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcOptionInstrTradeCostField$/;"	s
+CThostFtdcOptionInstrTradeCostField	header.h	/^typedef struct CThostFtdcOptionInstrTradeCostField			CThostFtdcOptionInstrTradeCostField;$/;"	t	typeref:struct:CThostFtdcOptionInstrTradeCostField
 CThostFtdcOptionInstrTradingRightField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcOptionInstrTradingRightField$/;"	s
+CThostFtdcOptionInstrTradingRightField	header.h	/^typedef struct CThostFtdcOptionInstrTradingRightField			CThostFtdcOptionInstrTradingRightField;$/;"	t	typeref:struct:CThostFtdcOptionInstrTradingRightField
 CThostFtdcOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcOrderActionField$/;"	s
+CThostFtdcOrderActionField	header.h	/^typedef struct CThostFtdcOrderActionField			CThostFtdcOrderActionField;$/;"	t	typeref:struct:CThostFtdcOrderActionField
 CThostFtdcOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcOrderField$/;"	s
+CThostFtdcOrderField	header.h	/^typedef struct CThostFtdcOrderField			CThostFtdcOrderField;$/;"	t	typeref:struct:CThostFtdcOrderField
 CThostFtdcParkedOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcParkedOrderActionField$/;"	s
+CThostFtdcParkedOrderActionField	header.h	/^typedef struct CThostFtdcParkedOrderActionField			CThostFtdcParkedOrderActionField;$/;"	t	typeref:struct:CThostFtdcParkedOrderActionField
 CThostFtdcParkedOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcParkedOrderField$/;"	s
+CThostFtdcParkedOrderField	header.h	/^typedef struct CThostFtdcParkedOrderField			CThostFtdcParkedOrderField;$/;"	t	typeref:struct:CThostFtdcParkedOrderField
 CThostFtdcPartBrokerField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcPartBrokerField$/;"	s
+CThostFtdcPartBrokerField	header.h	/^typedef struct CThostFtdcPartBrokerField			CThostFtdcPartBrokerField;$/;"	t	typeref:struct:CThostFtdcPartBrokerField
 CThostFtdcPositionProfitAlgorithmField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcPositionProfitAlgorithmField$/;"	s
+CThostFtdcPositionProfitAlgorithmField	header.h	/^typedef struct CThostFtdcPositionProfitAlgorithmField			CThostFtdcPositionProfitAlgorithmField;$/;"	t	typeref:struct:CThostFtdcPositionProfitAlgorithmField
 CThostFtdcProductField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcProductField$/;"	s
+CThostFtdcProductField	header.h	/^typedef struct CThostFtdcProductField			CThostFtdcProductField;$/;"	t	typeref:struct:CThostFtdcProductField
 CThostFtdcQryAccountregisterField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryAccountregisterField$/;"	s
+CThostFtdcQryAccountregisterField	header.h	/^typedef struct CThostFtdcQryAccountregisterField			CThostFtdcQryAccountregisterField;$/;"	t	typeref:struct:CThostFtdcQryAccountregisterField
 CThostFtdcQryBrokerField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryBrokerField$/;"	s
+CThostFtdcQryBrokerField	header.h	/^typedef struct CThostFtdcQryBrokerField			CThostFtdcQryBrokerField;$/;"	t	typeref:struct:CThostFtdcQryBrokerField
 CThostFtdcQryBrokerTradingAlgosField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryBrokerTradingAlgosField$/;"	s
+CThostFtdcQryBrokerTradingAlgosField	header.h	/^typedef struct CThostFtdcQryBrokerTradingAlgosField			CThostFtdcQryBrokerTradingAlgosField;$/;"	t	typeref:struct:CThostFtdcQryBrokerTradingAlgosField
 CThostFtdcQryBrokerTradingParamsField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryBrokerTradingParamsField$/;"	s
+CThostFtdcQryBrokerTradingParamsField	header.h	/^typedef struct CThostFtdcQryBrokerTradingParamsField			CThostFtdcQryBrokerTradingParamsField;$/;"	t	typeref:struct:CThostFtdcQryBrokerTradingParamsField
 CThostFtdcQryBrokerUserEventField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryBrokerUserEventField$/;"	s
+CThostFtdcQryBrokerUserEventField	header.h	/^typedef struct CThostFtdcQryBrokerUserEventField			CThostFtdcQryBrokerUserEventField;$/;"	t	typeref:struct:CThostFtdcQryBrokerUserEventField
 CThostFtdcQryBrokerUserField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryBrokerUserField$/;"	s
+CThostFtdcQryBrokerUserField	header.h	/^typedef struct CThostFtdcQryBrokerUserField			CThostFtdcQryBrokerUserField;$/;"	t	typeref:struct:CThostFtdcQryBrokerUserField
 CThostFtdcQryBrokerUserFunctionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryBrokerUserFunctionField$/;"	s
+CThostFtdcQryBrokerUserFunctionField	header.h	/^typedef struct CThostFtdcQryBrokerUserFunctionField			CThostFtdcQryBrokerUserFunctionField;$/;"	t	typeref:struct:CThostFtdcQryBrokerUserFunctionField
 CThostFtdcQryCFMMCBrokerKeyField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryCFMMCBrokerKeyField$/;"	s
+CThostFtdcQryCFMMCBrokerKeyField	header.h	/^typedef struct CThostFtdcQryCFMMCBrokerKeyField			CThostFtdcQryCFMMCBrokerKeyField;$/;"	t	typeref:struct:CThostFtdcQryCFMMCBrokerKeyField
 CThostFtdcQryCFMMCTradingAccountKeyField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryCFMMCTradingAccountKeyField$/;"	s
+CThostFtdcQryCFMMCTradingAccountKeyField	header.h	/^typedef struct CThostFtdcQryCFMMCTradingAccountKeyField			CThostFtdcQryCFMMCTradingAccountKeyField;$/;"	t	typeref:struct:CThostFtdcQryCFMMCTradingAccountKeyField
 CThostFtdcQryCombinationLegField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryCombinationLegField$/;"	s
+CThostFtdcQryCombinationLegField	header.h	/^typedef struct CThostFtdcQryCombinationLegField			CThostFtdcQryCombinationLegField;$/;"	t	typeref:struct:CThostFtdcQryCombinationLegField
 CThostFtdcQryCommRateModelField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryCommRateModelField$/;"	s
+CThostFtdcQryCommRateModelField	header.h	/^typedef struct CThostFtdcQryCommRateModelField			CThostFtdcQryCommRateModelField;$/;"	t	typeref:struct:CThostFtdcQryCommRateModelField
 CThostFtdcQryContractBankField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryContractBankField$/;"	s
+CThostFtdcQryContractBankField	header.h	/^typedef struct CThostFtdcQryContractBankField			CThostFtdcQryContractBankField;$/;"	t	typeref:struct:CThostFtdcQryContractBankField
 CThostFtdcQryDepthMarketDataField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryDepthMarketDataField$/;"	s
+CThostFtdcQryDepthMarketDataField	header.h	/^typedef struct CThostFtdcQryDepthMarketDataField			CThostFtdcQryDepthMarketDataField;$/;"	t	typeref:struct:CThostFtdcQryDepthMarketDataField
 CThostFtdcQryEWarrantOffsetField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryEWarrantOffsetField$/;"	s
+CThostFtdcQryEWarrantOffsetField	header.h	/^typedef struct CThostFtdcQryEWarrantOffsetField			CThostFtdcQryEWarrantOffsetField;$/;"	t	typeref:struct:CThostFtdcQryEWarrantOffsetField
 CThostFtdcQryErrExecOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryErrExecOrderActionField$/;"	s
+CThostFtdcQryErrExecOrderActionField	header.h	/^typedef struct CThostFtdcQryErrExecOrderActionField			CThostFtdcQryErrExecOrderActionField;$/;"	t	typeref:struct:CThostFtdcQryErrExecOrderActionField
 CThostFtdcQryErrExecOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryErrExecOrderField$/;"	s
+CThostFtdcQryErrExecOrderField	header.h	/^typedef struct CThostFtdcQryErrExecOrderField			CThostFtdcQryErrExecOrderField;$/;"	t	typeref:struct:CThostFtdcQryErrExecOrderField
 CThostFtdcQryErrOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryErrOrderActionField$/;"	s
+CThostFtdcQryErrOrderActionField	header.h	/^typedef struct CThostFtdcQryErrOrderActionField			CThostFtdcQryErrOrderActionField;$/;"	t	typeref:struct:CThostFtdcQryErrOrderActionField
 CThostFtdcQryErrOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryErrOrderField$/;"	s
+CThostFtdcQryErrOrderField	header.h	/^typedef struct CThostFtdcQryErrOrderField			CThostFtdcQryErrOrderField;$/;"	t	typeref:struct:CThostFtdcQryErrOrderField
 CThostFtdcQryExchangeExecOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryExchangeExecOrderActionField$/;"	s
+CThostFtdcQryExchangeExecOrderActionField	header.h	/^typedef struct CThostFtdcQryExchangeExecOrderActionField			CThostFtdcQryExchangeExecOrderActionField;$/;"	t	typeref:struct:CThostFtdcQryExchangeExecOrderActionField
 CThostFtdcQryExchangeExecOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryExchangeExecOrderField$/;"	s
+CThostFtdcQryExchangeExecOrderField	header.h	/^typedef struct CThostFtdcQryExchangeExecOrderField			CThostFtdcQryExchangeExecOrderField;$/;"	t	typeref:struct:CThostFtdcQryExchangeExecOrderField
 CThostFtdcQryExchangeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryExchangeField$/;"	s
+CThostFtdcQryExchangeField	header.h	/^typedef struct CThostFtdcQryExchangeField			CThostFtdcQryExchangeField;$/;"	t	typeref:struct:CThostFtdcQryExchangeField
 CThostFtdcQryExchangeForQuoteField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryExchangeForQuoteField$/;"	s
+CThostFtdcQryExchangeForQuoteField	header.h	/^typedef struct CThostFtdcQryExchangeForQuoteField			CThostFtdcQryExchangeForQuoteField;$/;"	t	typeref:struct:CThostFtdcQryExchangeForQuoteField
 CThostFtdcQryExchangeMarginRateAdjustField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryExchangeMarginRateAdjustField$/;"	s
+CThostFtdcQryExchangeMarginRateAdjustField	header.h	/^typedef struct CThostFtdcQryExchangeMarginRateAdjustField			CThostFtdcQryExchangeMarginRateAdjustField;$/;"	t	typeref:struct:CThostFtdcQryExchangeMarginRateAdjustField
 CThostFtdcQryExchangeMarginRateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryExchangeMarginRateField$/;"	s
+CThostFtdcQryExchangeMarginRateField	header.h	/^typedef struct CThostFtdcQryExchangeMarginRateField			CThostFtdcQryExchangeMarginRateField;$/;"	t	typeref:struct:CThostFtdcQryExchangeMarginRateField
 CThostFtdcQryExchangeOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryExchangeOrderActionField$/;"	s
+CThostFtdcQryExchangeOrderActionField	header.h	/^typedef struct CThostFtdcQryExchangeOrderActionField			CThostFtdcQryExchangeOrderActionField;$/;"	t	typeref:struct:CThostFtdcQryExchangeOrderActionField
 CThostFtdcQryExchangeOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryExchangeOrderField$/;"	s
+CThostFtdcQryExchangeOrderField	header.h	/^typedef struct CThostFtdcQryExchangeOrderField			CThostFtdcQryExchangeOrderField;$/;"	t	typeref:struct:CThostFtdcQryExchangeOrderField
 CThostFtdcQryExchangeQuoteActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryExchangeQuoteActionField$/;"	s
+CThostFtdcQryExchangeQuoteActionField	header.h	/^typedef struct CThostFtdcQryExchangeQuoteActionField			CThostFtdcQryExchangeQuoteActionField;$/;"	t	typeref:struct:CThostFtdcQryExchangeQuoteActionField
 CThostFtdcQryExchangeQuoteField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryExchangeQuoteField$/;"	s
+CThostFtdcQryExchangeQuoteField	header.h	/^typedef struct CThostFtdcQryExchangeQuoteField			CThostFtdcQryExchangeQuoteField;$/;"	t	typeref:struct:CThostFtdcQryExchangeQuoteField
 CThostFtdcQryExchangeRateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryExchangeRateField$/;"	s
+CThostFtdcQryExchangeRateField	header.h	/^typedef struct CThostFtdcQryExchangeRateField			CThostFtdcQryExchangeRateField;$/;"	t	typeref:struct:CThostFtdcQryExchangeRateField
 CThostFtdcQryExchangeSequenceField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryExchangeSequenceField$/;"	s
+CThostFtdcQryExchangeSequenceField	header.h	/^typedef struct CThostFtdcQryExchangeSequenceField			CThostFtdcQryExchangeSequenceField;$/;"	t	typeref:struct:CThostFtdcQryExchangeSequenceField
 CThostFtdcQryExecOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryExecOrderActionField$/;"	s
+CThostFtdcQryExecOrderActionField	header.h	/^typedef struct CThostFtdcQryExecOrderActionField			CThostFtdcQryExecOrderActionField;$/;"	t	typeref:struct:CThostFtdcQryExecOrderActionField
 CThostFtdcQryExecOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryExecOrderField$/;"	s
+CThostFtdcQryExecOrderField	header.h	/^typedef struct CThostFtdcQryExecOrderField			CThostFtdcQryExecOrderField;$/;"	t	typeref:struct:CThostFtdcQryExecOrderField
 CThostFtdcQryForQuoteField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryForQuoteField$/;"	s
+CThostFtdcQryForQuoteField	header.h	/^typedef struct CThostFtdcQryForQuoteField			CThostFtdcQryForQuoteField;$/;"	t	typeref:struct:CThostFtdcQryForQuoteField
 CThostFtdcQryFrontStatusField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryFrontStatusField$/;"	s
+CThostFtdcQryFrontStatusField	header.h	/^typedef struct CThostFtdcQryFrontStatusField			CThostFtdcQryFrontStatusField;$/;"	t	typeref:struct:CThostFtdcQryFrontStatusField
 CThostFtdcQryHisOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryHisOrderField$/;"	s
+CThostFtdcQryHisOrderField	header.h	/^typedef struct CThostFtdcQryHisOrderField			CThostFtdcQryHisOrderField;$/;"	t	typeref:struct:CThostFtdcQryHisOrderField
 CThostFtdcQryInstrumentCommissionRateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryInstrumentCommissionRateField$/;"	s
+CThostFtdcQryInstrumentCommissionRateField	header.h	/^typedef struct CThostFtdcQryInstrumentCommissionRateField			CThostFtdcQryInstrumentCommissionRateField;$/;"	t	typeref:struct:CThostFtdcQryInstrumentCommissionRateField
 CThostFtdcQryInstrumentField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryInstrumentField$/;"	s
+CThostFtdcQryInstrumentField	header.h	/^typedef struct CThostFtdcQryInstrumentField			CThostFtdcQryInstrumentField;$/;"	t	typeref:struct:CThostFtdcQryInstrumentField
 CThostFtdcQryInstrumentMarginRateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryInstrumentMarginRateField$/;"	s
+CThostFtdcQryInstrumentMarginRateField	header.h	/^typedef struct CThostFtdcQryInstrumentMarginRateField			CThostFtdcQryInstrumentMarginRateField;$/;"	t	typeref:struct:CThostFtdcQryInstrumentMarginRateField
 CThostFtdcQryInstrumentStatusField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryInstrumentStatusField$/;"	s
+CThostFtdcQryInstrumentStatusField	header.h	/^typedef struct CThostFtdcQryInstrumentStatusField			CThostFtdcQryInstrumentStatusField;$/;"	t	typeref:struct:CThostFtdcQryInstrumentStatusField
 CThostFtdcQryInstrumentTradingRightField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryInstrumentTradingRightField$/;"	s
+CThostFtdcQryInstrumentTradingRightField	header.h	/^typedef struct CThostFtdcQryInstrumentTradingRightField			CThostFtdcQryInstrumentTradingRightField;$/;"	t	typeref:struct:CThostFtdcQryInstrumentTradingRightField
 CThostFtdcQryInvestorField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryInvestorField$/;"	s
+CThostFtdcQryInvestorField	header.h	/^typedef struct CThostFtdcQryInvestorField			CThostFtdcQryInvestorField;$/;"	t	typeref:struct:CThostFtdcQryInvestorField
 CThostFtdcQryInvestorGroupField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryInvestorGroupField$/;"	s
+CThostFtdcQryInvestorGroupField	header.h	/^typedef struct CThostFtdcQryInvestorGroupField			CThostFtdcQryInvestorGroupField;$/;"	t	typeref:struct:CThostFtdcQryInvestorGroupField
 CThostFtdcQryInvestorPositionCombineDetailField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryInvestorPositionCombineDetailField$/;"	s
+CThostFtdcQryInvestorPositionCombineDetailField	header.h	/^typedef struct CThostFtdcQryInvestorPositionCombineDetailField			CThostFtdcQryInvestorPositionCombineDetailField;$/;"	t	typeref:struct:CThostFtdcQryInvestorPositionCombineDetailField
 CThostFtdcQryInvestorPositionDetailField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryInvestorPositionDetailField$/;"	s
+CThostFtdcQryInvestorPositionDetailField	header.h	/^typedef struct CThostFtdcQryInvestorPositionDetailField			CThostFtdcQryInvestorPositionDetailField;$/;"	t	typeref:struct:CThostFtdcQryInvestorPositionDetailField
 CThostFtdcQryInvestorPositionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryInvestorPositionField$/;"	s
+CThostFtdcQryInvestorPositionField	header.h	/^typedef struct CThostFtdcQryInvestorPositionField			CThostFtdcQryInvestorPositionField;$/;"	t	typeref:struct:CThostFtdcQryInvestorPositionField
 CThostFtdcQryInvestorProductGroupMarginField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryInvestorProductGroupMarginField$/;"	s
+CThostFtdcQryInvestorProductGroupMarginField	header.h	/^typedef struct CThostFtdcQryInvestorProductGroupMarginField			CThostFtdcQryInvestorProductGroupMarginField;$/;"	t	typeref:struct:CThostFtdcQryInvestorProductGroupMarginField
 CThostFtdcQryLinkManField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryLinkManField$/;"	s
+CThostFtdcQryLinkManField	header.h	/^typedef struct CThostFtdcQryLinkManField			CThostFtdcQryLinkManField;$/;"	t	typeref:struct:CThostFtdcQryLinkManField
 CThostFtdcQryLoginForbiddenUserField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryLoginForbiddenUserField$/;"	s
+CThostFtdcQryLoginForbiddenUserField	header.h	/^typedef struct CThostFtdcQryLoginForbiddenUserField			CThostFtdcQryLoginForbiddenUserField;$/;"	t	typeref:struct:CThostFtdcQryLoginForbiddenUserField
 CThostFtdcQryMDTraderOfferField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryMDTraderOfferField$/;"	s
+CThostFtdcQryMDTraderOfferField	header.h	/^typedef struct CThostFtdcQryMDTraderOfferField			CThostFtdcQryMDTraderOfferField;$/;"	t	typeref:struct:CThostFtdcQryMDTraderOfferField
 CThostFtdcQryMarginModelField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryMarginModelField$/;"	s
+CThostFtdcQryMarginModelField	header.h	/^typedef struct CThostFtdcQryMarginModelField			CThostFtdcQryMarginModelField;$/;"	t	typeref:struct:CThostFtdcQryMarginModelField
 CThostFtdcQryNoticeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryNoticeField$/;"	s
+CThostFtdcQryNoticeField	header.h	/^typedef struct CThostFtdcQryNoticeField			CThostFtdcQryNoticeField;$/;"	t	typeref:struct:CThostFtdcQryNoticeField
 CThostFtdcQryOptionInstrCommRateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryOptionInstrCommRateField$/;"	s
+CThostFtdcQryOptionInstrCommRateField	header.h	/^typedef struct CThostFtdcQryOptionInstrCommRateField			CThostFtdcQryOptionInstrCommRateField;$/;"	t	typeref:struct:CThostFtdcQryOptionInstrCommRateField
 CThostFtdcQryOptionInstrTradeCostField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryOptionInstrTradeCostField$/;"	s
+CThostFtdcQryOptionInstrTradeCostField	header.h	/^typedef struct CThostFtdcQryOptionInstrTradeCostField			CThostFtdcQryOptionInstrTradeCostField;$/;"	t	typeref:struct:CThostFtdcQryOptionInstrTradeCostField
 CThostFtdcQryOptionInstrTradingRightField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryOptionInstrTradingRightField$/;"	s
+CThostFtdcQryOptionInstrTradingRightField	header.h	/^typedef struct CThostFtdcQryOptionInstrTradingRightField			CThostFtdcQryOptionInstrTradingRightField;$/;"	t	typeref:struct:CThostFtdcQryOptionInstrTradingRightField
 CThostFtdcQryOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryOrderActionField$/;"	s
+CThostFtdcQryOrderActionField	header.h	/^typedef struct CThostFtdcQryOrderActionField			CThostFtdcQryOrderActionField;$/;"	t	typeref:struct:CThostFtdcQryOrderActionField
 CThostFtdcQryOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryOrderField$/;"	s
+CThostFtdcQryOrderField	header.h	/^typedef struct CThostFtdcQryOrderField			CThostFtdcQryOrderField;$/;"	t	typeref:struct:CThostFtdcQryOrderField
 CThostFtdcQryParkedOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryParkedOrderActionField$/;"	s
+CThostFtdcQryParkedOrderActionField	header.h	/^typedef struct CThostFtdcQryParkedOrderActionField			CThostFtdcQryParkedOrderActionField;$/;"	t	typeref:struct:CThostFtdcQryParkedOrderActionField
 CThostFtdcQryParkedOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryParkedOrderField$/;"	s
+CThostFtdcQryParkedOrderField	header.h	/^typedef struct CThostFtdcQryParkedOrderField			CThostFtdcQryParkedOrderField;$/;"	t	typeref:struct:CThostFtdcQryParkedOrderField
 CThostFtdcQryPartBrokerField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryPartBrokerField$/;"	s
+CThostFtdcQryPartBrokerField	header.h	/^typedef struct CThostFtdcQryPartBrokerField			CThostFtdcQryPartBrokerField;$/;"	t	typeref:struct:CThostFtdcQryPartBrokerField
 CThostFtdcQryProductField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryProductField$/;"	s
+CThostFtdcQryProductField	header.h	/^typedef struct CThostFtdcQryProductField			CThostFtdcQryProductField;$/;"	t	typeref:struct:CThostFtdcQryProductField
 CThostFtdcQryQuoteActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryQuoteActionField$/;"	s
+CThostFtdcQryQuoteActionField	header.h	/^typedef struct CThostFtdcQryQuoteActionField			CThostFtdcQryQuoteActionField;$/;"	t	typeref:struct:CThostFtdcQryQuoteActionField
 CThostFtdcQryQuoteField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryQuoteField$/;"	s
+CThostFtdcQryQuoteField	header.h	/^typedef struct CThostFtdcQryQuoteField			CThostFtdcQryQuoteField;$/;"	t	typeref:struct:CThostFtdcQryQuoteField
 CThostFtdcQrySecAgentACIDMapField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQrySecAgentACIDMapField$/;"	s
+CThostFtdcQrySecAgentACIDMapField	header.h	/^typedef struct CThostFtdcQrySecAgentACIDMapField			CThostFtdcQrySecAgentACIDMapField;$/;"	t	typeref:struct:CThostFtdcQrySecAgentACIDMapField
 CThostFtdcQrySettlementInfoConfirmField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQrySettlementInfoConfirmField$/;"	s
+CThostFtdcQrySettlementInfoConfirmField	header.h	/^typedef struct CThostFtdcQrySettlementInfoConfirmField			CThostFtdcQrySettlementInfoConfirmField;$/;"	t	typeref:struct:CThostFtdcQrySettlementInfoConfirmField
 CThostFtdcQrySettlementInfoField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQrySettlementInfoField$/;"	s
+CThostFtdcQrySettlementInfoField	header.h	/^typedef struct CThostFtdcQrySettlementInfoField			CThostFtdcQrySettlementInfoField;$/;"	t	typeref:struct:CThostFtdcQrySettlementInfoField
 CThostFtdcQryStrikeOffsetField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryStrikeOffsetField$/;"	s
+CThostFtdcQryStrikeOffsetField	header.h	/^typedef struct CThostFtdcQryStrikeOffsetField			CThostFtdcQryStrikeOffsetField;$/;"	t	typeref:struct:CThostFtdcQryStrikeOffsetField
 CThostFtdcQrySuperUserField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQrySuperUserField$/;"	s
+CThostFtdcQrySuperUserField	header.h	/^typedef struct CThostFtdcQrySuperUserField			CThostFtdcQrySuperUserField;$/;"	t	typeref:struct:CThostFtdcQrySuperUserField
 CThostFtdcQrySuperUserFunctionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQrySuperUserFunctionField$/;"	s
+CThostFtdcQrySuperUserFunctionField	header.h	/^typedef struct CThostFtdcQrySuperUserFunctionField			CThostFtdcQrySuperUserFunctionField;$/;"	t	typeref:struct:CThostFtdcQrySuperUserFunctionField
 CThostFtdcQrySyncDepositField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQrySyncDepositField$/;"	s
+CThostFtdcQrySyncDepositField	header.h	/^typedef struct CThostFtdcQrySyncDepositField			CThostFtdcQrySyncDepositField;$/;"	t	typeref:struct:CThostFtdcQrySyncDepositField
 CThostFtdcQrySyncFundMortgageField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQrySyncFundMortgageField$/;"	s
+CThostFtdcQrySyncFundMortgageField	header.h	/^typedef struct CThostFtdcQrySyncFundMortgageField			CThostFtdcQrySyncFundMortgageField;$/;"	t	typeref:struct:CThostFtdcQrySyncFundMortgageField
 CThostFtdcQrySyncStatusField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQrySyncStatusField$/;"	s
+CThostFtdcQrySyncStatusField	header.h	/^typedef struct CThostFtdcQrySyncStatusField			CThostFtdcQrySyncStatusField;$/;"	t	typeref:struct:CThostFtdcQrySyncStatusField
 CThostFtdcQryTradeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryTradeField$/;"	s
+CThostFtdcQryTradeField	header.h	/^typedef struct CThostFtdcQryTradeField			CThostFtdcQryTradeField;$/;"	t	typeref:struct:CThostFtdcQryTradeField
 CThostFtdcQryTraderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryTraderField$/;"	s
+CThostFtdcQryTraderField	header.h	/^typedef struct CThostFtdcQryTraderField			CThostFtdcQryTraderField;$/;"	t	typeref:struct:CThostFtdcQryTraderField
 CThostFtdcQryTraderOfferField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryTraderOfferField$/;"	s
+CThostFtdcQryTraderOfferField	header.h	/^typedef struct CThostFtdcQryTraderOfferField			CThostFtdcQryTraderOfferField;$/;"	t	typeref:struct:CThostFtdcQryTraderOfferField
 CThostFtdcQryTradingAccountField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryTradingAccountField$/;"	s
+CThostFtdcQryTradingAccountField	header.h	/^typedef struct CThostFtdcQryTradingAccountField			CThostFtdcQryTradingAccountField;$/;"	t	typeref:struct:CThostFtdcQryTradingAccountField
 CThostFtdcQryTradingCodeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryTradingCodeField$/;"	s
+CThostFtdcQryTradingCodeField	header.h	/^typedef struct CThostFtdcQryTradingCodeField			CThostFtdcQryTradingCodeField;$/;"	t	typeref:struct:CThostFtdcQryTradingCodeField
 CThostFtdcQryTradingNoticeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryTradingNoticeField$/;"	s
+CThostFtdcQryTradingNoticeField	header.h	/^typedef struct CThostFtdcQryTradingNoticeField			CThostFtdcQryTradingNoticeField;$/;"	t	typeref:struct:CThostFtdcQryTradingNoticeField
 CThostFtdcQryTransferBankField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryTransferBankField$/;"	s
+CThostFtdcQryTransferBankField	header.h	/^typedef struct CThostFtdcQryTransferBankField			CThostFtdcQryTransferBankField;$/;"	t	typeref:struct:CThostFtdcQryTransferBankField
 CThostFtdcQryTransferSerialField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryTransferSerialField$/;"	s
+CThostFtdcQryTransferSerialField	header.h	/^typedef struct CThostFtdcQryTransferSerialField			CThostFtdcQryTransferSerialField;$/;"	t	typeref:struct:CThostFtdcQryTransferSerialField
 CThostFtdcQryUserSessionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQryUserSessionField$/;"	s
+CThostFtdcQryUserSessionField	header.h	/^typedef struct CThostFtdcQryUserSessionField			CThostFtdcQryUserSessionField;$/;"	t	typeref:struct:CThostFtdcQryUserSessionField
 CThostFtdcQueryBrokerDepositField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQueryBrokerDepositField$/;"	s
+CThostFtdcQueryBrokerDepositField	header.h	/^typedef struct CThostFtdcQueryBrokerDepositField			CThostFtdcQueryBrokerDepositField;$/;"	t	typeref:struct:CThostFtdcQueryBrokerDepositField
 CThostFtdcQueryMaxOrderVolumeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQueryMaxOrderVolumeField$/;"	s
+CThostFtdcQueryMaxOrderVolumeField	header.h	/^typedef struct CThostFtdcQueryMaxOrderVolumeField			CThostFtdcQueryMaxOrderVolumeField;$/;"	t	typeref:struct:CThostFtdcQueryMaxOrderVolumeField
 CThostFtdcQueryMaxOrderVolumeWithPriceField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQueryMaxOrderVolumeWithPriceField$/;"	s
+CThostFtdcQueryMaxOrderVolumeWithPriceField	header.h	/^typedef struct CThostFtdcQueryMaxOrderVolumeWithPriceField			CThostFtdcQueryMaxOrderVolumeWithPriceField;$/;"	t	typeref:struct:CThostFtdcQueryMaxOrderVolumeWithPriceField
 CThostFtdcQuoteActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQuoteActionField$/;"	s
+CThostFtdcQuoteActionField	header.h	/^typedef struct CThostFtdcQuoteActionField			CThostFtdcQuoteActionField;$/;"	t	typeref:struct:CThostFtdcQuoteActionField
 CThostFtdcQuoteField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcQuoteField$/;"	s
+CThostFtdcQuoteField	header.h	/^typedef struct CThostFtdcQuoteField			CThostFtdcQuoteField;$/;"	t	typeref:struct:CThostFtdcQuoteField
 CThostFtdcRemoveParkedOrderActionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcRemoveParkedOrderActionField$/;"	s
+CThostFtdcRemoveParkedOrderActionField	header.h	/^typedef struct CThostFtdcRemoveParkedOrderActionField			CThostFtdcRemoveParkedOrderActionField;$/;"	t	typeref:struct:CThostFtdcRemoveParkedOrderActionField
 CThostFtdcRemoveParkedOrderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcRemoveParkedOrderField$/;"	s
+CThostFtdcRemoveParkedOrderField	header.h	/^typedef struct CThostFtdcRemoveParkedOrderField			CThostFtdcRemoveParkedOrderField;$/;"	t	typeref:struct:CThostFtdcRemoveParkedOrderField
 CThostFtdcReqAuthenticateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcReqAuthenticateField$/;"	s
+CThostFtdcReqAuthenticateField	header.h	/^typedef struct CThostFtdcReqAuthenticateField			CThostFtdcReqAuthenticateField;$/;"	t	typeref:struct:CThostFtdcReqAuthenticateField
 CThostFtdcReqCancelAccountField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcReqCancelAccountField$/;"	s
+CThostFtdcReqCancelAccountField	header.h	/^typedef struct CThostFtdcReqCancelAccountField			CThostFtdcReqCancelAccountField;$/;"	t	typeref:struct:CThostFtdcReqCancelAccountField
 CThostFtdcReqChangeAccountField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcReqChangeAccountField$/;"	s
+CThostFtdcReqChangeAccountField	header.h	/^typedef struct CThostFtdcReqChangeAccountField			CThostFtdcReqChangeAccountField;$/;"	t	typeref:struct:CThostFtdcReqChangeAccountField
 CThostFtdcReqDayEndFileReadyField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcReqDayEndFileReadyField$/;"	s
+CThostFtdcReqDayEndFileReadyField	header.h	/^typedef struct CThostFtdcReqDayEndFileReadyField			CThostFtdcReqDayEndFileReadyField;$/;"	t	typeref:struct:CThostFtdcReqDayEndFileReadyField
 CThostFtdcReqFutureSignOutField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcReqFutureSignOutField$/;"	s
+CThostFtdcReqFutureSignOutField	header.h	/^typedef struct CThostFtdcReqFutureSignOutField			CThostFtdcReqFutureSignOutField;$/;"	t	typeref:struct:CThostFtdcReqFutureSignOutField
 CThostFtdcReqOpenAccountField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcReqOpenAccountField$/;"	s
+CThostFtdcReqOpenAccountField	header.h	/^typedef struct CThostFtdcReqOpenAccountField			CThostFtdcReqOpenAccountField;$/;"	t	typeref:struct:CThostFtdcReqOpenAccountField
 CThostFtdcReqQueryAccountField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcReqQueryAccountField$/;"	s
+CThostFtdcReqQueryAccountField	header.h	/^typedef struct CThostFtdcReqQueryAccountField			CThostFtdcReqQueryAccountField;$/;"	t	typeref:struct:CThostFtdcReqQueryAccountField
 CThostFtdcReqQueryTradeResultBySerialField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcReqQueryTradeResultBySerialField$/;"	s
+CThostFtdcReqQueryTradeResultBySerialField	header.h	/^typedef struct CThostFtdcReqQueryTradeResultBySerialField			CThostFtdcReqQueryTradeResultBySerialField;$/;"	t	typeref:struct:CThostFtdcReqQueryTradeResultBySerialField
 CThostFtdcReqRepealField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcReqRepealField$/;"	s
+CThostFtdcReqRepealField	header.h	/^typedef struct CThostFtdcReqRepealField			CThostFtdcReqRepealField;$/;"	t	typeref:struct:CThostFtdcReqRepealField
 CThostFtdcReqSyncKeyField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcReqSyncKeyField$/;"	s
+CThostFtdcReqSyncKeyField	header.h	/^typedef struct CThostFtdcReqSyncKeyField			CThostFtdcReqSyncKeyField;$/;"	t	typeref:struct:CThostFtdcReqSyncKeyField
 CThostFtdcReqTransferField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcReqTransferField$/;"	s
+CThostFtdcReqTransferField	header.h	/^typedef struct CThostFtdcReqTransferField			CThostFtdcReqTransferField;$/;"	t	typeref:struct:CThostFtdcReqTransferField
 CThostFtdcReqUserLoginField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcReqUserLoginField$/;"	s
+CThostFtdcReqUserLoginField	header.h	/^typedef struct CThostFtdcReqUserLoginField			CThostFtdcReqUserLoginField;$/;"	t	typeref:struct:CThostFtdcReqUserLoginField
 CThostFtdcReturnResultField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcReturnResultField$/;"	s
+CThostFtdcReturnResultField	header.h	/^typedef struct CThostFtdcReturnResultField			CThostFtdcReturnResultField;$/;"	t	typeref:struct:CThostFtdcReturnResultField
 CThostFtdcRspAuthenticateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcRspAuthenticateField$/;"	s
+CThostFtdcRspAuthenticateField	header.h	/^typedef struct CThostFtdcRspAuthenticateField			CThostFtdcRspAuthenticateField;$/;"	t	typeref:struct:CThostFtdcRspAuthenticateField
 CThostFtdcRspFutureSignInField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcRspFutureSignInField$/;"	s
+CThostFtdcRspFutureSignInField	header.h	/^typedef struct CThostFtdcRspFutureSignInField			CThostFtdcRspFutureSignInField;$/;"	t	typeref:struct:CThostFtdcRspFutureSignInField
 CThostFtdcRspFutureSignOutField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcRspFutureSignOutField$/;"	s
+CThostFtdcRspFutureSignOutField	header.h	/^typedef struct CThostFtdcRspFutureSignOutField			CThostFtdcRspFutureSignOutField;$/;"	t	typeref:struct:CThostFtdcRspFutureSignOutField
 CThostFtdcRspInfoField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcRspInfoField$/;"	s
+CThostFtdcRspInfoField	header.h	/^typedef struct CThostFtdcRspInfoField			CThostFtdcRspInfoField;$/;"	t	typeref:struct:CThostFtdcRspInfoField
 CThostFtdcRspQueryAccountField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcRspQueryAccountField$/;"	s
+CThostFtdcRspQueryAccountField	header.h	/^typedef struct CThostFtdcRspQueryAccountField			CThostFtdcRspQueryAccountField;$/;"	t	typeref:struct:CThostFtdcRspQueryAccountField
 CThostFtdcRspQueryTradeResultBySerialField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcRspQueryTradeResultBySerialField$/;"	s
+CThostFtdcRspQueryTradeResultBySerialField	header.h	/^typedef struct CThostFtdcRspQueryTradeResultBySerialField			CThostFtdcRspQueryTradeResultBySerialField;$/;"	t	typeref:struct:CThostFtdcRspQueryTradeResultBySerialField
 CThostFtdcRspRepealField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcRspRepealField$/;"	s
+CThostFtdcRspRepealField	header.h	/^typedef struct CThostFtdcRspRepealField			CThostFtdcRspRepealField;$/;"	t	typeref:struct:CThostFtdcRspRepealField
 CThostFtdcRspSyncKeyField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcRspSyncKeyField$/;"	s
+CThostFtdcRspSyncKeyField	header.h	/^typedef struct CThostFtdcRspSyncKeyField			CThostFtdcRspSyncKeyField;$/;"	t	typeref:struct:CThostFtdcRspSyncKeyField
 CThostFtdcRspTransferField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcRspTransferField$/;"	s
+CThostFtdcRspTransferField	header.h	/^typedef struct CThostFtdcRspTransferField			CThostFtdcRspTransferField;$/;"	t	typeref:struct:CThostFtdcRspTransferField
 CThostFtdcRspUserLoginField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcRspUserLoginField$/;"	s
+CThostFtdcRspUserLoginField	header.h	/^typedef struct CThostFtdcRspUserLoginField			CThostFtdcRspUserLoginField;$/;"	t	typeref:struct:CThostFtdcRspUserLoginField
 CThostFtdcSecAgentACIDMapField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSecAgentACIDMapField$/;"	s
+CThostFtdcSecAgentACIDMapField	header.h	/^typedef struct CThostFtdcSecAgentACIDMapField			CThostFtdcSecAgentACIDMapField;$/;"	t	typeref:struct:CThostFtdcSecAgentACIDMapField
 CThostFtdcSettlementInfoConfirmField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSettlementInfoConfirmField$/;"	s
+CThostFtdcSettlementInfoConfirmField	header.h	/^typedef struct CThostFtdcSettlementInfoConfirmField			CThostFtdcSettlementInfoConfirmField;$/;"	t	typeref:struct:CThostFtdcSettlementInfoConfirmField
 CThostFtdcSettlementInfoField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSettlementInfoField$/;"	s
+CThostFtdcSettlementInfoField	header.h	/^typedef struct CThostFtdcSettlementInfoField			CThostFtdcSettlementInfoField;$/;"	t	typeref:struct:CThostFtdcSettlementInfoField
 CThostFtdcSettlementRefField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSettlementRefField$/;"	s
+CThostFtdcSettlementRefField	header.h	/^typedef struct CThostFtdcSettlementRefField			CThostFtdcSettlementRefField;$/;"	t	typeref:struct:CThostFtdcSettlementRefField
 CThostFtdcSpecificInstrumentField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSpecificInstrumentField$/;"	s
+CThostFtdcSpecificInstrumentField	header.h	/^typedef struct CThostFtdcSpecificInstrumentField			CThostFtdcSpecificInstrumentField;$/;"	t	typeref:struct:CThostFtdcSpecificInstrumentField
 CThostFtdcStrikeOffsetField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcStrikeOffsetField$/;"	s
+CThostFtdcStrikeOffsetField	header.h	/^typedef struct CThostFtdcStrikeOffsetField			CThostFtdcStrikeOffsetField;$/;"	t	typeref:struct:CThostFtdcStrikeOffsetField
 CThostFtdcSuperUserField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSuperUserField$/;"	s
+CThostFtdcSuperUserField	header.h	/^typedef struct CThostFtdcSuperUserField			CThostFtdcSuperUserField;$/;"	t	typeref:struct:CThostFtdcSuperUserField
 CThostFtdcSuperUserFunctionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSuperUserFunctionField$/;"	s
+CThostFtdcSuperUserFunctionField	header.h	/^typedef struct CThostFtdcSuperUserFunctionField			CThostFtdcSuperUserFunctionField;$/;"	t	typeref:struct:CThostFtdcSuperUserFunctionField
 CThostFtdcSyncDepositField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSyncDepositField$/;"	s
+CThostFtdcSyncDepositField	header.h	/^typedef struct CThostFtdcSyncDepositField			CThostFtdcSyncDepositField;$/;"	t	typeref:struct:CThostFtdcSyncDepositField
 CThostFtdcSyncFundMortgageField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSyncFundMortgageField$/;"	s
+CThostFtdcSyncFundMortgageField	header.h	/^typedef struct CThostFtdcSyncFundMortgageField			CThostFtdcSyncFundMortgageField;$/;"	t	typeref:struct:CThostFtdcSyncFundMortgageField
 CThostFtdcSyncStatusField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSyncStatusField$/;"	s
+CThostFtdcSyncStatusField	header.h	/^typedef struct CThostFtdcSyncStatusField			CThostFtdcSyncStatusField;$/;"	t	typeref:struct:CThostFtdcSyncStatusField
 CThostFtdcSyncingInstrumentCommissionRateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSyncingInstrumentCommissionRateField$/;"	s
+CThostFtdcSyncingInstrumentCommissionRateField	header.h	/^typedef struct CThostFtdcSyncingInstrumentCommissionRateField			CThostFtdcSyncingInstrumentCommissionRateField;$/;"	t	typeref:struct:CThostFtdcSyncingInstrumentCommissionRateField
 CThostFtdcSyncingInstrumentMarginRateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSyncingInstrumentMarginRateField$/;"	s
+CThostFtdcSyncingInstrumentMarginRateField	header.h	/^typedef struct CThostFtdcSyncingInstrumentMarginRateField			CThostFtdcSyncingInstrumentMarginRateField;$/;"	t	typeref:struct:CThostFtdcSyncingInstrumentMarginRateField
 CThostFtdcSyncingInstrumentTradingRightField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSyncingInstrumentTradingRightField$/;"	s
+CThostFtdcSyncingInstrumentTradingRightField	header.h	/^typedef struct CThostFtdcSyncingInstrumentTradingRightField			CThostFtdcSyncingInstrumentTradingRightField;$/;"	t	typeref:struct:CThostFtdcSyncingInstrumentTradingRightField
 CThostFtdcSyncingInvestorField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSyncingInvestorField$/;"	s
+CThostFtdcSyncingInvestorField	header.h	/^typedef struct CThostFtdcSyncingInvestorField			CThostFtdcSyncingInvestorField;$/;"	t	typeref:struct:CThostFtdcSyncingInvestorField
 CThostFtdcSyncingInvestorGroupField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSyncingInvestorGroupField$/;"	s
+CThostFtdcSyncingInvestorGroupField	header.h	/^typedef struct CThostFtdcSyncingInvestorGroupField			CThostFtdcSyncingInvestorGroupField;$/;"	t	typeref:struct:CThostFtdcSyncingInvestorGroupField
 CThostFtdcSyncingInvestorPositionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSyncingInvestorPositionField$/;"	s
+CThostFtdcSyncingInvestorPositionField	header.h	/^typedef struct CThostFtdcSyncingInvestorPositionField			CThostFtdcSyncingInvestorPositionField;$/;"	t	typeref:struct:CThostFtdcSyncingInvestorPositionField
 CThostFtdcSyncingTradingAccountField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSyncingTradingAccountField$/;"	s
+CThostFtdcSyncingTradingAccountField	header.h	/^typedef struct CThostFtdcSyncingTradingAccountField			CThostFtdcSyncingTradingAccountField;$/;"	t	typeref:struct:CThostFtdcSyncingTradingAccountField
 CThostFtdcSyncingTradingCodeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcSyncingTradingCodeField$/;"	s
+CThostFtdcSyncingTradingCodeField	header.h	/^typedef struct CThostFtdcSyncingTradingCodeField			CThostFtdcSyncingTradingCodeField;$/;"	t	typeref:struct:CThostFtdcSyncingTradingCodeField
 CThostFtdcTradeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTradeField$/;"	s
+CThostFtdcTradeField	header.h	/^typedef struct CThostFtdcTradeField			CThostFtdcTradeField;$/;"	t	typeref:struct:CThostFtdcTradeField
 CThostFtdcTraderApi	cpp_api/ThostFtdcTraderApi.h	/^class TRADER_API_EXPORT CThostFtdcTraderApi$/;"	c
 CThostFtdcTraderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTraderField$/;"	s
+CThostFtdcTraderField	header.h	/^typedef struct CThostFtdcTraderField			CThostFtdcTraderField;$/;"	t	typeref:struct:CThostFtdcTraderField
 CThostFtdcTraderOfferField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTraderOfferField$/;"	s
+CThostFtdcTraderOfferField	header.h	/^typedef struct CThostFtdcTraderOfferField			CThostFtdcTraderOfferField;$/;"	t	typeref:struct:CThostFtdcTraderOfferField
 CThostFtdcTraderSpi	cpp_api/ThostFtdcTraderApi.h	/^class CThostFtdcTraderSpi$/;"	c
 CThostFtdcTradingAccountField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTradingAccountField$/;"	s
+CThostFtdcTradingAccountField	header.h	/^typedef struct CThostFtdcTradingAccountField			CThostFtdcTradingAccountField;$/;"	t	typeref:struct:CThostFtdcTradingAccountField
 CThostFtdcTradingAccountPasswordField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTradingAccountPasswordField$/;"	s
+CThostFtdcTradingAccountPasswordField	header.h	/^typedef struct CThostFtdcTradingAccountPasswordField			CThostFtdcTradingAccountPasswordField;$/;"	t	typeref:struct:CThostFtdcTradingAccountPasswordField
 CThostFtdcTradingAccountPasswordUpdateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTradingAccountPasswordUpdateField$/;"	s
+CThostFtdcTradingAccountPasswordUpdateField	header.h	/^typedef struct CThostFtdcTradingAccountPasswordUpdateField			CThostFtdcTradingAccountPasswordUpdateField;$/;"	t	typeref:struct:CThostFtdcTradingAccountPasswordUpdateField
 CThostFtdcTradingAccountPasswordUpdateV1Field	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTradingAccountPasswordUpdateV1Field$/;"	s
+CThostFtdcTradingAccountPasswordUpdateV1Field	header.h	/^typedef struct CThostFtdcTradingAccountPasswordUpdateV1Field			CThostFtdcTradingAccountPasswordUpdateV1Field;$/;"	t	typeref:struct:CThostFtdcTradingAccountPasswordUpdateV1Field
 CThostFtdcTradingAccountReserveField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTradingAccountReserveField$/;"	s
+CThostFtdcTradingAccountReserveField	header.h	/^typedef struct CThostFtdcTradingAccountReserveField			CThostFtdcTradingAccountReserveField;$/;"	t	typeref:struct:CThostFtdcTradingAccountReserveField
 CThostFtdcTradingCodeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTradingCodeField$/;"	s
+CThostFtdcTradingCodeField	header.h	/^typedef struct CThostFtdcTradingCodeField			CThostFtdcTradingCodeField;$/;"	t	typeref:struct:CThostFtdcTradingCodeField
 CThostFtdcTradingNoticeField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTradingNoticeField$/;"	s
+CThostFtdcTradingNoticeField	header.h	/^typedef struct CThostFtdcTradingNoticeField			CThostFtdcTradingNoticeField;$/;"	t	typeref:struct:CThostFtdcTradingNoticeField
 CThostFtdcTradingNoticeInfoField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTradingNoticeInfoField$/;"	s
+CThostFtdcTradingNoticeInfoField	header.h	/^typedef struct CThostFtdcTradingNoticeInfoField			CThostFtdcTradingNoticeInfoField;$/;"	t	typeref:struct:CThostFtdcTradingNoticeInfoField
 CThostFtdcTransferBankField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTransferBankField$/;"	s
+CThostFtdcTransferBankField	header.h	/^typedef struct CThostFtdcTransferBankField			CThostFtdcTransferBankField;$/;"	t	typeref:struct:CThostFtdcTransferBankField
 CThostFtdcTransferBankToFutureReqField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTransferBankToFutureReqField$/;"	s
+CThostFtdcTransferBankToFutureReqField	header.h	/^typedef struct CThostFtdcTransferBankToFutureReqField			CThostFtdcTransferBankToFutureReqField;$/;"	t	typeref:struct:CThostFtdcTransferBankToFutureReqField
 CThostFtdcTransferBankToFutureRspField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTransferBankToFutureRspField$/;"	s
+CThostFtdcTransferBankToFutureRspField	header.h	/^typedef struct CThostFtdcTransferBankToFutureRspField			CThostFtdcTransferBankToFutureRspField;$/;"	t	typeref:struct:CThostFtdcTransferBankToFutureRspField
 CThostFtdcTransferFutureToBankReqField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTransferFutureToBankReqField$/;"	s
+CThostFtdcTransferFutureToBankReqField	header.h	/^typedef struct CThostFtdcTransferFutureToBankReqField			CThostFtdcTransferFutureToBankReqField;$/;"	t	typeref:struct:CThostFtdcTransferFutureToBankReqField
 CThostFtdcTransferFutureToBankRspField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTransferFutureToBankRspField$/;"	s
+CThostFtdcTransferFutureToBankRspField	header.h	/^typedef struct CThostFtdcTransferFutureToBankRspField			CThostFtdcTransferFutureToBankRspField;$/;"	t	typeref:struct:CThostFtdcTransferFutureToBankRspField
 CThostFtdcTransferHeaderField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTransferHeaderField$/;"	s
+CThostFtdcTransferHeaderField	header.h	/^typedef struct CThostFtdcTransferHeaderField			CThostFtdcTransferHeaderField;$/;"	t	typeref:struct:CThostFtdcTransferHeaderField
 CThostFtdcTransferQryBankReqField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTransferQryBankReqField$/;"	s
+CThostFtdcTransferQryBankReqField	header.h	/^typedef struct CThostFtdcTransferQryBankReqField			CThostFtdcTransferQryBankReqField;$/;"	t	typeref:struct:CThostFtdcTransferQryBankReqField
 CThostFtdcTransferQryBankRspField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTransferQryBankRspField$/;"	s
+CThostFtdcTransferQryBankRspField	header.h	/^typedef struct CThostFtdcTransferQryBankRspField			CThostFtdcTransferQryBankRspField;$/;"	t	typeref:struct:CThostFtdcTransferQryBankRspField
 CThostFtdcTransferQryDetailReqField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTransferQryDetailReqField$/;"	s
+CThostFtdcTransferQryDetailReqField	header.h	/^typedef struct CThostFtdcTransferQryDetailReqField			CThostFtdcTransferQryDetailReqField;$/;"	t	typeref:struct:CThostFtdcTransferQryDetailReqField
 CThostFtdcTransferQryDetailRspField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTransferQryDetailRspField$/;"	s
+CThostFtdcTransferQryDetailRspField	header.h	/^typedef struct CThostFtdcTransferQryDetailRspField			CThostFtdcTransferQryDetailRspField;$/;"	t	typeref:struct:CThostFtdcTransferQryDetailRspField
 CThostFtdcTransferSerialField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcTransferSerialField$/;"	s
+CThostFtdcTransferSerialField	header.h	/^typedef struct CThostFtdcTransferSerialField			CThostFtdcTransferSerialField;$/;"	t	typeref:struct:CThostFtdcTransferSerialField
 CThostFtdcUserIPField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcUserIPField$/;"	s
+CThostFtdcUserIPField	header.h	/^typedef struct CThostFtdcUserIPField			CThostFtdcUserIPField;$/;"	t	typeref:struct:CThostFtdcUserIPField
 CThostFtdcUserLogoutField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcUserLogoutField$/;"	s
+CThostFtdcUserLogoutField	header.h	/^typedef struct CThostFtdcUserLogoutField			CThostFtdcUserLogoutField;$/;"	t	typeref:struct:CThostFtdcUserLogoutField
 CThostFtdcUserPasswordUpdateField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcUserPasswordUpdateField$/;"	s
+CThostFtdcUserPasswordUpdateField	header.h	/^typedef struct CThostFtdcUserPasswordUpdateField			CThostFtdcUserPasswordUpdateField;$/;"	t	typeref:struct:CThostFtdcUserPasswordUpdateField
 CThostFtdcUserRightField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcUserRightField$/;"	s
+CThostFtdcUserRightField	header.h	/^typedef struct CThostFtdcUserRightField			CThostFtdcUserRightField;$/;"	t	typeref:struct:CThostFtdcUserRightField
 CThostFtdcUserRightsAssignField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcUserRightsAssignField$/;"	s
+CThostFtdcUserRightsAssignField	header.h	/^typedef struct CThostFtdcUserRightsAssignField			CThostFtdcUserRightsAssignField;$/;"	t	typeref:struct:CThostFtdcUserRightsAssignField
 CThostFtdcUserSessionField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcUserSessionField$/;"	s
+CThostFtdcUserSessionField	header.h	/^typedef struct CThostFtdcUserSessionField			CThostFtdcUserSessionField;$/;"	t	typeref:struct:CThostFtdcUserSessionField
 CThostFtdcVerifyCustInfoField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcVerifyCustInfoField$/;"	s
+CThostFtdcVerifyCustInfoField	header.h	/^typedef struct CThostFtdcVerifyCustInfoField			CThostFtdcVerifyCustInfoField;$/;"	t	typeref:struct:CThostFtdcVerifyCustInfoField
 CThostFtdcVerifyFuturePasswordAndCustInfoField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcVerifyFuturePasswordAndCustInfoField$/;"	s
+CThostFtdcVerifyFuturePasswordAndCustInfoField	header.h	/^typedef struct CThostFtdcVerifyFuturePasswordAndCustInfoField			CThostFtdcVerifyFuturePasswordAndCustInfoField;$/;"	t	typeref:struct:CThostFtdcVerifyFuturePasswordAndCustInfoField
 CThostFtdcVerifyFuturePasswordField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcVerifyFuturePasswordField$/;"	s
+CThostFtdcVerifyFuturePasswordField	header.h	/^typedef struct CThostFtdcVerifyFuturePasswordField			CThostFtdcVerifyFuturePasswordField;$/;"	t	typeref:struct:CThostFtdcVerifyFuturePasswordField
 CThostFtdcVerifyInvestorPasswordField	cpp_api/ThostFtdcUserApiStruct.h	/^struct CThostFtdcVerifyInvestorPasswordField$/;"	s
+CThostFtdcVerifyInvestorPasswordField	header.h	/^typedef struct CThostFtdcVerifyInvestorPasswordField			CThostFtdcVerifyInvestorPasswordField;$/;"	t	typeref:struct:CThostFtdcVerifyInvestorPasswordField
 CZCETime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	CZCETime;$/;"	m	struct:CThostFtdcLoginInfoField
 CZCETime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	CZCETime;$/;"	m	struct:CThostFtdcRspUserLoginField
 CancelTime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	CancelTime;$/;"	m	struct:CThostFtdcErrorConditionalOrderField
@@ -984,7 +1266,6 @@ CashIn	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMoneyType	CashIn;$/;"	m	str
 CashIn	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMoneyType	CashIn;$/;"	m	struct:CThostFtdcSyncingTradingAccountField
 CashIn	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMoneyType	CashIn;$/;"	m	struct:CThostFtdcTradingAccountField
 CertCode	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcCertCodeType	CertCode;$/;"	m	struct:CThostFtdcTransferQryDetailRspField
-Clear	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Clear()$/;"	f	class:CCTPMsgQueue
 ClearingPartID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcParticipantIDType	ClearingPartID;$/;"	m	struct:CThostFtdcErrorConditionalOrderField
 ClearingPartID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcParticipantIDType	ClearingPartID;$/;"	m	struct:CThostFtdcExchangeExecOrderField
 ClearingPartID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcParticipantIDType	ClearingPartID;$/;"	m	struct:CThostFtdcExchangeOrderField
@@ -1103,6 +1384,7 @@ Commission	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMoneyType	Commission;$/
 Commission	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMoneyType	Commission;$/;"	m	struct:CThostFtdcTradingAccountField
 ConfirmDate	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDateType	ConfirmDate;$/;"	m	struct:CThostFtdcSettlementInfoConfirmField
 ConfirmTime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	ConfirmTime;$/;"	m	struct:CThostFtdcSettlementInfoConfirmField
+Connect	MdUserApi.cpp	/^void CMdUserApi::Connect(const string& szPath,$/;"	f	class:CMdUserApi
 ConnectDate	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDateType	ConnectDate;$/;"	m	struct:CThostFtdcMDTraderOfferField
 ConnectDate	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDateType	ConnectDate;$/;"	m	struct:CThostFtdcTraderOfferField
 ConnectRequestDate	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDateType	ConnectRequestDate;$/;"	m	struct:CThostFtdcMDTraderOfferField
@@ -1111,8 +1393,6 @@ ConnectRequestTime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	Connec
 ConnectRequestTime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	ConnectRequestTime;$/;"	m	struct:CThostFtdcTraderOfferField
 ConnectTime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	ConnectTime;$/;"	m	struct:CThostFtdcMDTraderOfferField
 ConnectTime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	ConnectTime;$/;"	m	struct:CThostFtdcTraderOfferField
-ConnectionStatus	header.h	/^enum ConnectionStatus$/;"	g
-ConnectionStatus	header.h	/^typedef enum ConnectionStatus ConnectionStatus;$/;"	t	typeref:enum:ConnectionStatus
 Content	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcContentType	Content;$/;"	m	struct:CThostFtdcNoticeField
 Content	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcContentType	Content;$/;"	m	struct:CThostFtdcSettlementInfoField
 ContingentCondition	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcContingentConditionType	ContingentCondition;$/;"	m	struct:CThostFtdcErrOrderField
@@ -1253,7 +1533,6 @@ Deposit	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMoneyType	Deposit;$/;"	m	s
 DepositSeqNo	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDepositSeqNoType	DepositSeqNo;$/;"	m	struct:CThostFtdcDepositResultInformField
 DepositSeqNo	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDepositSeqNoType	DepositSeqNo;$/;"	m	struct:CThostFtdcQrySyncDepositField
 DepositSeqNo	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDepositSeqNoType	DepositSeqNo;$/;"	m	struct:CThostFtdcSyncDepositField
-DepthMarketData	CTPMsgQueue.h	/^			CThostFtdcDepthMarketDataField			DepthMarketData;	\/\/E_fnOnRspQryDepthMarketData与E_fnOnRtnDepthMarketData返回的数据格式相同$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
 DescrInfoForReturnCode	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDescrInfoForReturnCodeType	DescrInfoForReturnCode;$/;"	m	struct:CThostFtdcDepositResultInformField
 DescrInfoForReturnCode	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDescrInfoForReturnCodeType	DescrInfoForReturnCode;$/;"	m	struct:CThostFtdcReturnResultField
 DestBrokerID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcBrokerIDType	DestBrokerID;$/;"	m	struct:CThostFtdcDRTransferField
@@ -1317,6 +1596,7 @@ Direction	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDirectionType	Direction;
 Direction	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDirectionType	Direction;$/;"	m	struct:CThostFtdcQueryMaxOrderVolumeField
 Direction	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDirectionType	Direction;$/;"	m	struct:CThostFtdcQueryMaxOrderVolumeWithPriceField
 Direction	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDirectionType	Direction;$/;"	m	struct:CThostFtdcTradeField
+Disconnect	MdUserApi.cpp	/^void CMdUserApi::Disconnect()$/;"	f	class:CMdUserApi
 Discount	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcRatioType	Discount;$/;"	m	struct:CThostFtdcDiscountField
 EMail	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcEMailType	EMail;$/;"	m	struct:CThostFtdcCancelAccountField
 EMail	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcEMailType	EMail;$/;"	m	struct:CThostFtdcChangeAccountField
@@ -1324,49 +1604,9 @@ EMail	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcEMailType	EMail;$/;"	m	struc
 EMail	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcEMailType	EMail;$/;"	m	struct:CThostFtdcReqCancelAccountField
 EMail	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcEMailType	EMail;$/;"	m	struct:CThostFtdcReqChangeAccountField
 EMail	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcEMailType	EMail;$/;"	m	struct:CThostFtdcReqOpenAccountField
-E_authed	header.h	/^	E_authed,		\/\/授权成功$/;"	e	enum:ConnectionStatus
-E_authing	header.h	/^	E_authing,		\/\/授权中$/;"	e	enum:ConnectionStatus
-E_confirmed	header.h	/^	E_confirmed,	\/\/已经确认$/;"	e	enum:ConnectionStatus
-E_confirming	header.h	/^	E_confirming,	\/\/结算单确认中$/;"	e	enum:ConnectionStatus
-E_conn_max	header.h	/^	E_conn_max		\/\/最大值$/;"	e	enum:ConnectionStatus
-E_connected	header.h	/^	E_connected,	\/\/连接成功$/;"	e	enum:ConnectionStatus
-E_connecting	header.h	/^	E_connecting,	\/\/连接中$/;"	e	enum:ConnectionStatus
-E_fnOnConnect	CTPMsgQueue.h	/^		E_fnOnConnect,	$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnDisconnect	CTPMsgQueue.h	/^		E_fnOnDisconnect,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnErrRtnOrderAction	CTPMsgQueue.h	/^		E_fnOnErrRtnOrderAction,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnErrRtnOrderInsert	CTPMsgQueue.h	/^		E_fnOnErrRtnOrderInsert,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnErrRtnQuoteAction	CTPMsgQueue.h	/^		E_fnOnErrRtnQuoteAction,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnErrRtnQuoteInsert	CTPMsgQueue.h	/^		E_fnOnErrRtnQuoteInsert,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRspError	CTPMsgQueue.h	/^		E_fnOnRspError,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRspOrderAction	CTPMsgQueue.h	/^		E_fnOnRspOrderAction,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRspOrderInsert	CTPMsgQueue.h	/^		E_fnOnRspOrderInsert,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRspQryDepthMarketData	CTPMsgQueue.h	/^		E_fnOnRspQryDepthMarketData,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRspQryInstrument	CTPMsgQueue.h	/^		E_fnOnRspQryInstrument,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRspQryInstrumentCommissionRate	CTPMsgQueue.h	/^		E_fnOnRspQryInstrumentCommissionRate,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRspQryInstrumentMarginRate	CTPMsgQueue.h	/^		E_fnOnRspQryInstrumentMarginRate,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRspQryInvestorPosition	CTPMsgQueue.h	/^		E_fnOnRspQryInvestorPosition,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRspQryInvestorPositionDetail	CTPMsgQueue.h	/^		E_fnOnRspQryInvestorPositionDetail,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRspQryOrder	CTPMsgQueue.h	/^		E_fnOnRspQryOrder,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRspQrySettlementInfo	CTPMsgQueue.h	/^		E_fnOnRspQrySettlementInfo,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRspQryTrade	CTPMsgQueue.h	/^		E_fnOnRspQryTrade,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRspQryTradingAccount	CTPMsgQueue.h	/^		E_fnOnRspQryTradingAccount,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRspQuoteAction	CTPMsgQueue.h	/^		E_fnOnRspQuoteAction,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRspQuoteInsert	CTPMsgQueue.h	/^		E_fnOnRspQuoteInsert,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRtnDepthMarketData	CTPMsgQueue.h	/^		E_fnOnRtnDepthMarketData,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRtnForQuoteRsp	CTPMsgQueue.h	/^		E_fnOnRtnForQuoteRsp,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRtnInstrumentStatus	CTPMsgQueue.h	/^		E_fnOnRtnInstrumentStatus,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRtnOrder	CTPMsgQueue.h	/^		E_fnOnRtnOrder,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRtnQuote	CTPMsgQueue.h	/^		E_fnOnRtnQuote,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_fnOnRtnTrade	CTPMsgQueue.h	/^		E_fnOnRtnTrade,$/;"	e	enum:CCTPMsgQueue::EnumMsgType
-E_inited	header.h	/^	E_inited,		\/\/已经初始化$/;"	e	enum:ConnectionStatus
-E_logined	header.h	/^	E_logined,		\/\/登录成功$/;"	e	enum:ConnectionStatus
-E_logining	header.h	/^	E_logining,		\/\/登录中$/;"	e	enum:ConnectionStatus
-E_unconnected	header.h	/^	E_unconnected,	\/\/连接已经断开$/;"	e	enum:ConnectionStatus
-E_uninit	header.h	/^	E_uninit,		\/\/未初始化$/;"	e	enum:ConnectionStatus
 EndDelivDate	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDateType	EndDelivDate;$/;"	m	struct:CThostFtdcInstrumentField
 EnterReason	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstStatusEnterReasonType	EnterReason;$/;"	m	struct:CThostFtdcInstrumentStatusField
 EnterTime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	EnterTime;$/;"	m	struct:CThostFtdcInstrumentStatusField
-EnumMsgType	CTPMsgQueue.h	/^	enum EnumMsgType$/;"	g	class:CCTPMsgQueue
 ErrorID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcErrorIDType	ErrorID;$/;"	m	struct:CThostFtdcCancelAccountField
 ErrorID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcErrorIDType	ErrorID;$/;"	m	struct:CThostFtdcChangeAccountField
 ErrorID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcErrorIDType	ErrorID;$/;"	m	struct:CThostFtdcErrExecOrderActionField
@@ -1581,7 +1821,6 @@ ForQuoteLocalID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcOrderLocalIDType	F
 ForQuoteLocalID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcOrderLocalIDType	ForQuoteLocalID;$/;"	m	struct:CThostFtdcForQuoteField
 ForQuoteRef	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcOrderRefType	ForQuoteRef;$/;"	m	struct:CThostFtdcForQuoteField
 ForQuoteRef	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcOrderRefType	ForQuoteRef;$/;"	m	struct:CThostFtdcInputForQuoteField
-ForQuoteRsp	CTPMsgQueue.h	/^			CThostFtdcForQuoteRspField				ForQuoteRsp;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
 ForQuoteStatus	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcForQuoteStatusType	ForQuoteStatus;$/;"	m	struct:CThostFtdcExchangeForQuoteField
 ForQuoteStatus	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcForQuoteStatusType	ForQuoteStatus;$/;"	m	struct:CThostFtdcForQuoteField
 ForQuoteSysID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcOrderSysIDType	ForQuoteSysID;$/;"	m	struct:CThostFtdcForQuoteRspField
@@ -1686,6 +1925,8 @@ Gender	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcGenderType	Gender;$/;"	m	st
 Gender	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcGenderType	Gender;$/;"	m	struct:CThostFtdcReqCancelAccountField
 Gender	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcGenderType	Gender;$/;"	m	struct:CThostFtdcReqChangeAccountField
 Gender	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcGenderType	Gender;$/;"	m	struct:CThostFtdcReqOpenAccountField
+GetOnFrontDisconnectedMsg	toolkit.cpp	/^void GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo)$/;"	f
+GetSetFromString	toolkit.cpp	/^void GetSetFromString(const char* szString,const char* seps,vector<string>& vct,set<string>& st)$/;"	f
 GroupIP	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcIPAddressType	GroupIP;$/;"	m	struct:CThostFtdcMulticastGroupInfoField
 GroupPort	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcIPPortType	GroupPort;$/;"	m	struct:CThostFtdcMulticastGroupInfoField
 HShortMarginRatioByMoney	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcRatioType	HShortMarginRatioByMoney;$/;"	m	struct:CThostFtdcOptionInstrMarginAdjustField
@@ -1771,38 +2012,7 @@ IdentifiedCardType	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcIdCardTypeType	
 IdentityID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDRIdentityIDType	IdentityID;$/;"	m	struct:CThostFtdcCurrTransferIdentityField
 ImplyLevel	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcImplyLevelType	ImplyLevel;$/;"	m	struct:CThostFtdcCombinationLegField
 IncludeCloseProfit	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcIncludeCloseProfitType	IncludeCloseProfit;$/;"	m	struct:CThostFtdcBrokerWithdrawAlgorithmField
-InputOrder	CTPMsgQueue.h	/^			CThostFtdcInputOrderField				InputOrder;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
-InputOrderAction	CTPMsgQueue.h	/^			CThostFtdcInputOrderActionField			InputOrderAction;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
 InputPrice	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPriceType	InputPrice;$/;"	m	struct:CThostFtdcQryOptionInstrTradeCostField
-InputQuote	CTPMsgQueue.h	/^			CThostFtdcInputQuoteField				InputQuote;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
-InputQuoteAction	CTPMsgQueue.h	/^			CThostFtdcInputQuoteActionField			InputQuoteAction;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
-Input_OnConnect	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnConnect(void* pApi,CThostFtdcRspUserLoginField *pRspUserLogin,ConnectionStatus result)$/;"	f	class:CCTPMsgQueue
-Input_OnDisconnect	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnDisconnect(void* pApi,CThostFtdcRspInfoField *pRspInfo,ConnectionStatus step)$/;"	f	class:CCTPMsgQueue
-Input_OnErrRtnOrderAction	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnErrRtnOrderAction(void* pTraderApi,CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo)$/;"	f	class:CCTPMsgQueue
-Input_OnErrRtnOrderInsert	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnErrRtnOrderInsert(void* pTraderApi,CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo)$/;"	f	class:CCTPMsgQueue
-Input_OnErrRtnQuoteAction	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnErrRtnQuoteAction(void* pTraderApi, CThostFtdcQuoteActionField *pQuoteAction, CThostFtdcRspInfoField *pRspInfo)$/;"	f	class:CCTPMsgQueue
-Input_OnErrRtnQuoteInsert	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnErrRtnQuoteInsert(void* pTraderApi, CThostFtdcInputQuoteField *pInputQuote, CThostFtdcRspInfoField *pRspInfo)$/;"	f	class:CCTPMsgQueue
-Input_OnRspError	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRspError(void* pApi,CThostFtdcRspInfoField* pRspInfo,int nRequestID,bool bIsLast)$/;"	f	class:CCTPMsgQueue
-Input_OnRspOrderAction	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRspOrderAction(void* pTraderApi,CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CCTPMsgQueue
-Input_OnRspOrderInsert	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRspOrderInsert(void* pTraderApi,CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CCTPMsgQueue
-Input_OnRspQryDepthMarketData	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRspQryDepthMarketData(void* pTraderApi,CThostFtdcDepthMarketDataField *pDepthMarketData, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CCTPMsgQueue
-Input_OnRspQryInstrument	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRspQryInstrument(void* pTraderApi,CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CCTPMsgQueue
-Input_OnRspQryInstrumentCommissionRate	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRspQryInstrumentCommissionRate(void* pTraderApi,CThostFtdcInstrumentCommissionRateField *pInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CCTPMsgQueue
-Input_OnRspQryInstrumentMarginRate	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRspQryInstrumentMarginRate(void* pTraderApi,CThostFtdcInstrumentMarginRateField *pInstrumentMarginRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CCTPMsgQueue
-Input_OnRspQryInvestorPosition	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRspQryInvestorPosition(void* pTraderApi,CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CCTPMsgQueue
-Input_OnRspQryInvestorPositionDetail	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRspQryInvestorPositionDetail(void* pTraderApi,CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CCTPMsgQueue
-Input_OnRspQryOrder	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRspQryOrder(void* pTraderApi,CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CCTPMsgQueue
-Input_OnRspQrySettlementInfo	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRspQrySettlementInfo(void* pTraderApi, CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CCTPMsgQueue
-Input_OnRspQryTrade	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRspQryTrade(void* pTraderApi,CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CCTPMsgQueue
-Input_OnRspQryTradingAccount	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRspQryTradingAccount(void* pTraderApi,CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CCTPMsgQueue
-Input_OnRspQuoteAction	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRspQuoteAction(void* pTraderApi, CThostFtdcInputQuoteActionField *pInputQuoteAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CCTPMsgQueue
-Input_OnRspQuoteInsert	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRspQuoteInsert(void* pTraderApi, CThostFtdcInputQuoteField *pInputQuote, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CCTPMsgQueue
-Input_OnRtnDepthMarketData	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRtnDepthMarketData(void* pMdUserApi, CThostFtdcDepthMarketDataField *pDepthMarketData)$/;"	f	class:CCTPMsgQueue
-Input_OnRtnForQuoteRsp	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRtnForQuoteRsp(void* pMdUserApi, CThostFtdcForQuoteRspField *pForQuoteRsp)$/;"	f	class:CCTPMsgQueue
-Input_OnRtnInstrumentStatus	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRtnInstrumentStatus(void* pTraderApi,CThostFtdcInstrumentStatusField *pInstrumentStatus)$/;"	f	class:CCTPMsgQueue
-Input_OnRtnOrder	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRtnOrder(void* pTraderApi,CThostFtdcOrderField *pOrder)$/;"	f	class:CCTPMsgQueue
-Input_OnRtnQuote	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRtnQuote(void* pTraderApi, CThostFtdcQuoteField *pQuote)$/;"	f	class:CCTPMsgQueue
-Input_OnRtnTrade	CTPMsgQueue.cpp	/^void CCTPMsgQueue::Input_OnRtnTrade(void* pTraderApi,CThostFtdcTradeField *pTrade)$/;"	f	class:CCTPMsgQueue
 InsertDate	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDateType	InsertDate;$/;"	m	struct:CThostFtdcErrorConditionalOrderField
 InsertDate	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDateType	InsertDate;$/;"	m	struct:CThostFtdcExchangeExecOrderField
 InsertDate	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDateType	InsertDate;$/;"	m	struct:CThostFtdcExchangeForQuoteField
@@ -1876,8 +2086,6 @@ InstallID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstallIDType	InstallID;
 InstallID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstallIDType	InstallID;$/;"	m	struct:CThostFtdcRspTransferField
 InstallID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstallIDType	InstallID;$/;"	m	struct:CThostFtdcTraderOfferField
 InstallID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstallIDType	InstallID;$/;"	m	struct:CThostFtdcVerifyFuturePasswordField
-Instrument	CTPMsgQueue.h	/^			CThostFtdcInstrumentField				Instrument;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
-InstrumentCommissionRate	CTPMsgQueue.h	/^			CThostFtdcInstrumentCommissionRateField	InstrumentCommissionRate;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
 InstrumentID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstrumentIDType	InstrumentID;$/;"	m	struct:CThostFtdcBrokerTradingAlgosField
 InstrumentID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstrumentIDType	InstrumentID;$/;"	m	struct:CThostFtdcBrokerUserEventField
 InstrumentID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstrumentIDType	InstrumentID;$/;"	m	struct:CThostFtdcDepthMarketDataField
@@ -1956,9 +2164,7 @@ InstrumentID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstrumentIDType	Inst
 InstrumentID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstrumentIDType	InstrumentID;$/;"	m	struct:CThostFtdcSyncingInstrumentTradingRightField
 InstrumentID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstrumentIDType	InstrumentID;$/;"	m	struct:CThostFtdcSyncingInvestorPositionField
 InstrumentID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstrumentIDType	InstrumentID;$/;"	m	struct:CThostFtdcTradeField
-InstrumentMarginRate	CTPMsgQueue.h	/^			CThostFtdcInstrumentMarginRateField		InstrumentMarginRate;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
 InstrumentName	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstrumentNameType	InstrumentName;$/;"	m	struct:CThostFtdcInstrumentField
-InstrumentStatus	CTPMsgQueue.h	/^			CThostFtdcInstrumentStatusField			InstrumentStatus;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
 InstrumentStatus	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstrumentStatusType	InstrumentStatus;$/;"	m	struct:CThostFtdcInstrumentStatusField
 Interest	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMoneyType	Interest;$/;"	m	struct:CThostFtdcSyncingTradingAccountField
 Interest	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMoneyType	Interest;$/;"	m	struct:CThostFtdcTradingAccountField
@@ -2077,8 +2283,6 @@ InvestorID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInvestorIDType	Investor
 InvestorID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInvestorIDType	InvestorID;$/;"	m	struct:CThostFtdcVerifyInvestorPasswordField
 InvestorName	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPartyNameType	InvestorName;$/;"	m	struct:CThostFtdcInvestorField
 InvestorName	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPartyNameType	InvestorName;$/;"	m	struct:CThostFtdcSyncingInvestorField
-InvestorPosition	CTPMsgQueue.h	/^			CThostFtdcInvestorPositionField			InvestorPosition;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
-InvestorPositionDetail	CTPMsgQueue.h	/^			CThostFtdcInvestorPositionDetailField	InvestorPositionDetail;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
 InvestorRange	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInvestorRangeType	InvestorRange;$/;"	m	struct:CThostFtdcDiscountField
 InvestorRange	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInvestorRangeType	InvestorRange;$/;"	m	struct:CThostFtdcInstrumentCommissionRateField
 InvestorRange	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInvestorRangeType	InvestorRange;$/;"	m	struct:CThostFtdcInstrumentMarginRateAdjustField
@@ -2112,6 +2316,8 @@ IsAutoSuspend	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcBoolType	IsAutoSuspe
 IsAutoSuspend	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcBoolType	IsAutoSuspend;$/;"	m	struct:CThostFtdcOrderField
 IsAutoSuspend	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcBoolType	IsAutoSuspend;$/;"	m	struct:CThostFtdcParkedOrderField
 IsBrokerUserEvent	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcBoolType	IsBrokerUserEvent;$/;"	m	struct:CThostFtdcBrokerWithdrawAlgorithmField
+IsErrorRspInfo	MdUserApi.cpp	/^bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)   $/;"	f	class:CMdUserApi
+IsErrorRspInfo	MdUserApi.cpp	/^bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)   $/;"	f	class:CMdUserApi
 IsForbidden	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcBoolType	IsForbidden;$/;"	m	struct:CThostFtdcUserRightField
 IsForce	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcBoolType	IsForce;$/;"	m	struct:CThostFtdcSyncDepositField
 IsRelative	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcBoolType	IsRelative;$/;"	m	struct:CThostFtdcInstrumentMarginRateAdjustField
@@ -2221,6 +2427,19 @@ LowestPrice	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPriceType	LowestPrice;
 MD_API_EXPORT	cpp_api/ThostFtdcMdApi.h	21;"	d
 MD_API_EXPORT	cpp_api/ThostFtdcMdApi.h	23;"	d
 MD_API_EXPORT	cpp_api/ThostFtdcMdApi.h	26;"	d
+MD_GetApi	capi.cpp	/^inline CMdUserApi* MD_GetApi(void* pMdUserApi)$/;"	f
+MD_RegOnFrontConnected	capi.cpp	/^void MD_RegOnFrontConnected(void* pApi, fnOnFrontConnected pCallback)$/;"	f
+MD_RegOnFrontDisconnected	capi.cpp	/^void MD_RegOnFrontDisconnected(void* pApi, fnOnFrontDisconnected pCallback)$/;"	f
+MD_RegOnHeartBeatWarning	capi.cpp	/^void MD_RegOnHeartBeatWarning(void* pApi, fnOnHeartBeatWarning pCallback)$/;"	f
+MD_RegOnRspError	capi.cpp	/^void MD_RegOnRspError(void* pApi, fnOnRspError pCallback)$/;"	f
+MD_RegOnRspSubForQuoteRsp	capi.cpp	/^void MD_RegOnRspSubForQuoteRsp(void *pApi, fnOnRspSubForQuoteRsp pCallback)$/;"	f
+MD_RegOnRspSubMarketData	capi.cpp	/^void MD_RegOnRspSubMarketData(void *pApi, fnOnRspSubMarketData pCallback)$/;"	f
+MD_RegOnRspUnSubForQuoteRsp	capi.cpp	/^void MD_RegOnRspUnSubForQuoteRsp(void *pApi, fnOnRspUnSubForQuoteRsp pCallback)$/;"	f
+MD_RegOnRspUnSubMarketData	capi.cpp	/^void MD_RegOnRspUnSubMarketData(void *pApi, fnOnRspUnSubMarketData pCallback)$/;"	f
+MD_RegOnRspUserLogin	capi.cpp	/^void MD_RegOnRspUserLogin(void *pApi, fnOnRspUserLogin pCallback)$/;"	f
+MD_RegOnRspUserLogout	capi.cpp	/^void MD_RegOnRspUserLogout(void *pApi, fnOnRspUserLogout pCallback)$/;"	f
+MD_RegOnRtnDepthMarketData	capi.cpp	/^void MD_RegOnRtnDepthMarketData(void* pApi, fnOnRtnDepthMarketData pCallback)$/;"	f
+MD_RegOnRtnForQuoteRsp	capi.cpp	/^void MD_RegOnRtnForQuoteRsp(void* pApi, fnOnRtnForQuoteRsp pCallback)$/;"	f
 MacAddress	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMacAddressType	MacAddress;$/;"	m	struct:CThostFtdcLoginInfoField
 MacAddress	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMacAddressType	MacAddress;$/;"	m	struct:CThostFtdcReqUserLoginField
 MacAddress	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMacAddressType	MacAddress;$/;"	m	struct:CThostFtdcUserIPField
@@ -2345,13 +2564,17 @@ OnErrRtnQuoteAction	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnErrRtnQuoteAc
 OnErrRtnQuoteInsert	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnErrRtnQuoteInsert(CThostFtdcInputQuoteField *pInputQuote, CThostFtdcRspInfoField *pRspInfo) {};$/;"	f	class:CThostFtdcTraderSpi
 OnErrRtnRepealBankToFutureByFutureManual	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnErrRtnRepealBankToFutureByFutureManual(CThostFtdcReqRepealField *pReqRepeal, CThostFtdcRspInfoField *pRspInfo) {};$/;"	f	class:CThostFtdcTraderSpi
 OnErrRtnRepealFutureToBankByFutureManual	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnErrRtnRepealFutureToBankByFutureManual(CThostFtdcReqRepealField *pReqRepeal, CThostFtdcRspInfoField *pRspInfo) {};$/;"	f	class:CThostFtdcTraderSpi
+OnFrontConnected	MdUserApi.cpp	/^void CMdUserApi::OnFrontConnected()$/;"	f	class:CMdUserApi
 OnFrontConnected	cpp_api/ThostFtdcMdApi.h	/^	virtual void OnFrontConnected(){};$/;"	f	class:CThostFtdcMdSpi
 OnFrontConnected	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnFrontConnected(){};$/;"	f	class:CThostFtdcTraderSpi
+OnFrontConnected_i	main.c	/^void OnFrontConnected_i(void * pApi) {$/;"	f
+OnFrontDisconnected	MdUserApi.cpp	/^void CMdUserApi::OnFrontDisconnected(int nReason)$/;"	f	class:CMdUserApi
 OnFrontDisconnected	cpp_api/ThostFtdcMdApi.h	/^	virtual void OnFrontDisconnected(int nReason){};$/;"	f	class:CThostFtdcMdSpi
 OnFrontDisconnected	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnFrontDisconnected(int nReason){};$/;"	f	class:CThostFtdcTraderSpi
 OnHeartBeatWarning	cpp_api/ThostFtdcMdApi.h	/^	virtual void OnHeartBeatWarning(int nTimeLapse){};$/;"	f	class:CThostFtdcMdSpi
 OnHeartBeatWarning	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnHeartBeatWarning(int nTimeLapse){};$/;"	f	class:CThostFtdcTraderSpi
 OnRspAuthenticate	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAuthenticateField, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcTraderSpi
+OnRspError	MdUserApi.cpp	/^void CMdUserApi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CMdUserApi
 OnRspError	cpp_api/ThostFtdcMdApi.h	/^	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcMdSpi
 OnRspError	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcTraderSpi
 OnRspExecOrderAction	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRspExecOrderAction(CThostFtdcInputExecOrderActionField *pInputExecOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcTraderSpi
@@ -2408,11 +2631,16 @@ OnRspQuoteInsert	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRspQuoteInsert(C
 OnRspRemoveParkedOrder	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRspRemoveParkedOrder(CThostFtdcRemoveParkedOrderField *pRemoveParkedOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcTraderSpi
 OnRspRemoveParkedOrderAction	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRspRemoveParkedOrderAction(CThostFtdcRemoveParkedOrderActionField *pRemoveParkedOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcTraderSpi
 OnRspSettlementInfoConfirm	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcTraderSpi
+OnRspSubForQuoteRsp	MdUserApi.cpp	/^void CMdUserApi::OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) $/;"	f	class:CMdUserApi
 OnRspSubForQuoteRsp	cpp_api/ThostFtdcMdApi.h	/^	virtual void OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcMdSpi
+OnRspSubMarketData	MdUserApi.cpp	/^void CMdUserApi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CMdUserApi
 OnRspSubMarketData	cpp_api/ThostFtdcMdApi.h	/^	virtual void OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcMdSpi
 OnRspTradingAccountPasswordUpdate	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRspTradingAccountPasswordUpdate(CThostFtdcTradingAccountPasswordUpdateField *pTradingAccountPasswordUpdate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcTraderSpi
+OnRspUnSubForQuoteRsp	MdUserApi.cpp	/^void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CMdUserApi
 OnRspUnSubForQuoteRsp	cpp_api/ThostFtdcMdApi.h	/^	virtual void OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcMdSpi
+OnRspUnSubMarketData	MdUserApi.cpp	/^void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CMdUserApi
 OnRspUnSubMarketData	cpp_api/ThostFtdcMdApi.h	/^	virtual void OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcMdSpi
+OnRspUserLogin	MdUserApi.cpp	/^void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)$/;"	f	class:CMdUserApi
 OnRspUserLogin	cpp_api/ThostFtdcMdApi.h	/^	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcMdSpi
 OnRspUserLogin	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcTraderSpi
 OnRspUserLogout	cpp_api/ThostFtdcMdApi.h	/^	virtual void OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcMdSpi
@@ -2420,9 +2648,11 @@ OnRspUserLogout	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRspUserLogout(CTh
 OnRspUserPasswordUpdate	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRspUserPasswordUpdate(CThostFtdcUserPasswordUpdateField *pUserPasswordUpdate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};$/;"	f	class:CThostFtdcTraderSpi
 OnRtnCancelAccountByBank	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRtnCancelAccountByBank(CThostFtdcCancelAccountField *pCancelAccount) {};$/;"	f	class:CThostFtdcTraderSpi
 OnRtnChangeAccountByBank	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRtnChangeAccountByBank(CThostFtdcChangeAccountField *pChangeAccount) {};$/;"	f	class:CThostFtdcTraderSpi
+OnRtnDepthMarketData	MdUserApi.cpp	/^void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)$/;"	f	class:CMdUserApi
 OnRtnDepthMarketData	cpp_api/ThostFtdcMdApi.h	/^	virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData) {};$/;"	f	class:CThostFtdcMdSpi
 OnRtnErrorConditionalOrder	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRtnErrorConditionalOrder(CThostFtdcErrorConditionalOrderField *pErrorConditionalOrder) {};$/;"	f	class:CThostFtdcTraderSpi
 OnRtnExecOrder	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRtnExecOrder(CThostFtdcExecOrderField *pExecOrder) {};$/;"	f	class:CThostFtdcTraderSpi
+OnRtnForQuoteRsp	MdUserApi.cpp	/^void CMdUserApi::OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp)$/;"	f	class:CMdUserApi
 OnRtnForQuoteRsp	cpp_api/ThostFtdcMdApi.h	/^	virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp) {};$/;"	f	class:CThostFtdcMdSpi
 OnRtnForQuoteRsp	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp) {};$/;"	f	class:CThostFtdcTraderSpi
 OnRtnFromBankToFutureByBank	cpp_api/ThostFtdcTraderApi.h	/^	virtual void OnRtnFromBankToFutureByBank(CThostFtdcRspTransferField *pRspTransfer) {};$/;"	f	class:CThostFtdcTraderSpi
@@ -2499,8 +2729,6 @@ OptionValue	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMoneyType	OptionValue;
 OptionValue	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMoneyType	OptionValue;$/;"	m	struct:CThostFtdcSyncingTradingAccountField
 OptionValue	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMoneyType	OptionValue;$/;"	m	struct:CThostFtdcTradingAccountField
 OptionsType	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcOptionsTypeType	OptionsType;$/;"	m	struct:CThostFtdcInstrumentField
-Order	CTPMsgQueue.h	/^			CThostFtdcOrderField					Order;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
-OrderAction	CTPMsgQueue.h	/^			CThostFtdcOrderActionField				OrderAction;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
 OrderActionRef	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcOrderActionRefType	OrderActionRef;$/;"	m	struct:CThostFtdcErrOrderActionField
 OrderActionRef	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcOrderActionRefType	OrderActionRef;$/;"	m	struct:CThostFtdcInputOrderActionField
 OrderActionRef	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcOrderActionRefType	OrderActionRef;$/;"	m	struct:CThostFtdcOrderActionField
@@ -2574,33 +2802,6 @@ OrigDRIdentityID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDRIdentityIDType	
 OriginDescrInfoForReturnCode	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDescrInfoForReturnCodeType	OriginDescrInfoForReturnCode;$/;"	m	struct:CThostFtdcRspQueryTradeResultBySerialField
 OriginReturnCode	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcReturnCodeType	OriginReturnCode;$/;"	m	struct:CThostFtdcRspQueryTradeResultBySerialField
 OutDate	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTradeDateType	OutDate;$/;"	m	struct:CThostFtdcAccountregisterField
-Output_OnConnect	CTPMsgQueue.h	/^	void Output_OnConnect(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnDisconnect	CTPMsgQueue.h	/^	void Output_OnDisconnect(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnErrRtnOrderAction	CTPMsgQueue.h	/^	void Output_OnErrRtnOrderAction(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnErrRtnOrderInsert	CTPMsgQueue.h	/^	void Output_OnErrRtnOrderInsert(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnErrRtnQuoteAction	CTPMsgQueue.h	/^	void Output_OnErrRtnQuoteAction(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnErrRtnQuoteInsert	CTPMsgQueue.h	/^	void Output_OnErrRtnQuoteInsert(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRspError	CTPMsgQueue.h	/^	void Output_OnRspError(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRspOrderAction	CTPMsgQueue.h	/^	void Output_OnRspOrderAction(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRspOrderInsert	CTPMsgQueue.h	/^	void Output_OnRspOrderInsert(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRspQryDepthMarketData	CTPMsgQueue.h	/^	void Output_OnRspQryDepthMarketData(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRspQryInstrument	CTPMsgQueue.h	/^	void Output_OnRspQryInstrument(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRspQryInstrumentCommissionRate	CTPMsgQueue.h	/^	void Output_OnRspQryInstrumentCommissionRate(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRspQryInstrumentMarginRate	CTPMsgQueue.h	/^	void Output_OnRspQryInstrumentMarginRate(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRspQryInvestorPosition	CTPMsgQueue.h	/^	void Output_OnRspQryInvestorPosition(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRspQryInvestorPositionDetail	CTPMsgQueue.h	/^	void Output_OnRspQryInvestorPositionDetail(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRspQryOrder	CTPMsgQueue.h	/^	void Output_OnRspQryOrder(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRspQrySettlementInfo	CTPMsgQueue.h	/^	void Output_OnRspQrySettlementInfo(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRspQryTrade	CTPMsgQueue.h	/^	void Output_OnRspQryTrade(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRspQryTradingAccount	CTPMsgQueue.h	/^	void Output_OnRspQryTradingAccount(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRspQuoteAction	CTPMsgQueue.h	/^	void Output_OnRspQuoteAction(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRspQuoteInsert	CTPMsgQueue.h	/^	void Output_OnRspQuoteInsert(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRtnDepthMarketData	CTPMsgQueue.h	/^	void Output_OnRtnDepthMarketData(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRtnForQuoteRsp	CTPMsgQueue.h	/^	void Output_OnRtnForQuoteRsp(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRtnInstrumentStatus	CTPMsgQueue.h	/^	void Output_OnRtnInstrumentStatus(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRtnOrder	CTPMsgQueue.h	/^	void Output_OnRtnOrder(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRtnQuote	CTPMsgQueue.h	/^	void Output_OnRtnQuote(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
-Output_OnRtnTrade	CTPMsgQueue.h	/^	void Output_OnRtnTrade(SMsgItem* pItem)$/;"	f	class:CCTPMsgQueue
 ParkedOrderActionID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcParkedOrderActionIDType	ParkedOrderActionID;$/;"	m	struct:CThostFtdcParkedOrderActionField
 ParkedOrderActionID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcParkedOrderActionIDType	ParkedOrderActionID;$/;"	m	struct:CThostFtdcRemoveParkedOrderActionField
 ParkedOrderID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcParkedOrderIDType	ParkedOrderID;$/;"	m	struct:CThostFtdcParkedOrderField
@@ -2764,8 +2965,6 @@ PriceSource	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPriceSourceType	PriceS
 PriceTick	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPriceType	PriceTick;$/;"	m	struct:CThostFtdcInstrumentField
 PriceTick	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPriceType	PriceTick;$/;"	m	struct:CThostFtdcProductField
 Priority	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPriorityType	Priority;$/;"	m	struct:CThostFtdcLinkManField
-Process	CTPMsgQueue.cpp	/^bool CCTPMsgQueue::Process()$/;"	f	class:CCTPMsgQueue
-ProcessThread	CTPMsgQueue.cpp	/^DWORD WINAPI ProcessThread(LPVOID lpParam)$/;"	f
 ProductClass	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcProductClassType	ProductClass;$/;"	m	struct:CThostFtdcInstrumentField
 ProductClass	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcProductClassType	ProductClass;$/;"	m	struct:CThostFtdcProductField
 ProductClass	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcProductClassType	ProductClass;$/;"	m	struct:CThostFtdcQryProductField
@@ -2779,8 +2978,6 @@ ProductName	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcProductNameType	Produc
 ProtocolInfo	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcProtocolInfoType	ProtocolInfo;$/;"	m	struct:CThostFtdcLoginInfoField
 ProtocolInfo	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcProtocolInfoType	ProtocolInfo;$/;"	m	struct:CThostFtdcReqUserLoginField
 ProtocolInfo	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcProtocolInfoType	ProtocolInfo;$/;"	m	struct:CThostFtdcUserSessionField
-Quote	CTPMsgQueue.h	/^			CThostFtdcQuoteField					Quote;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
-QuoteAction	CTPMsgQueue.h	/^			CThostFtdcQuoteActionField				QuoteAction;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
 QuoteActionRef	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcOrderActionRefType	QuoteActionRef;$/;"	m	struct:CThostFtdcInputQuoteActionField
 QuoteActionRef	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcOrderActionRefType	QuoteActionRef;$/;"	m	struct:CThostFtdcQuoteActionField
 QuoteLocalID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcOrderLocalIDType	QuoteLocalID;$/;"	m	struct:CThostFtdcExchangeQuoteActionField
@@ -2807,39 +3004,25 @@ RefrenceIssure	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcOrganCodeType	Refre
 RefrenceIssureType	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstitutionTypeType	RefrenceIssureType;$/;"	m	struct:CThostFtdcReqQueryTradeResultBySerialField
 RefrenceIssureType	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstitutionTypeType	RefrenceIssureType;$/;"	m	struct:CThostFtdcRspQueryTradeResultBySerialField
 RegDate	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTradeDateType	RegDate;$/;"	m	struct:CThostFtdcAccountregisterField
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnConnect pCallback){ m_fnOnConnect = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnDisconnect pCallback){ m_fnOnDisconnect = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnErrRtnOrderAction pCallback){ m_fnOnErrRtnOrderAction = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnErrRtnOrderInsert pCallback){ m_fnOnErrRtnOrderInsert = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnErrRtnQuoteAction pCallback){ m_fnOnErrRtnQuoteAction = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnErrRtnQuoteInsert pCallback){ m_fnOnErrRtnQuoteInsert = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRspError pCallback){ m_fnOnRspError = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRspOrderAction pCallback){ m_fnOnRspOrderAction = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRspOrderInsert pCallback){ m_fnOnRspOrderInsert = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRspQryDepthMarketData pCallback){ m_fnOnRspQryDepthMarketData = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRspQryInstrument pCallback){ m_fnOnRspQryInstrument = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRspQryInstrumentCommissionRate pCallback){ m_fnOnRspQryInstrumentCommissionRate = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRspQryInstrumentMarginRate pCallback){ m_fnOnRspQryInstrumentMarginRate = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRspQryInvestorPosition pCallback){ m_fnOnRspQryInvestorPosition = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRspQryInvestorPositionDetail pCallback){ m_fnOnRspQryInvestorPositionDetail = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRspQryOrder pCallback){ m_fnOnRspQryOrder = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRspQrySettlementInfo pCallback){ m_fnOnRspQrySettlementInfo = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRspQryTrade pCallback){ m_fnOnRspQryTrade = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRspQryTradingAccount pCallback){ m_fnOnRspQryTradingAccount = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRspQuoteAction pCallback){ m_fnOnRspQuoteAction = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRspQuoteInsert pCallback){ m_fnOnRspQuoteInsert = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRtnDepthMarketData pCallback){ m_fnOnRtnDepthMarketData = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRtnForQuoteRsp pCallback){ m_fnOnRtnForQuoteRsp = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRtnInstrumentStatus pCallback){ m_fnOnRtnInstrumentStatus = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRtnOrder pCallback){ m_fnOnRtnOrder = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRtnQuote pCallback){ m_fnOnRtnQuote = pCallback; }$/;"	f	class:CCTPMsgQueue
-RegisterCallback	CTPMsgQueue.h	/^	void RegisterCallback(fnOnRtnTrade pCallback){ m_fnOnRtnTrade = pCallback; }$/;"	f	class:CCTPMsgQueue
+RegisterCallback_ofc	MdUserApi.h	/^	void RegisterCallback_ofc(fnOnFrontConnected pCallback) { m_fnOnFrontConnected = pCallback; }$/;"	f	class:CMdUserApi
+RegisterCallback_ofd	MdUserApi.h	/^	void RegisterCallback_ofd(fnOnFrontDisconnected pCallback) { m_fnOnFrontDisconnected = pCallback; }$/;"	f	class:CMdUserApi
+RegisterCallback_ohb	MdUserApi.h	/^	void RegisterCallback_ohb(fnOnHeartBeatWarning pCallback) { m_fnOnHeartBeatWarning = pCallback; }$/;"	f	class:CMdUserApi
+RegisterCallback_ordmd	MdUserApi.h	/^	void RegisterCallback_ordmd(fnOnRtnDepthMarketData pCallback) { m_fnOnRtnDepthMarketData = pCallback; }$/;"	f	class:CMdUserApi
+RegisterCallback_ore	MdUserApi.h	/^	void RegisterCallback_ore(fnOnRspError pCallback) { m_fnOnRspError = pCallback; }$/;"	f	class:CMdUserApi
+RegisterCallback_orfqr	MdUserApi.h	/^	void RegisterCallback_orfqr(fnOnRtnForQuoteRsp pCallback) { m_fnOnRtnForQuoteRsp = pCallback; }$/;"	f	class:CMdUserApi
+RegisterCallback_orsfqr	MdUserApi.h	/^	void RegisterCallback_orsfqr(fnOnRspSubForQuoteRsp pCallback) { m_fnOnRspSubForQuoteRsp = pCallback; }$/;"	f	class:CMdUserApi
+RegisterCallback_orsmd	MdUserApi.h	/^	void RegisterCallback_orsmd(fnOnRspSubMarketData pCallback) { m_fnOnRspSubMarketData = pCallback; }$/;"	f	class:CMdUserApi
+RegisterCallback_oruli	MdUserApi.h	/^	void RegisterCallback_oruli(fnOnRspUserLogin pCallback) { m_fnOnRspUserLogin = pCallback; }$/;"	f	class:CMdUserApi
+RegisterCallback_orulo	MdUserApi.h	/^	void RegisterCallback_orulo(fnOnRspUserLogout pCallback) { m_fnOnRspUserLogout = pCallback; }$/;"	f	class:CMdUserApi
+RegisterCallback_orusfqr	MdUserApi.h	/^	void RegisterCallback_orusfqr(fnOnRspUnSubForQuoteRsp pCallback) { m_fnOnRspUnSubForQuoteRsp = pCallback; }$/;"	f	class:CMdUserApi
+RegisterCallback_orusmd	MdUserApi.h	/^	void RegisterCallback_orusmd(fnOnRspUnSubMarketData pCallback) { m_fnOnRspUnSubMarketData = pCallback; }$/;"	f	class:CMdUserApi
 RelativeOrderSysID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcOrderSysIDType	RelativeOrderSysID;$/;"	m	struct:CThostFtdcErrorConditionalOrderField
 RelativeOrderSysID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcOrderSysIDType	RelativeOrderSysID;$/;"	m	struct:CThostFtdcOrderField
 RepealTimeInterval	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcRepealTimeIntervalType	RepealTimeInterval;$/;"	m	struct:CThostFtdcReqRepealField
 RepealTimeInterval	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcRepealTimeIntervalType	RepealTimeInterval;$/;"	m	struct:CThostFtdcRspRepealField
 RepealedTimes	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcRepealedTimesType	RepealedTimes;$/;"	m	struct:CThostFtdcReqRepealField
 RepealedTimes	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcRepealedTimesType	RepealedTimes;$/;"	m	struct:CThostFtdcRspRepealField
+ReqUserLogin	MdUserApi.cpp	/^void CMdUserApi::ReqUserLogin()$/;"	f	class:CMdUserApi
 RequestID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcRequestIDType	RequestID;$/;"	m	struct:CThostFtdcDepositResultInformField
 RequestID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcRequestIDType	RequestID;$/;"	m	struct:CThostFtdcErrExecOrderActionField
 RequestID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcRequestIDType	RequestID;$/;"	m	struct:CThostFtdcErrExecOrderField
@@ -2899,12 +3082,8 @@ RetInfo	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcRetInfoType	RetInfo;$/;"	m
 ReturnCode	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcReturnCodeType	ReturnCode;$/;"	m	struct:CThostFtdcDepositResultInformField
 ReturnCode	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcReturnCodeType	ReturnCode;$/;"	m	struct:CThostFtdcReturnResultField
 Royalty	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMoneyType	Royalty;$/;"	m	struct:CThostFtdcOptionInstrTradeCostField
-RspInfo	CTPMsgQueue.h	/^		CThostFtdcRspInfoField				RspInfo;		\/\/响应信息$/;"	m	struct:CCTPMsgQueue::SMsgItem
-RspUserLogin	CTPMsgQueue.h	/^			CThostFtdcRspUserLoginField				RspUserLogin;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
-RunInThread	CTPMsgQueue.cpp	/^void CCTPMsgQueue::RunInThread()$/;"	f	class:CCTPMsgQueue
 SHFETime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	SHFETime;$/;"	m	struct:CThostFtdcLoginInfoField
 SHFETime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	SHFETime;$/;"	m	struct:CThostFtdcRspUserLoginField
-SMsgItem	CTPMsgQueue.h	/^	struct SMsgItem$/;"	s	class:CCTPMsgQueue
 SShortMarginRatioByMoney	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcRatioType	SShortMarginRatioByMoney;$/;"	m	struct:CThostFtdcOptionInstrMarginAdjustField
 SShortMarginRatioByVolume	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMoneyType	SShortMarginRatioByVolume;$/;"	m	struct:CThostFtdcOptionInstrMarginAdjustField
 SecondOTP	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPasswordType	SecondOTP;$/;"	m	struct:CThostFtdcManualSyncBrokerUserOTPField
@@ -3008,7 +3187,6 @@ SettlementID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcSettlementIDType	Sett
 SettlementID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcSettlementIDType	SettlementID;$/;"	m	struct:CThostFtdcSyncingTradingAccountField
 SettlementID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcSettlementIDType	SettlementID;$/;"	m	struct:CThostFtdcTradeField
 SettlementID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcSettlementIDType	SettlementID;$/;"	m	struct:CThostFtdcTradingAccountField
-SettlementInfo	CTPMsgQueue.h	/^			CThostFtdcSettlementInfoField			SettlementInfo;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
 SettlementPrice	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPriceType	SettlementPrice;$/;"	m	struct:CThostFtdcDepthMarketDataField
 SettlementPrice	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPriceType	SettlementPrice;$/;"	m	struct:CThostFtdcInvestorPositionDetailField
 SettlementPrice	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPriceType	SettlementPrice;$/;"	m	struct:CThostFtdcInvestorPositionField
@@ -3055,10 +3233,8 @@ SpecProductPositionProfitByAlg	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMon
 StartDate	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDateType	StartDate;$/;"	m	struct:CThostFtdcMDTraderOfferField
 StartDate	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDateType	StartDate;$/;"	m	struct:CThostFtdcTraderOfferField
 StartDelivDate	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDateType	StartDelivDate;$/;"	m	struct:CThostFtdcInstrumentField
-StartThread	CTPMsgQueue.cpp	/^void CCTPMsgQueue::StartThread()$/;"	f	class:CCTPMsgQueue
 StartTime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	StartTime;$/;"	m	struct:CThostFtdcMDTraderOfferField
 StartTime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	StartTime;$/;"	m	struct:CThostFtdcTraderOfferField
-Status	CTPMsgQueue.h	/^			ConnectionStatus				Status;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon1
 Status	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcParkedOrderStatusType	Status;$/;"	m	struct:CThostFtdcParkedOrderActionField
 Status	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcParkedOrderStatusType	Status;$/;"	m	struct:CThostFtdcParkedOrderField
 StatusMsg	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcErrorMsgType	StatusMsg;$/;"	m	struct:CThostFtdcErrOrderActionField
@@ -3076,7 +3252,6 @@ StopPrice	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPriceType	StopPrice;$/;"
 StopPrice	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPriceType	StopPrice;$/;"	m	struct:CThostFtdcInputOrderField
 StopPrice	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPriceType	StopPrice;$/;"	m	struct:CThostFtdcOrderField
 StopPrice	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPriceType	StopPrice;$/;"	m	struct:CThostFtdcParkedOrderField
-StopThread	CTPMsgQueue.cpp	/^void CCTPMsgQueue::StopThread()$/;"	f	class:CCTPMsgQueue
 StrikeFrozen	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcVolumeType	StrikeFrozen;$/;"	m	struct:CThostFtdcInvestorPositionField
 StrikeFrozen	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcVolumeType	StrikeFrozen;$/;"	m	struct:CThostFtdcSyncingInvestorPositionField
 StrikeFrozenAmount	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMoneyType	StrikeFrozenAmount;$/;"	m	struct:CThostFtdcInvestorPositionField
@@ -3084,6 +3259,10 @@ StrikeFrozenAmount	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMoneyType	Strik
 StrikePrice	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPriceType	StrikePrice;$/;"	m	struct:CThostFtdcInstrumentField
 StrikeRatioByMoney	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcRatioType	StrikeRatioByMoney;$/;"	m	struct:CThostFtdcOptionInstrCommRateField
 StrikeRatioByVolume	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcRatioType	StrikeRatioByVolume;$/;"	m	struct:CThostFtdcOptionInstrCommRateField
+Subscribe	MdUserApi.cpp	/^void CMdUserApi::Subscribe(const set<string>& instrumentIDs)$/;"	f	class:CMdUserApi
+Subscribe	MdUserApi.cpp	/^void CMdUserApi::Subscribe(const string& szInstrumentIDs)$/;"	f	class:CMdUserApi
+SubscribeQuote	MdUserApi.cpp	/^void CMdUserApi::SubscribeQuote(const set<string>& instrumentIDs)$/;"	f	class:CMdUserApi
+SubscribeQuote	MdUserApi.cpp	/^void CMdUserApi::SubscribeQuote(const string& szInstrumentIDs)$/;"	f	class:CMdUserApi
 SuspendTime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	SuspendTime;$/;"	m	struct:CThostFtdcErrorConditionalOrderField
 SuspendTime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	SuspendTime;$/;"	m	struct:CThostFtdcExchangeOrderField
 SuspendTime	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTimeType	SuspendTime;$/;"	m	struct:CThostFtdcOrderField
@@ -4244,6 +4423,7 @@ THOST_TERT_QUICK	cpp_api/ThostFtdcUserApiDataType.h	/^	THOST_TERT_QUICK$/;"	e	en
 THOST_TERT_RESTART	cpp_api/ThostFtdcUserApiDataType.h	/^	THOST_TERT_RESTART = 0,$/;"	e	enum:THOST_TE_RESUME_TYPE
 THOST_TERT_RESUME	cpp_api/ThostFtdcUserApiDataType.h	/^	THOST_TERT_RESUME,$/;"	e	enum:THOST_TE_RESUME_TYPE
 THOST_TE_RESUME_TYPE	cpp_api/ThostFtdcUserApiDataType.h	/^enum THOST_TE_RESUME_TYPE$/;"	g
+THOST_TE_RESUME_TYPE	header.h	/^typedef enum THOST_TE_RESUME_TYPE THOST_TE_RESUME_TYPE;$/;"	t	typeref:enum:THOST_TE_RESUME_TYPE
 TID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTIDType	TID;$/;"	m	struct:CThostFtdcAccountregisterField
 TID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTIDType	TID;$/;"	m	struct:CThostFtdcCancelAccountField
 TID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTIDType	TID;$/;"	m	struct:CThostFtdcChangeAccountField
@@ -5025,7 +5205,6 @@ ToCurrencyID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcCurrencyIDType	ToCurr
 TodayPosition	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcVolumeType	TodayPosition;$/;"	m	struct:CThostFtdcInvestorPositionField
 TodayPosition	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcVolumeType	TodayPosition;$/;"	m	struct:CThostFtdcSyncingInvestorPositionField
 TotalAmt	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcVolumeType	TotalAmt;$/;"	m	struct:CThostFtdcInvestorPositionCombineDetailField
-Trade	CTPMsgQueue.h	/^			CThostFtdcTradeField					Trade;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
 TradeAmount	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTradeAmountType	TradeAmount;$/;"	m	struct:CThostFtdcReqQueryTradeResultBySerialField
 TradeAmount	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTradeAmountType	TradeAmount;$/;"	m	struct:CThostFtdcReqRepealField
 TradeAmount	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTradeAmountType	TradeAmount;$/;"	m	struct:CThostFtdcReqTransferField
@@ -5181,7 +5360,6 @@ TraderID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTraderIDType	TraderID;$/;
 TraderID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTraderIDType	TraderID;$/;"	m	struct:CThostFtdcTradeField
 TraderID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTraderIDType	TraderID;$/;"	m	struct:CThostFtdcTraderField
 TraderID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcTraderIDType	TraderID;$/;"	m	struct:CThostFtdcTraderOfferField
-TradingAccount	CTPMsgQueue.h	/^			CThostFtdcTradingAccountField			TradingAccount;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon2
 TradingDay	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDateType	TradingDay;$/;"	m	struct:CThostFtdcCommPhaseField
 TradingDay	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDateType	TradingDay;$/;"	m	struct:CThostFtdcDepthMarketDataField
 TradingDay	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcDateType	TradingDay;$/;"	m	struct:CThostFtdcErrorConditionalOrderField
@@ -5260,6 +5438,8 @@ UnderlyingInstrID	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcInstrumentIDType
 UnderlyingMultiple	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcUnderlyingMultipleType	UnderlyingMultiple;$/;"	m	struct:CThostFtdcInstrumentField
 UnderlyingMultiple	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcUnderlyingMultipleType	UnderlyingMultiple;$/;"	m	struct:CThostFtdcProductField
 UnderlyingPrice	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcPriceType	UnderlyingPrice;$/;"	m	struct:CThostFtdcQryOptionInstrTradeCostField
+Unsubscribe	MdUserApi.cpp	/^void CMdUserApi::Unsubscribe(const string& szInstrumentIDs)$/;"	f	class:CMdUserApi
+UnsubscribeQuote	MdUserApi.cpp	/^void CMdUserApi::UnsubscribeQuote(const string& szInstrumentIDs)$/;"	f	class:CMdUserApi
 UpdateMillisec	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMillisecType	UpdateMillisec;$/;"	m	struct:CThostFtdcDepthMarketDataField
 UpdateMillisec	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMillisecType	UpdateMillisec;$/;"	m	struct:CThostFtdcMarketDataField
 UpdateMillisec	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcMillisecType	UpdateMillisec;$/;"	m	struct:CThostFtdcMarketDataUpdateTimeField
@@ -5448,50 +5628,46 @@ ZipCode	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcZipCodeType	ZipCode;$/;"	m
 ZipCode	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcZipCodeType	ZipCode;$/;"	m	struct:CThostFtdcReqCancelAccountField
 ZipCode	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcZipCodeType	ZipCode;$/;"	m	struct:CThostFtdcReqChangeAccountField
 ZipCode	cpp_api/ThostFtdcUserApiStruct.h	/^	TThostFtdcZipCodeType	ZipCode;$/;"	m	struct:CThostFtdcReqOpenAccountField
-_Input_MD	CTPMsgQueue.cpp	/^void CCTPMsgQueue::_Input_MD(SMsgItem* pMsgItem)$/;"	f	class:CCTPMsgQueue
-_Input_TD	CTPMsgQueue.cpp	/^void CCTPMsgQueue::_Input_TD(SMsgItem* pMsgItem)$/;"	f	class:CCTPMsgQueue
-_Output_MD	CTPMsgQueue.cpp	/^void CCTPMsgQueue::_Output_MD(SMsgItem* pMsgItem)$/;"	f	class:CCTPMsgQueue
-_Output_TD	CTPMsgQueue.cpp	/^void CCTPMsgQueue::_Output_TD(SMsgItem* pMsgItem)$/;"	f	class:CCTPMsgQueue
-_QUANTBOXC2CTP_SEPS_	header.h	17;"	d
-bIsLast	CTPMsgQueue.h	/^		bool								bIsLast;		\/\/是否最后一个包$/;"	m	struct:CCTPMsgQueue::SMsgItem
-fnOnConnect	header.h	/^typedef void( *fnOnConnect)(void* pApi, CThostFtdcRspUserLoginField *pRspUserLogin, ConnectionStatus result);\/\/连接后的结果状态$/;"	t
-fnOnDisconnect	header.h	/^typedef void( *fnOnDisconnect)(void* pApi, CThostFtdcRspInfoField *pRspInfo, ConnectionStatus step);\/\/出错时所处的状态$/;"	t
-m_bRunning	CTPMsgQueue.h	/^	volatile bool				m_bRunning;$/;"	m	class:CCTPMsgQueue
-m_fnOnConnect	CTPMsgQueue.h	/^	fnOnConnect							m_fnOnConnect;$/;"	m	class:CCTPMsgQueue
-m_fnOnDisconnect	CTPMsgQueue.h	/^	fnOnDisconnect						m_fnOnDisconnect;$/;"	m	class:CCTPMsgQueue
-m_fnOnErrRtnOrderAction	CTPMsgQueue.h	/^	fnOnErrRtnOrderAction				m_fnOnErrRtnOrderAction;$/;"	m	class:CCTPMsgQueue
-m_fnOnErrRtnOrderInsert	CTPMsgQueue.h	/^	fnOnErrRtnOrderInsert				m_fnOnErrRtnOrderInsert;$/;"	m	class:CCTPMsgQueue
-m_fnOnErrRtnQuoteAction	CTPMsgQueue.h	/^	fnOnErrRtnQuoteAction				m_fnOnErrRtnQuoteAction;$/;"	m	class:CCTPMsgQueue
-m_fnOnErrRtnQuoteInsert	CTPMsgQueue.h	/^	fnOnErrRtnQuoteInsert				m_fnOnErrRtnQuoteInsert;$/;"	m	class:CCTPMsgQueue
-m_fnOnRspError	CTPMsgQueue.h	/^	fnOnRspError						m_fnOnRspError;$/;"	m	class:CCTPMsgQueue
-m_fnOnRspOrderAction	CTPMsgQueue.h	/^	fnOnRspOrderAction					m_fnOnRspOrderAction;$/;"	m	class:CCTPMsgQueue
-m_fnOnRspOrderInsert	CTPMsgQueue.h	/^	fnOnRspOrderInsert					m_fnOnRspOrderInsert;$/;"	m	class:CCTPMsgQueue
-m_fnOnRspQryDepthMarketData	CTPMsgQueue.h	/^	fnOnRspQryDepthMarketData			m_fnOnRspQryDepthMarketData;$/;"	m	class:CCTPMsgQueue
-m_fnOnRspQryInstrument	CTPMsgQueue.h	/^	fnOnRspQryInstrument				m_fnOnRspQryInstrument;$/;"	m	class:CCTPMsgQueue
-m_fnOnRspQryInstrumentCommissionRate	CTPMsgQueue.h	/^	fnOnRspQryInstrumentCommissionRate	m_fnOnRspQryInstrumentCommissionRate;$/;"	m	class:CCTPMsgQueue
-m_fnOnRspQryInstrumentMarginRate	CTPMsgQueue.h	/^	fnOnRspQryInstrumentMarginRate		m_fnOnRspQryInstrumentMarginRate;$/;"	m	class:CCTPMsgQueue
-m_fnOnRspQryInvestorPosition	CTPMsgQueue.h	/^	fnOnRspQryInvestorPosition			m_fnOnRspQryInvestorPosition;$/;"	m	class:CCTPMsgQueue
-m_fnOnRspQryInvestorPositionDetail	CTPMsgQueue.h	/^	fnOnRspQryInvestorPositionDetail	m_fnOnRspQryInvestorPositionDetail;$/;"	m	class:CCTPMsgQueue
-m_fnOnRspQryOrder	CTPMsgQueue.h	/^	fnOnRspQryOrder						m_fnOnRspQryOrder;$/;"	m	class:CCTPMsgQueue
-m_fnOnRspQrySettlementInfo	CTPMsgQueue.h	/^	fnOnRspQrySettlementInfo			m_fnOnRspQrySettlementInfo;$/;"	m	class:CCTPMsgQueue
-m_fnOnRspQryTrade	CTPMsgQueue.h	/^	fnOnRspQryTrade						m_fnOnRspQryTrade;$/;"	m	class:CCTPMsgQueue
-m_fnOnRspQryTradingAccount	CTPMsgQueue.h	/^	fnOnRspQryTradingAccount			m_fnOnRspQryTradingAccount;$/;"	m	class:CCTPMsgQueue
-m_fnOnRspQuoteAction	CTPMsgQueue.h	/^	fnOnRspQuoteAction					m_fnOnRspQuoteAction;$/;"	m	class:CCTPMsgQueue
-m_fnOnRspQuoteInsert	CTPMsgQueue.h	/^	fnOnRspQuoteInsert					m_fnOnRspQuoteInsert;$/;"	m	class:CCTPMsgQueue
-m_fnOnRtnDepthMarketData	CTPMsgQueue.h	/^	fnOnRtnDepthMarketData				m_fnOnRtnDepthMarketData;$/;"	m	class:CCTPMsgQueue
-m_fnOnRtnForQuoteRsp	CTPMsgQueue.h	/^	fnOnRtnForQuoteRsp					m_fnOnRtnForQuoteRsp;$/;"	m	class:CCTPMsgQueue
-m_fnOnRtnInstrumentStatus	CTPMsgQueue.h	/^	fnOnRtnInstrumentStatus				m_fnOnRtnInstrumentStatus;$/;"	m	class:CCTPMsgQueue
-m_fnOnRtnOrder	CTPMsgQueue.h	/^	fnOnRtnOrder						m_fnOnRtnOrder;$/;"	m	class:CCTPMsgQueue
-m_fnOnRtnQuote	CTPMsgQueue.h	/^	fnOnRtnQuote						m_fnOnRtnQuote;$/;"	m	class:CCTPMsgQueue
-m_fnOnRtnTrade	CTPMsgQueue.h	/^	fnOnRtnTrade						m_fnOnRtnTrade;$/;"	m	class:CCTPMsgQueue
-m_hEvent	CTPMsgQueue.h	/^	HANDLE						m_hEvent;$/;"	m	class:CCTPMsgQueue
-m_hThread	CTPMsgQueue.h	/^	HANDLE						m_hThread;$/;"	m	class:CCTPMsgQueue
-m_queue_MD	CTPMsgQueue.h	/^	MSQueue<SMsgItem*>			m_queue_MD;			\/\/响应队列$/;"	m	class:CCTPMsgQueue
-m_queue_TD	CTPMsgQueue.h	/^	MSQueue<SMsgItem*>			m_queue_TD;			\/\/响应队列$/;"	m	class:CCTPMsgQueue
+_QUANTBOXC2CTP_SEPS_	header.h	314;"	d
+cb_OnFrontConnected	callback.c	/^void cb_OnFrontConnected (void *pApi) {$/;"	f
+fnOnFrontConnected	header.h	/^typedef void(* fnOnFrontConnected)(void* pApi);\/\/连接后的结果状态$/;"	t
+fnOnFrontDisconnected	header.h	/^typedef void(* fnOnFrontDisconnected)(void* pApi, int nReason);\/\/出错时所处的状态$/;"	t
+fnOnHeartBeatWarning	header.h	/^typedef void(* fnOnHeartBeatWarning)(void* pApi, int nTimeLapse);$/;"	t
+fnOnRspError	header.h	/^typedef void(* fnOnRspError)(void* pApi, CThostFtdcRspInfoField *pRspInfo, int nRequestID, \/*bool*\/ int bIsLast);$/;"	t
+fnOnRspSubForQuoteRsp	header.h	/^typedef void(* fnOnRspSubForQuoteRsp)(void *pApi, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, \/*bool*\/ int bIsLast);$/;"	t
+fnOnRspSubMarketData	header.h	/^typedef void(* fnOnRspSubMarketData)(void *pApi, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, \/*bool*\/ int bIsLast);$/;"	t
+fnOnRspUnSubForQuoteRsp	header.h	/^typedef void(* fnOnRspUnSubForQuoteRsp)(void *pApi, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, \/*bool*\/ int bIsLast);$/;"	t
+fnOnRspUnSubMarketData	header.h	/^typedef void(* fnOnRspUnSubMarketData)(void *pApi, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, \/*bool*\/ int bIsLast);$/;"	t
+fnOnRspUserLogin	header.h	/^typedef void(* fnOnRspUserLogin)(void *pApi, CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, \/*bool*\/ int bIsLast);$/;"	t
+fnOnRspUserLogout	header.h	/^typedef void(* fnOnRspUserLogout)(void *pApi, CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, \/*bool*\/ int bIsLast);$/;"	t
+fnOnRtnDepthMarketData	header.h	/^typedef void(* fnOnRtnDepthMarketData)(void* pApi, CThostFtdcDepthMarketDataField *pDepthMarketData);$/;"	t
+fnOnRtnForQuoteRsp	header.h	/^typedef void(* fnOnRtnForQuoteRsp)(void* pApi, CThostFtdcForQuoteRspField *pForQuoteRsp);$/;"	t
+m_arrAddresses	MdUserApi.h	/^	set<string>					m_arrAddresses;			\/\/服务器地址$/;"	m	class:CMdUserApi
+m_csMapInstrumentIDs	MdUserApi.h	/^	mutex						m_csMapInstrumentIDs;$/;"	m	class:CMdUserApi
+m_csMapQuoteInstrumentIDs	MdUserApi.h	/^	mutex						m_csMapQuoteInstrumentIDs;$/;"	m	class:CMdUserApi
+m_fnOnFrontConnected	MdUserApi.h	/^	fnOnFrontConnected m_fnOnFrontConnected;$/;"	m	class:CMdUserApi
+m_fnOnFrontDisconnected	MdUserApi.h	/^	fnOnFrontDisconnected m_fnOnFrontDisconnected;$/;"	m	class:CMdUserApi
+m_fnOnHeartBeatWarning	MdUserApi.h	/^	fnOnHeartBeatWarning m_fnOnHeartBeatWarning;$/;"	m	class:CMdUserApi
+m_fnOnRspError	MdUserApi.h	/^	fnOnRspError m_fnOnRspError;$/;"	m	class:CMdUserApi
+m_fnOnRspSubForQuoteRsp	MdUserApi.h	/^	fnOnRspSubForQuoteRsp m_fnOnRspSubForQuoteRsp;$/;"	m	class:CMdUserApi
+m_fnOnRspSubMarketData	MdUserApi.h	/^	fnOnRspSubMarketData m_fnOnRspSubMarketData;$/;"	m	class:CMdUserApi
+m_fnOnRspUnSubForQuoteRsp	MdUserApi.h	/^	fnOnRspUnSubForQuoteRsp m_fnOnRspUnSubForQuoteRsp;$/;"	m	class:CMdUserApi
+m_fnOnRspUnSubMarketData	MdUserApi.h	/^	fnOnRspUnSubMarketData m_fnOnRspUnSubMarketData;$/;"	m	class:CMdUserApi
+m_fnOnRspUserLogin	MdUserApi.h	/^	fnOnRspUserLogin m_fnOnRspUserLogin;$/;"	m	class:CMdUserApi
+m_fnOnRspUserLogout	MdUserApi.h	/^	fnOnRspUserLogout m_fnOnRspUserLogout;$/;"	m	class:CMdUserApi
+m_fnOnRtnDepthMarketData	MdUserApi.h	/^	fnOnRtnDepthMarketData m_fnOnRtnDepthMarketData;$/;"	m	class:CMdUserApi
+m_fnOnRtnForQuoteRsp	MdUserApi.h	/^	fnOnRtnForQuoteRsp m_fnOnRtnForQuoteRsp;$/;"	m	class:CMdUserApi
+m_nRequestID	MdUserApi.h	/^	atomic<int>					m_nRequestID;			\/\/请求ID，每次请求前自增$/;"	m	class:CMdUserApi
+m_pApi	MdUserApi.h	/^	CThostFtdcMdApi*			m_pApi;					\/\/行情API$/;"	m	class:CMdUserApi
+m_setInstrumentIDs	MdUserApi.h	/^	set<string>					m_setInstrumentIDs;		\/\/正在订阅的合约$/;"	m	class:CMdUserApi
+m_setQuoteInstrumentIDs	MdUserApi.h	/^	set<string>					m_setQuoteInstrumentIDs;		\/\/正在订阅的合约$/;"	m	class:CMdUserApi
+m_szBrokerId	MdUserApi.h	/^	string						m_szBrokerId;			\/\/期商ID$/;"	m	class:CMdUserApi
+m_szInvestorId	MdUserApi.h	/^	string						m_szInvestorId;			\/\/投资者ID$/;"	m	class:CMdUserApi
+m_szPassword	MdUserApi.h	/^	string						m_szPassword;			\/\/密码$/;"	m	class:CMdUserApi
+m_szPath	MdUserApi.h	/^	string						m_szPath;				\/\/生成配置文件的路径$/;"	m	class:CMdUserApi
+main	cmain.c	/^int main(int argc, char **argv) {$/;"	f
 main	main.c	/^int main(int argc, char **argv) {$/;"	f
-nRequestID	CTPMsgQueue.h	/^			int								nRequestID;$/;"	m	union:CCTPMsgQueue::SMsgItem::__anon1
-pApi	CTPMsgQueue.h	/^		void*								pApi;			\/\/指向类对象的指针$/;"	m	struct:CCTPMsgQueue::SMsgItem
-type	CTPMsgQueue.h	/^		EnumMsgType							type;			\/\/消息类型$/;"	m	struct:CCTPMsgQueue::SMsgItem
-~CCTPMsgQueue	CTPMsgQueue.h	/^	virtual ~CCTPMsgQueue(void)$/;"	f	class:CCTPMsgQueue
+makedirs	toolkit.cpp	/^void makedirs(const char* dir)$/;"	f
+~CMdUserApi	MdUserApi.cpp	/^CMdUserApi::~CMdUserApi(void)$/;"	f	class:CMdUserApi
 ~CThostFtdcMdApi	cpp_api/ThostFtdcMdApi.h	/^	~CThostFtdcMdApi(){};$/;"	f	class:CThostFtdcMdApi
 ~CThostFtdcTraderApi	cpp_api/ThostFtdcTraderApi.h	/^	~CThostFtdcTraderApi(){};$/;"	f	class:CThostFtdcTraderApi

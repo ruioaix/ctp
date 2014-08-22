@@ -341,6 +341,20 @@ void  MD_Disconnect(void* pMdUserApi);
 //释放行情接口
 void  MD_ReleaseMdApi(void* pMdUserApi);
 
+//Register callback function
+void MD_RegOnFrontConnected(void* pApi, fnOnFrontConnected pCallback);
+void MD_RegOnFrontDisconnected(void* pApi, fnOnFrontDisconnected pCallback);
+void MD_RegOnHeartBeatWarning(void* pApi, fnOnHeartBeatWarning pCallback);
+void MD_RegOnRspUserLogin(void *pApi, fnOnRspUserLogin pCallback);
+void MD_RegOnRspUserLogout(void *pApi, fnOnRspUserLogout pCallback);
+void MD_RegOnRspError(void* pApi, fnOnRspError pCallback);
+void MD_RegOnRspSubMarketData(void *pApi, fnOnRspSubMarketData pCallback);
+void MD_RegOnRspUnSubMarketData(void *pApi, fnOnRspUnSubMarketData pCallback);
+void MD_RegOnRspSubForQuoteRsp(void *pApi, fnOnRspSubForQuoteRsp pCallback);
+void MD_RegOnRspUnSubForQuoteRsp(void *pApi, fnOnRspUnSubForQuoteRsp pCallback);
+void MD_RegOnRtnDepthMarketData(void* pApi, fnOnRtnDepthMarketData pCallback);
+void MD_RegOnRtnForQuoteRsp(void* pApi, fnOnRtnForQuoteRsp pCallback);
+
 #ifdef __cplusplus
 }
 #endif
