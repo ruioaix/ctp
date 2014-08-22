@@ -1,20 +1,7 @@
-dirsname := $(patsubst %/,%,$(wildcard */))
-
 .PHONY : all install clean $(dirsname) 
 
-all : $(dirsname)
-
-install : 
-	@for d in $(dirsname); \
-		do \
-		$(MAKE) -C $$d install;\
-		done
+all : *.h *.c 
+	gcc -Wall -Wunused  -c main.c
 
 clean :
-	@for d in $(dirsname); \
-		do \
-		$(MAKE) -C $$d clean;\
-		done
-
-$(dirsname) :
-	@$(MAKE) -C $@ all
+	@$(RM) a.out *.o

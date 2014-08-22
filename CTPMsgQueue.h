@@ -1,7 +1,7 @@
-#pragma once
+#ifndef CTP_C_API_CCTPMSGQUEUE
+#define CTP_C_API_CCTPMSGQUEUE
 
-#include "QuantBox.C2CTP.h"
-#include "include\LockFreeQ.h"
+#include "header.h"
 
 class CCTPMsgQueue
 {
@@ -74,7 +74,7 @@ class CCTPMsgQueue
 public:
 	CCTPMsgQueue(void)
 	{
-		m_hThread = NULL;
+		//m_hThread = NULL;
 		m_bRunning = false;
 
 		//回调函数地址指针
@@ -106,14 +106,14 @@ public:
 		m_fnOnRtnQuote = NULL;
 		m_fnOnRtnTrade = NULL;
 
-		m_hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
+		//m_hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
 	}
 	virtual ~CCTPMsgQueue(void)
 	{
-		StopThread();
+		//StopThread();
 		Clear();
 
-		CloseHandle(m_hEvent);
+		//CloseHandle(m_hEvent);
 	}
 
 public:
@@ -186,8 +186,8 @@ public:
 	void Input_OnRtnTrade(void* pTraderApi,CThostFtdcTradeField *pTrade);
 	
 private:
-	friend DWORD WINAPI ProcessThread(LPVOID lpParam);
-	void RunInThread();
+	//friend DWORD WINAPI ProcessThread(LPVOID lpParam);
+	//void RunInThread();
 
 	//响应结果直接入队列
 	void _Input_MD(SMsgItem* pMsgItem);
@@ -335,8 +335,8 @@ private:
 
 private:
 	volatile bool				m_bRunning;
-	HANDLE						m_hEvent;
-	HANDLE						m_hThread;
+	//HANDLE						m_hEvent;
+	//HANDLE						m_hThread;
 
 	MSQueue<SMsgItem*>			m_queue_MD;			//响应队列
 	MSQueue<SMsgItem*>			m_queue_TD;			//响应队列
@@ -371,3 +371,4 @@ private:
 	fnOnRtnTrade						m_fnOnRtnTrade;
 };
 
+#endif
