@@ -1,3 +1,0 @@
-There is a C-API available which is on https://github.com/QuantBox/CTP/tree/master/C-CTP (2014.08.21)
-But it is for windows(using windows-APIs, especially thread part), I can not simply use it on Unix-like system.
-So I rewrite it with pthread.

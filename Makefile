@@ -1,31 +1,20 @@
-examples := examples
-CTPAPI := CTPAPI
-examples_dir := $(notdir $(patsubst %/,%,$(filter %/, $(wildcard $(examples)/*/))))
-CTPAPI_dir := $(notdir $(patsubst %/,%,$(filter %/, $(wildcard $(CTPAPI)/*/))))
+dirsname := $(patsubst %/,%,$(wildcard */))
 
-.PHONY : all install clean $(examples) $(CTPAPI) $(examples_dir) $(CTPAPI_dir)
+.PHONY : all install clean $(dirsname) 
 
-all : $(CTPAPI) $(examples)
-	
-#only 
+all : $(dirsname)
+
 install : 
-	@for d in $(CTPAPI); \
+	@for d in $(dirsname); \
 		do \
-		$(MAKE) -C $$d install; \
+		$(MAKE) -C $$d install;\
 		done
 
 clean :
-	@$(RM) *.con
-	@for d in $(CTPAPI) $(examples); \
+	@for d in $(dirsname); \
 		do \
-		$(MAKE) -C $$d clean; \
+		$(MAKE) -C $$d clean;\
 		done
 
-$(CTPAPI) $(examples) : 
+$(dirsname) :
 	@$(MAKE) -C $@ all
-
-$(examples_dir) :
-	@$(MAKE) -C $(examples) $@
-
-$(CTPAPI_dir) :
-	@$(MAKE) -C $(CTPAPI) $@
