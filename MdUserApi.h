@@ -1,7 +1,7 @@
 #ifndef CTP_C_API_MDUSERAPI_H
 #define CTP_C_API_MDUSERAPI_H
 
-#include "header.h"
+#include "capi.h"
 #include "cpp_api/ThostFtdcMdApi.h"
 
 #include <set>
@@ -37,6 +37,9 @@ private:
 	void SubscribeQuote(const set<string>& instrumentIDs);
 	//登录请求
 	void ReqUserLogin();
+
+	//根据OnFrontDisconnected(int nReason)的值填上错误消息
+	void GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo);
 
 	virtual void OnFrontConnected();
 	virtual void OnFrontDisconnected(int nReason);

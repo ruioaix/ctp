@@ -1,9 +1,11 @@
 #include "MdUserApi.h"
-#include "toolkit.h"
 
 #include <string.h>
 #include <iostream>
+#include <vector>
 #include <mutex>
+#include <sys/stat.h>
+
 using namespace std;
 
 CMdUserApi::CMdUserApi(void)
@@ -47,7 +49,7 @@ void CMdUserApi::Connect(const string& szPath,
 	
 	char *pszPath = new char[szPath.length()+20];
 	sprintf(pszPath,"%sMd",szPath.c_str());
-	makedirs(pszPath);
+	mkdir(pszPath, 0777);
 	//printf("%s\n", pszPath);
 	
 	m_pApi = CThostFtdcMdApi::CreateFtdcMdApi(pszPath,(szAddresses.find("udp://") != szAddresses.npos));
@@ -426,4 +428,32 @@ void CMdUserApi::OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp)
 {
 	//if (m_msgQueue)
 	//	m_msgQueue->Input_OnRtnForQuoteRsp(this, pForQuoteRsp);
+}
+
+void CMdUserApi::GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo)
+{
+	if(NULL == pRspInfo)
+		return;
+
+	switch(pRspInfo->ErrorID)
+	{
+	case 0x1001:
+		strcpy(pRspInfo->ErrorMsg,"0x1001 ÍøÂç¶ÁÊ§°Ü");
+		break;
+	case 0x1002:
+		strcpy(pRspInfo->ErrorMsg,"0x1002 ÍøÂçÐ´Ê§°Ü");
+		break;
+	case 0x2001:
+		strcpy(pRspInfo->ErrorMsg,"0x2001 ½ÓÊÕÐÄÌø³¬Ê±");
+		break;
+	case 0x2002:
+		strcpy(pRspInfo->ErrorMsg,"0x2002 ·¢ËÍÐÄÌøÊ§°Ü");
+		break;
+	case 0x2003:
+		strcpy(pRspInfo->ErrorMsg,"0x2003 ÊÕµ½´íÎó±¨ÎÄ");
+		break;
+	default:
+		sprintf(pRspInfo->ErrorMsg,"%x Î´Öª´íÎó", pRspInfo->ErrorID);
+		break;
+	}
 }
