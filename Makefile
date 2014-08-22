@@ -1,10 +1,17 @@
 all : trade
 
-trade : trade.c *.h
-	g++ $< lib/linux64/thosttraderapi.so -o $@
+#trade : trade.c *.h
+#	g++ $< -lthostmduserapi -lthosttraderapi -o $@
+#
+#quotation : quotation.c *.h
+#	g++ $< -lthostmduserapi -o $@
 
-quotation : quotation.c *.h
-	g++ $< lib/linux64/thostmduserapi.so -o $@
+trade : trade.o 
+	gcc $< -lthosttraderapi -lstdc++ -lthostmduserapi -o $@
+#	gcc $< -lthosttraderapi -lstdc++ -o $@
+
+%.o : %.c
+	g++ -c $< -o $@
 
 .PHONY : clean all 
 
