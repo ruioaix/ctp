@@ -11,7 +11,6 @@
 extern "C" {
 #endif
 
-#define bool int
 #include "cpp_api/ThostFtdcUserApiStruct.h"
 
 //need for c
@@ -297,6 +296,20 @@ typedef struct CThostFtdcQryLoginForbiddenUserField			CThostFtdcQryLoginForbidde
 typedef struct CThostFtdcMulticastGroupInfoField			CThostFtdcMulticastGroupInfoField;
 typedef struct CThostFtdcTradingAccountReserveField			CThostFtdcTradingAccountReserveField;
 
+//回调函数类型定义（为编写方便，按字母排序）
+typedef void(* fnOnFrontConnected)(void* pApi);//连接后的结果状态
+typedef void(* fnOnFrontDisconnected)(void* pApi, int nReason);//出错时所处的状态
+typedef void(* fnOnHeartBeatWarning)(void* pApi, int nTimeLapse);
+typedef void(* fnOnRspUserLogin)(void *pApi, CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
+typedef void(* fnOnRspUserLogout)(void *pApi, CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
+typedef void(* fnOnRspError)(void* pApi, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
+typedef void(* fnOnRspSubMarketData)(void *pApi, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
+typedef void(* fnOnRspUnSubMarketData)(void *pApi, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
+typedef void(* fnOnRspSubForQuoteRsp)(void *pApi, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
+typedef void(* fnOnRspUnSubForQuoteRsp)(void *pApi, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
+typedef void(* fnOnRtnDepthMarketData)(void* pApi, CThostFtdcDepthMarketDataField *pDepthMarketData);
+typedef void(* fnOnRtnForQuoteRsp)(void* pApi, CThostFtdcForQuoteRspField *pForQuoteRsp);
+
 //用于分隔输入的合列表，与前置机地址列表，所以不能出现“:”一类的
 #define _QUANTBOXC2CTP_SEPS_ ",;"
 
@@ -306,8 +319,6 @@ typedef enum THOST_TE_RESUME_TYPE THOST_TE_RESUME_TYPE;
 
 //创建行情接口
 void*  MD_CreateMdApi();
-//将消息队列注册到行情接口上
-void  MD_RegMsgQueue2MdApi(void* pMdUserApi, void* pMsgQueue);
 //连接
 void  MD_Connect(
 		void* pMdUserApi,

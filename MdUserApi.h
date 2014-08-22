@@ -1,7 +1,8 @@
-#pragma once
+#ifndef CTP_C_API_MDUSERAPI_H
+#define CTP_C_API_MDUSERAPI_H
 
-#include "QuantBox.C2CTP.h"
-#include "include\CTP\ThostFtdcMdApi.h"
+#include "header.h"
+#include "cpp_api/ThostFtdcMdApi.h"
 
 #include <set>
 #include <string>
@@ -10,16 +11,12 @@
 
 using namespace std;
 
-class CCTPMsgQueue;
-
 class CMdUserApi :
 	public CThostFtdcMdSpi
 {
 public:
 	CMdUserApi(void);
 	virtual ~CMdUserApi(void);
-
-	void RegisterMsgQueue(CCTPMsgQueue* pMsgQueue);
 
 	void Connect(const string& szPath,
 		const string& szAddresses,
@@ -62,13 +59,11 @@ private:
 	mutex						m_csMapInstrumentIDs;
 	mutex						m_csMapQuoteInstrumentIDs;
 
-	ConnectionStatus			m_status;				//连接状态
 	atomic<int>					m_nRequestID;			//请求ID，每次请求前自增
 	
 	set<string>					m_setInstrumentIDs;		//正在订阅的合约
 	set<string>					m_setQuoteInstrumentIDs;		//正在订阅的合约
 	CThostFtdcMdApi*			m_pApi;					//行情API
-	CCTPMsgQueue*				m_msgQueue;				//消息队列指针
 
 	string						m_szPath;				//生成配置文件的路径
 	set<string>					m_arrAddresses;			//服务器地址
@@ -77,3 +72,4 @@ private:
 	string						m_szPassword;			//密码
 };
 
+#endif

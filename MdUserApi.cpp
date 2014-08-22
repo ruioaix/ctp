@@ -1,8 +1,7 @@
-#include "StdAfx.h"
 #include "MdUserApi.h"
-#include "CTPMsgQueue.h"
-#include "include\toolkit.h"
+#include "toolkit.h"
 
+#include <string.h>
 #include <iostream>
 #include <mutex>
 using namespace std;
@@ -10,8 +9,6 @@ using namespace std;
 CMdUserApi::CMdUserApi(void)
 {
 	m_pApi = NULL;
-	m_msgQueue = NULL;
-	m_status = E_uninit;
 	m_nRequestID = 0;
 }
 
@@ -20,18 +17,13 @@ CMdUserApi::~CMdUserApi(void)
 	Disconnect();
 }
 
-void CMdUserApi::RegisterMsgQueue(CCTPMsgQueue* pMsgQueue)
-{
-	m_msgQueue = pMsgQueue;
-}
-
 bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)   
 {
 	bool bRet = ((pRspInfo) && (pRspInfo->ErrorID != 0));
 	if(bRet)
 	{
-		if(m_msgQueue)
-			m_msgQueue->Input_OnRspError(this,pRspInfo,nRequestID,bIsLast);
+		//if(m_msgQueue)
+		//	m_msgQueue->Input_OnRspError(this,pRspInfo,nRequestID,bIsLast);
 	}
 	return bRet;
 }
@@ -60,10 +52,6 @@ void CMdUserApi::Connect(const string& szPath,
 	m_pApi = CThostFtdcMdApi::CreateFtdcMdApi(pszPath,(szAddresses.find("udp://") != szAddresses.npos));
 	delete[] pszPath;
 
-	m_status = E_inited;
-	if(m_msgQueue)
-		m_msgQueue->Input_OnConnect(this,NULL,m_status);
-
 	if (m_pApi)
 	{
 		m_pApi->RegisterSpi(this);
@@ -91,9 +79,6 @@ void CMdUserApi::Connect(const string& szPath,
 		
 		//初始化连接
 		m_pApi->Init();
-		m_status = E_connecting;
-		if(m_msgQueue)
-			m_msgQueue->Input_OnConnect(this,NULL,m_status);
 	}
 }
 
@@ -110,22 +95,15 @@ void CMdUserApi::ReqUserLogin()
 	
 	//只有这一处用到了m_nRequestID，没有必要每次重连m_nRequestID都从0开始
 	m_pApi->ReqUserLogin(&request,++m_nRequestID);
-	m_status = E_logining;
-	if(m_msgQueue)
-		m_msgQueue->Input_OnConnect(this,NULL,m_status);
 }
 
 void CMdUserApi::Disconnect()
 {
-	m_status = E_unconnected;
 	if(m_pApi)
 	{
 		m_pApi->RegisterSpi(NULL);
 		m_pApi->Release();
 		m_pApi = NULL;
-
-		if(m_msgQueue)
-			m_msgQueue->Input_OnDisconnect(this,NULL,m_status);
 	}
 }
 
@@ -345,24 +323,16 @@ void CMdUserApi::UnsubscribeQuote(const string& szInstrumentIDs)
 
 void CMdUserApi::OnFrontConnected()
 {
-	m_status =  E_connected;
-	if(m_msgQueue)
-		m_msgQueue->Input_OnConnect(this,NULL,m_status);
-
 	//连接成功后自动请求登录
 	ReqUserLogin();
 }
 
 void CMdUserApi::OnFrontDisconnected(int nReason)
 {
-	m_status = E_unconnected;
 	CThostFtdcRspInfoField RspInfo;
 	//连接失败返回的信息是拼接而成，主要是为了统一输出
 	RspInfo.ErrorID = nReason;
 	GetOnFrontDisconnectedMsg(&RspInfo);
-	
-	if(m_msgQueue)
-		m_msgQueue->Input_OnDisconnect(this,&RspInfo,m_status);
 }
 
 void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -370,10 +340,6 @@ void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 	if (!IsErrorRspInfo(pRspInfo)
 		&&pRspUserLogin)
 	{
-		m_status = E_logined;
-		if(m_msgQueue)
-			m_msgQueue->Input_OnConnect(this,pRspUserLogin,m_status);
-		
 		//有可能断线了，本处是断线重连后重新订阅
 		set<string> mapOld = m_setInstrumentIDs;//记下上次订阅的合约
 		//Unsubscribe(mapOld);//由于已经断线了，没有必要再取消订阅
@@ -385,16 +351,16 @@ void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 	}
 	else
 	{
-		m_status = E_authed;
-		if(m_msgQueue)
-			m_msgQueue->Input_OnDisconnect(this,pRspInfo,E_logining);
+		//m_status = E_authed;
+		//if(m_msgQueue)
+		//	m_msgQueue->Input_OnDisconnect(this,pRspInfo,E_logining);
 	}
 }
 
 void CMdUserApi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	if(m_msgQueue)
-		m_msgQueue->Input_OnRspError(this,pRspInfo,nRequestID,bIsLast);
+//	if(m_msgQueue)
+//		m_msgQueue->Input_OnRspError(this,pRspInfo,nRequestID,bIsLast);
 }
 
 void CMdUserApi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -424,8 +390,8 @@ void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecif
 //行情回调，得保证此函数尽快返回
 void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	if(m_msgQueue)
-		m_msgQueue->Input_OnRtnDepthMarketData(this,pDepthMarketData);
+	//if(m_msgQueue)
+	//	m_msgQueue->Input_OnRtnDepthMarketData(this,pDepthMarketData);
 }
 
 void CMdUserApi::OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) 
@@ -452,6 +418,6 @@ void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpeci
 
 void CMdUserApi::OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp)
 {
-	if (m_msgQueue)
-		m_msgQueue->Input_OnRtnForQuoteRsp(this, pForQuoteRsp);
+	//if (m_msgQueue)
+	//	m_msgQueue->Input_OnRtnForQuoteRsp(this, pForQuoteRsp);
 }
