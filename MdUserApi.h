@@ -1,7 +1,7 @@
 #ifndef CTP_C_API_MDUSERAPI_H
 #define CTP_C_API_MDUSERAPI_H
 
-#include "capi.h"
+#include "ctpcapi.h"
 #include "cpp_api/ThostFtdcMdApi.h"
 
 #include <set>

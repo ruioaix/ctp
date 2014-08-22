@@ -1,4 +1,5 @@
 *.o
+libctpcapi.so
 run
 a.out
 1
