@@ -1,6 +1,8 @@
 #include "header.h"
+#include <stdio.h>
 
 void OnFrontConnected_i(void * pApi) {
+	printf("xx\n");
 }
 
 int main(int argc, char **argv) {
