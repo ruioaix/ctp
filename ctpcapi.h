@@ -313,8 +313,6 @@ typedef void(* fnOnRtnForQuoteRsp)(void* pApi, CThostFtdcForQuoteRspField *pForQ
 //用于分隔输入的合列表，与前置机地址列表，所以不能出现“:”一类的
 #define _QUANTBOXC2CTP_SEPS_ ",;"
 
-typedef enum THOST_TE_RESUME_TYPE THOST_TE_RESUME_TYPE;
-
 //行情接口=======================================
 
 //创建行情接口
