@@ -46,8 +46,9 @@ void CMdUserApi::Connect(const string& szPath,
 	m_szPassword = szPassword;
 	
 	char *pszPath = new char[szPath.length()+20];
-	sprintf(pszPath,"%s\\Md\\",szPath.c_str());
+	sprintf(pszPath,"%sMd",szPath.c_str());
 	makedirs(pszPath);
+	//printf("%s\n", pszPath);
 	
 	m_pApi = CThostFtdcMdApi::CreateFtdcMdApi(pszPath,(szAddresses.find("udp://") != szAddresses.npos));
 	delete[] pszPath;
@@ -80,6 +81,8 @@ void CMdUserApi::Connect(const string& szPath,
 		//初始化连接
 		m_pApi->Init();
 	}
+	/*
+	*/
 }
 
 void CMdUserApi::ReqUserLogin()
