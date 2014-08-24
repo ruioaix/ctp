@@ -35,24 +35,6 @@ CMdUserApi::~CMdUserApi(void)
 	Disconnect();
 }
 
-bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)   
-{
-	bool bRet = ((pRspInfo) && (pRspInfo->ErrorID != 0));
-	if(bRet)
-	{
-		//if(m_msgQueue)
-		//	m_msgQueue->Input_OnRspError(this,pRspInfo,nRequestID,bIsLast);
-	}
-	return bRet;
-}
-
-bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)   
-{
-	bool bRet = ((pRspInfo) && (pRspInfo->ErrorID != 0));
-
-	return bRet;
-}
-
 void CMdUserApi::Connect(const string& szPath, const string& szAddresses, const string& szBrokerId, const string& szInvestorId, const string& szPassword)
 {
 	m_szBrokerId = szBrokerId;
@@ -97,6 +79,24 @@ void CMdUserApi::Connect(const string& szPath, const string& szAddresses, const 
 	}
 	/*
 	*/
+}
+
+bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)   
+{
+	bool bRet = ((pRspInfo) && (pRspInfo->ErrorID != 0));
+	if(bRet)
+	{
+		//if(m_msgQueue)
+		//	m_msgQueue->Input_OnRspError(this,pRspInfo,nRequestID,bIsLast);
+	}
+	return bRet;
+}
+
+bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)   
+{
+	bool bRet = ((pRspInfo) && (pRspInfo->ErrorID != 0));
+
+	return bRet;
 }
 
 void CMdUserApi::ReqUserLogin()
