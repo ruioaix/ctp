@@ -6,12 +6,28 @@
 #include <mutex>
 #include <sys/stat.h>
 
+#define delimiter ",;"
+
 using namespace std;
 
 CMdUserApi::CMdUserApi(void)
 {
 	m_pApi = NULL;
 	m_nRequestID = 0;
+	
+	//init callback function point
+	m_fnOnFrontConnected = NULL;
+	m_fnOnFrontDisconnected = NULL;
+	m_fnOnHeartBeatWarning = NULL;
+	m_fnOnRspUserLogin = NULL;
+	m_fnOnRspUserLogout = NULL;
+	m_fnOnRspError = NULL;
+	m_fnOnRspSubMarketData = NULL;
+	m_fnOnRspUnSubMarketData = NULL;
+	m_fnOnRspSubForQuoteRsp = NULL;
+	m_fnOnRspUnSubForQuoteRsp = NULL;
+	m_fnOnRtnDepthMarketData = NULL;
+	m_fnOnRtnForQuoteRsp = NULL;
 }
 
 CMdUserApi::~CMdUserApi(void)
@@ -37,11 +53,7 @@ bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
 	return bRet;
 }
 
-void CMdUserApi::Connect(const string& szPath,
-		const string& szAddresses,
-		const string& szBrokerId,
-		const string& szInvestorId,
-		const string& szPassword)
+void CMdUserApi::Connect(const string& szPath, const string& szAddresses, const string& szBrokerId, const string& szInvestorId, const string& szPassword)
 {
 	m_szBrokerId = szBrokerId;
 	m_szInvestorId = szInvestorId;
@@ -64,7 +76,7 @@ void CMdUserApi::Connect(const string& szPath,
 		char* buf = new char[len];
 		strncpy(buf,szAddresses.c_str(),len);
 
-		char* token = strtok(buf, _QUANTBOXC2CTP_SEPS_);
+		char* token = strtok(buf, delimiter);
 		while(token)
 		{
 			if (strlen(token)>0)
@@ -76,7 +88,7 @@ void CMdUserApi::Connect(const string& szPath,
 				}
 				m_pApi->RegisterFront(token);
 			}
-			token = strtok( NULL, _QUANTBOXC2CTP_SEPS_);
+			token = strtok( NULL, delimiter);
 		}
 		delete[] buf;
 		printf("before init\n");
@@ -125,7 +137,7 @@ void CMdUserApi::Subscribe(const string& szInstrumentIDs)
 
 	lock_guard<mutex> cl(m_csMapInstrumentIDs);
 
-	char* token = strtok(buf, _QUANTBOXC2CTP_SEPS_);
+	char* token = strtok(buf, delimiter);
 	while(token)
 	{
 		size_t l = strlen(token);
@@ -135,7 +147,7 @@ void CMdUserApi::Subscribe(const string& szInstrumentIDs)
 			m_setInstrumentIDs.insert(token);//记录此合约进行订阅
 			vct.push_back(token);
 		}
-		token = strtok( NULL, _QUANTBOXC2CTP_SEPS_);
+		token = strtok( NULL, delimiter);
 	}
 	
 	if(vct.size()>0)
@@ -187,7 +199,7 @@ void CMdUserApi::Unsubscribe(const string& szInstrumentIDs)
 
 	lock_guard<mutex> cl(m_csMapInstrumentIDs);
 
-	char* token = strtok(buf, _QUANTBOXC2CTP_SEPS_);
+	char* token = strtok(buf, delimiter);
 	while(token)
 	{
 		size_t l = strlen(token);
@@ -197,7 +209,7 @@ void CMdUserApi::Unsubscribe(const string& szInstrumentIDs)
 			m_setInstrumentIDs.erase(token);
 			vct.push_back(token);
 		}
-		token = strtok( NULL, _QUANTBOXC2CTP_SEPS_);
+		token = strtok( NULL, delimiter);
 	}
 	
 	if(vct.size()>0)
@@ -232,7 +244,7 @@ void CMdUserApi::SubscribeQuote(const string& szInstrumentIDs)
 
 	lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
 
-	char* token = strtok(buf, _QUANTBOXC2CTP_SEPS_);
+	char* token = strtok(buf, delimiter);
 	while (token)
 	{
 		size_t l = strlen(token);
@@ -242,7 +254,7 @@ void CMdUserApi::SubscribeQuote(const string& szInstrumentIDs)
 			m_setQuoteInstrumentIDs.insert(token);//记录此合约进行订阅
 			vct.push_back(token);
 		}
-		token = strtok(NULL, _QUANTBOXC2CTP_SEPS_);
+		token = strtok(NULL, delimiter);
 	}
 
 	if (vct.size()>0)
@@ -294,7 +306,7 @@ void CMdUserApi::UnsubscribeQuote(const string& szInstrumentIDs)
 
 	lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
 
-	char* token = strtok(buf, _QUANTBOXC2CTP_SEPS_);
+	char* token = strtok(buf, delimiter);
 	while (token)
 	{
 		size_t l = strlen(token);
@@ -304,7 +316,7 @@ void CMdUserApi::UnsubscribeQuote(const string& szInstrumentIDs)
 			m_setQuoteInstrumentIDs.erase(token);
 			vct.push_back(token);
 		}
-		token = strtok(NULL, _QUANTBOXC2CTP_SEPS_);
+		token = strtok(NULL, delimiter);
 	}
 
 	if (vct.size()>0)

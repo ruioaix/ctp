@@ -16,6 +16,6 @@ int main(int argc, char **argv) {
 	MD_RegOnFrontDisconnected(pMd, OnFrontDisconnected_i);
 	MD_Connect(pMd, "/tmp/", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
 	MD_Subscribe(pMd, "IF1409", "IF1410");
-	sleep(30);
+	sleep(3);
 	return 0;
 }

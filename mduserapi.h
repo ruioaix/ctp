@@ -11,18 +11,13 @@
 
 using namespace std;
 
-class CMdUserApi :
-	public CThostFtdcMdSpi
+class CMdUserApi : public CThostFtdcMdSpi
 {
 public:
 	CMdUserApi(void);
 	virtual ~CMdUserApi(void);
 
-	void Connect(const string& szPath,
-		const string& szAddresses,
-		const string& szBrokerId,
-		const string& szInvestorId,
-		const string& szPassword);
+	void Connect(const string& szPath, const string& szAddresses, const string& szBrokerId, const string& szInvestorId, const string& szPassword);
 	void Disconnect();
 
 	void Subscribe(const string& szInstrumentIDs);

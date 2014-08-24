@@ -1,9 +1,3 @@
-// 下列 ifdef 块是创建使从 DLL 导出更简单的
-// 宏的标准方法。此 DLL 中的所有文件都是用命令行上定义的 QUANTBOXC2CTP_EXPORTS
-// 符号编译的。在使用此 DLL 的
-// 任何其他项目上不应定义此符号。这样，源文件中包含此文件的任何其他项目都会将
-//  函数视为是从 DLL 导入的，而此 DLL 则将用此宏定义的
-// 符号视为是被导出的。
 #ifndef CTP_C_API_HEADER_H
 #define CTP_C_API_HEADER_H
 
@@ -11,9 +5,9 @@
 extern "C" {
 #endif
 
+//In the following included file,  there are 281 structures.
 #include "cpp_api/ThostFtdcUserApiStruct.h"
-
-//need for c
+//281 typedef
 typedef struct CThostFtdcDisseminationField			CThostFtdcDisseminationField;
 typedef struct CThostFtdcReqUserLoginField			CThostFtdcReqUserLoginField;
 typedef struct CThostFtdcRspUserLoginField			CThostFtdcRspUserLoginField;
@@ -296,66 +290,54 @@ typedef struct CThostFtdcQryLoginForbiddenUserField			CThostFtdcQryLoginForbidde
 typedef struct CThostFtdcMulticastGroupInfoField			CThostFtdcMulticastGroupInfoField;
 typedef struct CThostFtdcTradingAccountReserveField			CThostFtdcTradingAccountReserveField;
 
-//回调函数类型定义（为编写方便，按字母排序）
-typedef void(* fnOnFrontConnected)(void* pApi);//连接后的结果状态
-typedef void(* fnOnFrontDisconnected)(void* pApi, int nReason);//出错时所处的状态
-typedef void(* fnOnHeartBeatWarning)(void* pApi, int nTimeLapse);
-typedef void(* fnOnRspUserLogin)(void *pApi, CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-typedef void(* fnOnRspUserLogout)(void *pApi, CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-typedef void(* fnOnRspError)(void* pApi, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-typedef void(* fnOnRspSubMarketData)(void *pApi, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-typedef void(* fnOnRspUnSubMarketData)(void *pApi, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-typedef void(* fnOnRspSubForQuoteRsp)(void *pApi, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-typedef void(* fnOnRspUnSubForQuoteRsp)(void *pApi, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-typedef void(* fnOnRtnDepthMarketData)(void* pApi, CThostFtdcDepthMarketDataField *pDepthMarketData);
-typedef void(* fnOnRtnForQuoteRsp)(void* pApi, CThostFtdcForQuoteRspField *pForQuoteRsp);
-
-//用于分隔输入的合列表，与前置机地址列表，所以不能出现“:”一类的
-#define _QUANTBOXC2CTP_SEPS_ ",;"
-
-//行情接口=======================================
-
-//创建行情接口
+/********************************************************************************************************/
+/********************For Market Data (related to ThostFtdcMdApi.h)***************************************/
+/********************************************************************************************************/
+//return your quotation object. for example: void *md = MD_CreateMdApi();
 void*  MD_CreateMdApi();
-//连接
-void  MD_Connect(
-		void* pMdUserApi,
-		const char* szPath,
-		const char* szAddresses,
-		const char* szBrokerId,
-		const char* szInvestorId,
-		const char* szPassword);
+//release md
+void  MD_ReleaseMdApi(void* md);
 
-//订阅合约，多个合约以“,”分隔，与证券统一调用接口，交易所参数目前无效
-void  MD_Subscribe(void* pMdUserApi, const char* szInstrumentIDs, const char* szExchageID);
-//取消订阅，多个合约以“,”分隔，与证券统一调用接口，交易所参数目前无效
-void  MD_Unsubscribe(void* pMdUserApi, const char* szInstrumentIDs, const char* szExchageID);
-//订阅合约，多个合约以“,”分隔，与证券统一调用接口，交易所参数目前无效
-void  MD_SubscribeQuote(void* pMdUserApi, const char* szInstrumentIDs, const char* szExchageID);
-//取消订阅，多个合约以“,”分隔，与证券统一调用接口，交易所参数目前无效
-void  MD_UnsubscribeQuote(void* pMdUserApi, const char* szInstrumentIDs, const char* szExchageID);
-//断开连接
-void  MD_Disconnect(void* pMdUserApi);
-//释放行情接口
-void  MD_ReleaseMdApi(void* pMdUserApi);
+//In class CThostFtdcMdSpi, there are 12 callback functions.
+//Following is 12 typedef, you should implement your own callback functions according to these type.
+typedef void(* fnOnFrontConnected)(void* md);//连接后的结果状态
+typedef void(* fnOnFrontDisconnected)(void* md, int nReason);//出错时所处的状态
+typedef void(* fnOnHeartBeatWarning)(void* md, int nTimeLapse);
+typedef void(* fnOnRspUserLogin)(void *md, CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
+typedef void(* fnOnRspUserLogout)(void *md, CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
+typedef void(* fnOnRspError)(void* md, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
+typedef void(* fnOnRspSubMarketData)(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
+typedef void(* fnOnRspUnSubMarketData)(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
+typedef void(* fnOnRspSubForQuoteRsp)(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
+typedef void(* fnOnRspUnSubForQuoteRsp)(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
+typedef void(* fnOnRtnDepthMarketData)(void* md, CThostFtdcDepthMarketDataField *pDepthMarketData);
+typedef void(* fnOnRtnForQuoteRsp)(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp);
+//Defining your callback function, then register them to md(the returned object of MD_CreateMdApi()).
+void MD_RegOnFrontConnected(void* md, fnOnFrontConnected pCallback);
+void MD_RegOnFrontDisconnected(void* md, fnOnFrontDisconnected pCallback);
+void MD_RegOnHeartBeatWarning(void* md, fnOnHeartBeatWarning pCallback);
+void MD_RegOnRspUserLogin(void *md, fnOnRspUserLogin pCallback);
+void MD_RegOnRspUserLogout(void *md, fnOnRspUserLogout pCallback);
+void MD_RegOnRspError(void* md, fnOnRspError pCallback);
+void MD_RegOnRspSubMarketData(void *md, fnOnRspSubMarketData pCallback);
+void MD_RegOnRspUnSubMarketData(void *md, fnOnRspUnSubMarketData pCallback);
+void MD_RegOnRspSubForQuoteRsp(void *md, fnOnRspSubForQuoteRsp pCallback);
+void MD_RegOnRspUnSubForQuoteRsp(void *md, fnOnRspUnSubForQuoteRsp pCallback);
+void MD_RegOnRtnDepthMarketData(void* md, fnOnRtnDepthMarketData pCallback);
+void MD_RegOnRtnForQuoteRsp(void* md, fnOnRtnForQuoteRsp pCallback);
 
-//Register callback function
-void MD_RegOnFrontConnected(void* pApi, fnOnFrontConnected pCallback);
-void MD_RegOnFrontDisconnected(void* pApi, fnOnFrontDisconnected pCallback);
-void MD_RegOnHeartBeatWarning(void* pApi, fnOnHeartBeatWarning pCallback);
-void MD_RegOnRspUserLogin(void *pApi, fnOnRspUserLogin pCallback);
-void MD_RegOnRspUserLogout(void *pApi, fnOnRspUserLogout pCallback);
-void MD_RegOnRspError(void* pApi, fnOnRspError pCallback);
-void MD_RegOnRspSubMarketData(void *pApi, fnOnRspSubMarketData pCallback);
-void MD_RegOnRspUnSubMarketData(void *pApi, fnOnRspUnSubMarketData pCallback);
-void MD_RegOnRspSubForQuoteRsp(void *pApi, fnOnRspSubForQuoteRsp pCallback);
-void MD_RegOnRspUnSubForQuoteRsp(void *pApi, fnOnRspUnSubForQuoteRsp pCallback);
-void MD_RegOnRtnDepthMarketData(void* pApi, fnOnRtnDepthMarketData pCallback);
-void MD_RegOnRtnForQuoteRsp(void* pApi, fnOnRtnForQuoteRsp pCallback);
+//Connect to CTP server, this design is good, keep it.
+void  MD_Connect( void* md, const char* szPath, const char* szAddresses, const char* szBrokerId, const char* szInvestorId, const char* szPassword);
+void  MD_Disconnect(void* md);
+
+//four api in class CThostFtdcMdApi.
+void  MD_Subscribe(void* md, const char* szInstrumentIDs, const char* szExchageID);
+void  MD_Unsubscribe(void* md, const char* szInstrumentIDs, const char* szExchageID);
+void  MD_SubscribeQuote(void* md, const char* szInstrumentIDs, const char* szExchageID);
+void  MD_UnsubscribeQuote(void* md, const char* szInstrumentIDs, const char* szExchageID);
 
 #ifdef __cplusplus
 }
 #endif
 
-
-#endif//end of _QUANTBOXC2CTP_H_
+#endif//end of CTP_C_API_CTPCAPI_H
