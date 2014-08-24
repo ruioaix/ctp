@@ -6,7 +6,6 @@
 
 #include <set>
 #include <string>
-#include <atomic>
 #include <mutex>
 
 using namespace std;
@@ -74,7 +73,7 @@ private:
 	mutex						m_csMapInstrumentIDs;
 	mutex						m_csMapQuoteInstrumentIDs;
 
-	atomic<int>					m_nRequestID;			//请求ID，每次请求前自增
+	int							m_nRequestID;
 	
 	set<string>					m_setInstrumentIDs;		//正在订阅的合约
 	set<string>					m_setQuoteInstrumentIDs;		//正在订阅的合约
