@@ -5,3 +5,5 @@ a.out
 *.con
 trade
 quotation
+libctpcapi.so
+run
