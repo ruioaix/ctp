@@ -1,5 +1,5 @@
 #include "ctpcapi.h"
-#include "MdUserApi.h"
+#include "mduserapi.h"
 
 inline CMdUserApi* MD_GetApi(void* pMdUserApi)
 {

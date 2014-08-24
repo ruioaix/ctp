@@ -1,11 +1,11 @@
 .PHONY : all install clean $(dirsname) 
 
 all : *.h *.c 
-	g++ -std=c++11 -fPIC -Wall -Wunused -Werror -c MdUserApi.cpp
+	g++ -std=c++11 -fPIC -Wall -Wunused -Werror -c mduserapi.cpp
 	g++ -std=c++11 -fPIC -Wall -Wunused -Werror -c ctpcapi.cpp
-	g++ -shared -o libctpcapi.so MdUserApi.o ctpcapi.o
+	g++ -shared -o libctpcapi.so mduserapi.o ctpcapi.o
 	gcc -Wall -Wunused -c main.c
-	g++ -Wall -Wunused  -L. -lthostmduserapi -lctpcapi -lm main.o -o run
+	g++ -Wall -Wunused -lthostmduserapi -L. -lctpcapi -lm main.o -o run
 	
 
 clean :
