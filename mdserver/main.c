@@ -44,6 +44,7 @@ void OnRtnForQuoteRsp_i(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp) {
 	printf("InstrumentID: %s, ForQuoteSysID: %s\n", pForQuoteRsp->InstrumentID, pForQuoteRsp->ForQuoteSysID);fflush(stdout);
 }
 
+	char *i1[2] = {"IF1409", "IF1410"};
 int main(int argc, char **argv) {
 	//void *md = MD_create("/tmp/md", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
 	void *md = MD_create("/tmp/md", "tcp://27.17.62.149:40213", "1035", "00000008", "123456");
@@ -52,12 +53,16 @@ int main(int argc, char **argv) {
 	MD_RegOnRspUserLogin(md, OnRspUserLogin_i);
 	MD_RegOnRtnDepthMarketData(md, OnRtnDepthMarketData_i);
 	MD_RegOnRtnForQuoteRsp(md, OnRtnForQuoteRsp_i);
-	MD_connect(md, "/tmp/", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
-	MD_Subscribe(md, "IF1409,IF1410", "IF1410");
+	MD_init(md);
+	printf("xx\n");
+	MD_subscribeMarketData(md, i1, 2);
+	MD_subscribeForQuoteRsp(md, i1, 2);
+	printf("yy\n");
+	//MD_Subscribe(md, "IF1409,IF1410", "IF1409");
 	sleep(5);
 	//MD_Unsubscribe(md, "IF1409", "IF1410");
 	sleep(2);
-	MD_Disconnect(md);
+	//MD_Disconnect(md);
 	sleep(2);
 	MD_free(md);
 	return 0;

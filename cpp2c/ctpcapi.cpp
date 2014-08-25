@@ -76,17 +76,74 @@ void MD_RegOnRtnForQuoteRsp(void* md, fnOnRtnForQuoteRsp pCallback) {
 	}
 }
 
-void MD_connect(void* md, const char* szPath, const char* szAddresses, const char* szBrokerId, const char* szInvestorId, const char* szPassword) {
-	if(md && szPath && szAddresses && szBrokerId && szInvestorId && szPassword) {
-		printf("xxx\n");
-		MD_GetApi(md)->Connect();
+void MD_init(void* md) {
+	if(md) {
+		MD_GetApi(md)->Init();
 	}
 }
 
-void MD_Disconnect(void* md) {
+void MD_join(void* md) {
 	if(md) {
-		MD_GetApi(md)->Disconnect();
+		MD_GetApi(md)->Join();
 	}
+}
+
+void MD_getTradingDay(void* md) {
+	if(md) {
+		MD_GetApi(md)->GetTradingDay();
+	}
+}
+
+void MD_registerFront(void *md, char *pszFrontAddress) {
+	if(md) {
+		MD_GetApi(md)->RegisterFront(pszFrontAddress);
+	}
+}
+
+void MD_registerNameServer(void *md, char *pszNsAddress) {
+	if(md) {
+		MD_GetApi(md)->RegisterNameServer(pszNsAddress);
+	}
+}
+
+void MD_registerFensUserInfo(void *md, CThostFtdcFensUserInfoField * pFensUserInfo) {
+	if(md) {
+		MD_GetApi(md)->RegisterFensUserInfo(pFensUserInfo);
+	}
+}
+
+void MD_registerSpi(void *md) {
+	if(md) {
+		MD_GetApi(md)->RegisterSpi();
+	}
+}
+
+int MD_subscribeMarketData(void *md, char *ppInstrumentID[], int nCount) {
+	if(md) {
+		return MD_GetApi(md)->SubscribeMarketData(ppInstrumentID, nCount);
+	}
+	return -1;
+}
+
+int MD_unSubscribeMarketData(void *md, char *ppInstrumentID[], int nCount) {
+	if(md) {
+		return MD_GetApi(md)->UnSubscribeMarketData(ppInstrumentID, nCount);
+	}
+	return -1;
+}
+
+int MD_subscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount) {
+	if(md) {
+		return MD_GetApi(md)->SubscribeForQuoteRsp(ppInstrumentID, nCount);
+	}
+	return -1;
+}
+
+int MD_unSubscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount) {
+	if(md) {
+		return MD_GetApi(md)->UnSubscribeForQuoteRsp(ppInstrumentID, nCount);
+	}
+	return -1;
 }
 
 void MD_Subscribe(void* md,const char* szInstrumentIDs,const char* szExchageID) {

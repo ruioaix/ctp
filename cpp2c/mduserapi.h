@@ -17,8 +17,17 @@ public:
 	CMdUserApi(char *flowpath, char *servername, char *bid, char *iid, char *pd);
 	virtual ~CMdUserApi(void);
 
-	void Connect();
-	void Disconnect();
+	void Init();
+	void Join();
+	void GetTradingDay();
+	void RegisterFront(char *pszFrontAddress);
+	void RegisterNameServer(char *pszNsAddress);
+	void RegisterFensUserInfo(CThostFtdcFensUserInfoField *pFensUserInfo);
+	void RegisterSpi();
+	int SubscribeMarketData(char *ppInstrumentID[], int nCount);
+	int UnSubscribeMarketData(char *ppInstrumentID[], int nCount);
+	int SubscribeForQuoteRsp(char *ppInstrumentID[], int nCount);
+	int UnSubscribeForQuoteRsp(char *ppInstrumentID[], int nCount);
 
 	void Subscribe(const string& szInstrumentIDs);
 	void Unsubscribe(const string& szInstrumentIDs);
@@ -26,12 +35,12 @@ public:
 	void SubscribeQuote(const string& szInstrumentIDs);
 	void UnsubscribeQuote(const string& szInstrumentIDs);
 
+	void ReqUserLogin();
 private:
 	//订阅行情
 	void Subscribe(const set<string>& instrumentIDs);
 	void SubscribeQuote(const set<string>& instrumentIDs);
 	//登录请求
-	void ReqUserLogin();
 
 	//根据OnFrontDisconnected(int nReason)的值填上错误消息
 	void GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo);

@@ -336,21 +336,23 @@ void MD_RegOnRtnDepthMarketData(void* md, fnOnRtnDepthMarketData pCallback);
 typedef void(* fnOnRtnForQuoteRsp)(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp);
 void MD_RegOnRtnForQuoteRsp(void* md, fnOnRtnForQuoteRsp pCallback);
 
-//Connect to CTP server, this design is good, keep it.
-//done three things:
-//	1, CreateFtdcMdApi, create a mdapi object and put it into mdspi object as a variable member.
-//	2, RegisterSpi, put mdspi object into mdapi object as a variable member. (we don't have the source code of class mdapi, but should be as a variable member)
-//	3, RegisterFront 
-//	4, Init, send connect request.
-//	5, I don't supply ReqUserLogin interface now, because it will be
-void  MD_connect( void* md, const char* szPath, const char* szAddresses, const char* szBrokerId, const char* szInvestorId, const char* szPassword);
-void  MD_Disconnect(void* md);
-
 //four api in class CThostFtdcMdApi.
-void  MD_Subscribe(void* md, const char* szInstrumentIDs, const char* szExchageID);
-void  MD_Unsubscribe(void* md, const char* szInstrumentIDs, const char* szExchageID);
-void  MD_SubscribeQuote(void* md, const char* szInstrumentIDs, const char* szExchageID);
-void  MD_UnsubscribeQuote(void* md, const char* szInstrumentIDs, const char* szExchageID);
+void MD_init(void *md);
+void MD_join(void *md);
+void MD_getTradingDay(void *md);
+void MD_registerFront(void *md, char *pszFrontAddress);
+void MD_registerNameServer(void *md, char *pszNsAddress);
+void MD_registerFensUserInfo(void *md, CThostFtdcFensUserInfoField * pFensUserInfo);
+void MD_registerSpi(void *md);
+int MD_subscribeMarketData(void *md, char *ppInstrumentID[], int nCount);
+int MD_unSubscribeMarketData(void *md, char *ppInstrumentID[], int nCount);
+int MD_subscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount);
+int MD_unSubscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount);
+
+void MD_Subscribe(void* md, const char* szInstrumentIDs, const char* szExchageID);
+void MD_Unsubscribe(void* md, const char* szInstrumentIDs, const char* szExchageID);
+void MD_SubscribeQuote(void* md, const char* szInstrumentIDs, const char* szExchageID);
+void MD_UnsubscribeQuote(void* md, const char* szInstrumentIDs, const char* szExchageID);
 
 #ifdef __cplusplus
 }

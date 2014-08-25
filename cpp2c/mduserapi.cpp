@@ -48,27 +48,86 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 //delete
 CMdUserApi::~CMdUserApi(void)
 {
-	Disconnect();
-	if (m_pApi) {
+	if(m_pApi) {
+		m_pApi->RegisterSpi(NULL);
 		m_pApi->Release();
+		m_pApi = NULL;
 	}
 }
 
 /***special function to simply connect&disconnect process*****************************************************/
 //connect: include CreateFtdcMdApi, RegisterSpi, RegisterFront, Init.
-void CMdUserApi::Connect()
+void CMdUserApi::Init()
 {
 	if (m_pApi) {
 		m_pApi->Init();
 	}
 }
 
-void CMdUserApi::Disconnect() {
-	if(m_pApi) {
-		m_pApi->RegisterSpi(NULL);
-		m_pApi->Release();
-		m_pApi = NULL;
+void CMdUserApi::Join()
+{
+	if (m_pApi) {
+		m_pApi->Join();
 	}
+}
+
+void CMdUserApi::GetTradingDay()
+{
+	if (m_pApi) {
+		m_pApi->GetTradingDay();
+	}
+}
+
+void CMdUserApi::RegisterFront(char *pszFrontAddress) {
+	if (m_pApi) {
+		m_pApi->RegisterFront(pszFrontAddress);
+	}
+}
+
+void CMdUserApi::RegisterNameServer(char *pszNsAddress) {
+	if (m_pApi) {
+		m_pApi->RegisterNameServer(pszNsAddress);
+	}
+}
+
+void CMdUserApi::RegisterFensUserInfo(CThostFtdcFensUserInfoField *pFensUserInfo) {
+	if (m_pApi) {
+		m_pApi->RegisterFensUserInfo(pFensUserInfo);
+	}
+}
+
+void CMdUserApi::RegisterSpi() {
+	if (m_pApi) {
+		m_pApi->RegisterSpi(this);
+	}
+}
+
+int CMdUserApi::SubscribeMarketData(char *ppInstrumentID[], int nCount) {
+	if (m_pApi) {
+		return m_pApi->SubscribeMarketData(ppInstrumentID, nCount);
+	}
+	return -1;
+}
+
+int CMdUserApi::UnSubscribeMarketData(char *ppInstrumentID[], int nCount) {
+	if (m_pApi) {
+		return m_pApi->UnSubscribeMarketData(ppInstrumentID, nCount);
+	}
+	return -1;
+}
+
+int CMdUserApi::SubscribeForQuoteRsp(char *ppInstrumentID[], int nCount) {
+	if (m_pApi) {
+		return m_pApi->SubscribeForQuoteRsp(ppInstrumentID, nCount);
+	}
+	return -1;
+}
+
+int CMdUserApi::UnSubscribeForQuoteRsp(char *ppInstrumentID[], int nCount) {
+	if (m_pApi) {
+		return m_pApi->UnSubscribeForQuoteRsp(ppInstrumentID, nCount);
+	}
+	return -1;
 }
 
 void CMdUserApi::ReqUserLogin()
@@ -123,22 +182,27 @@ void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 	if (m_fnOnRspUserLogin != NULL) {
 		(*m_fnOnRspUserLogin)(this, pRspUserLogin, pRspInfo, nRequestID, bIsLast);
 	}
+	printf("ErrorId: %d, ErrorMsg: %s\n", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
 	if (!IsErrorRspInfo(pRspInfo) && pRspUserLogin) {
-		//有可能断线了，本处是断线重连后重新订阅
-		set<string> mapOld = m_setInstrumentIDs;//记下上次订阅的合约
-		//Unsubscribe(mapOld);//由于已经断线了，没有必要再取消订阅
-		Subscribe(mapOld);//订阅
+		////有可能断线了，本处是断线重连后重新订阅
+		//set<string> mapOld = m_setInstrumentIDs;//记下上次订阅的合约
+		////Unsubscribe(mapOld);//由于已经断线了，没有必要再取消订阅
+		//Subscribe(mapOld);//订阅
 
-		//有可能断线了，本处是断线重连后重新订阅
-		mapOld = m_setQuoteInstrumentIDs;//记下上次订阅的合约
-		SubscribeQuote(mapOld);//订阅
+		////有可能断线了，本处是断线重连后重新订阅
+		//mapOld = m_setQuoteInstrumentIDs;//记下上次订阅的合约
+		//SubscribeQuote(mapOld);//订阅
+
+		char *i1[2] = {"IF1409", "IF1410"};
+		m_pApi->SubscribeMarketData(i1, 2);
+		m_pApi->SubscribeForQuoteRsp(i1, 2);
 	}
-	else
-	{
-		//m_status = E_authed;
-		//if(m_msgQueue)
-		//	m_msgQueue->Input_OnDisconnect(this,pRspInfo,E_logining);
-	}
+	//else
+	//{
+	//	//m_status = E_authed;
+	//	//if(m_msgQueue)
+	//	//	m_msgQueue->Input_OnDisconnect(this,pRspInfo,E_logining);
+	//}
 }
 
 void CMdUserApi::OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
@@ -156,10 +220,10 @@ void CMdUserApi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bo
 
 void CMdUserApi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
+	printf("Sub MD done.\n");
 	if (m_fnOnRspSubMarketData != NULL) {
 		(*m_fnOnRspSubMarketData)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
 	}
-	printf("Sub MD done.\n");
 	//在模拟平台可能这个函数不会触发，所以要自己维护一张已经订阅的合约列表
 	if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast) &&pSpecificInstrument)
 	{
@@ -306,6 +370,9 @@ void CMdUserApi::Subscribe(const string& szInstrumentIDs)
 
 		//订阅
 		m_pApi->SubscribeMarketData(pArray,(int)vct.size());
+		printf("iiiii: %s\n", pArray[0]);
+		printf("iiiii: %s\n", pArray[1]);
+		printf("iiiii: %d\n", (int)vct.size());
 
 		delete[] pArray;
 	}
