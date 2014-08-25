@@ -15,7 +15,7 @@ CMdUserApi::CMdUserApi(void)
 {
 	m_pApi = NULL;
 	m_nRequestID = 0;
-	
+
 	//init callback function point
 	m_fnOnFrontConnected = NULL;
 	m_fnOnFrontDisconnected = NULL;

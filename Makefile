@@ -9,6 +9,6 @@ all : *.h *.c
 	
 
 clean :
-	@$(RM) a.out *.o run
+	@$(RM) a.out *.o run *.log
 
 
