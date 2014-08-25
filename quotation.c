@@ -131,7 +131,7 @@ int main()
 	// start the connection between client and CTP server
 	pUserApi->Init();
 
-	sleep(1);	
+	sleep(10);	
 
 	// waiting for the quotation data
 	//WaitForSingleObject(g_hEvent, INFINITE);
