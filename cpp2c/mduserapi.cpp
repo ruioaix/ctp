@@ -27,7 +27,7 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 	m_pApi = CThostFtdcMdApi::CreateFtdcMdApi(m_szPath);
 	if (m_pApi) {
 		m_pApi->RegisterSpi(this);
-		m_pApi->RegisterNameServer(m_server);
+		m_pApi->RegisterFront(m_server);
 	}
 
 	//init 12 callback point.

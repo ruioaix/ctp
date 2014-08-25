@@ -9,6 +9,6 @@ all :
 	
 
 clean :
-	@$(RM) a.out bin/* run *.log *.o ./*.so
+	@$(RM) a.out bin/* run *.log *.o ./*.so *.con
 
 
