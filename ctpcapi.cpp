@@ -94,3 +94,11 @@ void MD_Subscribe(void* md,const char* szInstrumentIDs,const char* szExchageID) 
 		MD_GetApi(md)->Subscribe(szInstrumentIDs);
 	}
 }
+
+void  MD_Unsubscribe(void* md, const char* szInstrumentIDs, const char* szExchageID) {
+	if(md && szInstrumentIDs)
+	{
+		MD_GetApi(md)->Unsubscribe(szInstrumentIDs);
+	}
+}
+

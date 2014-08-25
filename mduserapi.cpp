@@ -152,10 +152,8 @@ bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
 	return bRet;
 }
 
-void CMdUserApi::Disconnect()
-{
-	if(m_pApi)
-	{
+void CMdUserApi::Disconnect() {
+	if(m_pApi) {
 		m_pApi->RegisterSpi(NULL);
 		m_pApi->Release();
 		m_pApi = NULL;
@@ -384,9 +382,9 @@ void CMdUserApi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bo
 
 void CMdUserApi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
+	printf("Sub MD done.\n");
 	//在模拟平台可能这个函数不会触发，所以要自己维护一张已经订阅的合约列表
-	if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast)
-		&&pSpecificInstrument)
+	if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast) &&pSpecificInstrument)
 	{
 		lock_guard<mutex> cl(m_csMapInstrumentIDs);
 
@@ -397,6 +395,7 @@ void CMdUserApi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecific
 void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
 	//模拟平台可能这个函数不会触发
+	printf("UnSub MD done.\n");
 	if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast)
 		&&pSpecificInstrument)
 	{

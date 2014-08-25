@@ -49,7 +49,12 @@ int main(int argc, char **argv) {
 	MD_RegOnRtnDepthMarketData(md, OnRtnDepthMarketData_i);
 	MD_RegOnRtnForQuoteRsp(md, OnRtnForQuoteRsp_i);
 	MD_Connect(md, "/tmp/", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
-	MD_Subscribe(md, "IF1409", "IF1410");
-	sleep(13);
+	//MD_Subscribe(md, "IF1409", "IF1410");
+	sleep(5);
+	//MD_Unsubscribe(md, "IF1409", "IF1410");
+	sleep(2);
+	MD_Disconnect(md);
+	sleep(2);
+	MD_ReleaseMdApi(md);
 	return 0;
 }
