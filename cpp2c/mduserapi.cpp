@@ -184,18 +184,18 @@ void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 	}
 	printf("ErrorId: %d, ErrorMsg: %s\n", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
 	if (!IsErrorRspInfo(pRspInfo) && pRspUserLogin) {
-		////有可能断线了，本处是断线重连后重新订阅
-		//set<string> mapOld = m_setInstrumentIDs;//记下上次订阅的合约
-		////Unsubscribe(mapOld);//由于已经断线了，没有必要再取消订阅
-		//Subscribe(mapOld);//订阅
+		//有可能断线了，本处是断线重连后重新订阅
+		set<string> mapOld = m_setInstrumentIDs;//记下上次订阅的合约
+		//Unsubscribe(mapOld);//由于已经断线了，没有必要再取消订阅
+		Subscribe(mapOld);//订阅
 
-		////有可能断线了，本处是断线重连后重新订阅
-		//mapOld = m_setQuoteInstrumentIDs;//记下上次订阅的合约
-		//SubscribeQuote(mapOld);//订阅
+		//有可能断线了，本处是断线重连后重新订阅
+		mapOld = m_setQuoteInstrumentIDs;//记下上次订阅的合约
+		SubscribeQuote(mapOld);//订阅
 
-		char *i1[2] = {"IF1409", "IF1410"};
-		m_pApi->SubscribeMarketData(i1, 2);
-		m_pApi->SubscribeForQuoteRsp(i1, 2);
+		//char *i1[2] = {"IF1409", "IF1410"};
+		//m_pApi->SubscribeMarketData(i1, 2);
+		//m_pApi->SubscribeForQuoteRsp(i1, 2);
 	}
 	//else
 	//{
