@@ -1,21 +1,55 @@
 #include "ctpcapi.h"
 #include <stdio.h>
 #include <unistd.h>
+#include <math.h>
+#include <inttypes.h>
+#include <time.h>
 
-void OnFrontConnected_i(void * pApi) {
-	printf("xx\n");
+void OnFrontConnected_i(void * md) {
+	printf("connect successful.\n");
 }
 
-void OnFrontDisconnected_i(void *pApi, int nReason) {
-	printf("nn\n");
+void OnFrontDisconnected_i(void *md, int nReason) {
+	printf("connect unsuccessful.\n");
+}
+
+void OnRspUserLogin_i(void *md, CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast) {
+	printf("Date: %s\n", pRspUserLogin->TradingDay);
+	printf("LoginTime: %s\n", pRspUserLogin->LoginTime);
+	printf("BrokerID: %s, UserID: %s\n", pRspUserLogin->BrokerID, pRspUserLogin->UserID);
+	printf("SystemName: %s\n", pRspUserLogin->SystemName);
+	printf("FrontID: %d, SessionID: %d\n", pRspUserLogin->FrontID, pRspUserLogin->SessionID);
+	printf("MaxOrderRef: %s\n", pRspUserLogin->MaxOrderRef);
+	printf("SHFETime: %s\n", pRspUserLogin->SHFETime);
+	printf("DCETime: %s\n", pRspUserLogin->DCETime);
+	printf("FFEXTime: %s\n", pRspUserLogin->FFEXTime);
+	printf("INETime: %s\n", pRspUserLogin->INETime);
+	printf("ErrorID: %d, ErrorMsg: %s\n", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+}
+
+void OnRtnDepthMarketData_i(void* md, CThostFtdcDepthMarketDataField *pDepthMarketData) {
+	//long ms;
+	//time_t s;
+	struct timespec spec;
+	clock_gettime(CLOCK_REALTIME, &spec);
+	//s = spec.tv_sec;
+	//ms = round(spec.tv_nsec/1E6);
+	printf("InstrumentID: %s, LastPrice: %f, UpdateTime: %s, UpdateMillisec: %d, realtime: %"PRIdMAX"\n", pDepthMarketData->InstrumentID, pDepthMarketData->LastPrice, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, (intmax_t)(spec.tv_sec));fflush(stdout);
+}
+
+void OnRtnForQuoteRsp_i(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp) {
+	printf("InstrumentID: %s, ForQuoteSysID: %s\n", pForQuoteRsp->InstrumentID, pForQuoteRsp->ForQuoteSysID);fflush(stdout);
 }
 
 int main(int argc, char **argv) {
-	void *pMd = MD_CreateMdApi();
-	MD_RegOnFrontConnected(pMd, OnFrontConnected_i);
-	MD_RegOnFrontDisconnected(pMd, OnFrontDisconnected_i);
-	MD_Connect(pMd, "/tmp/", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
-	MD_Subscribe(pMd, "IF1409", "IF1410");
-	sleep(3);
+	void *md = MD_CreateMdApi();
+	MD_RegOnFrontConnected(md, OnFrontConnected_i);
+	MD_RegOnFrontDisconnected(md, OnFrontDisconnected_i);
+	MD_RegOnRspUserLogin(md, OnRspUserLogin_i);
+	MD_RegOnRtnDepthMarketData(md, OnRtnDepthMarketData_i);
+	MD_RegOnRtnForQuoteRsp(md, OnRtnForQuoteRsp_i);
+	MD_Connect(md, "/tmp/", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
+	MD_Subscribe(md, "IF1409", "IF1410");
+	sleep(13);
 	return 0;
 }

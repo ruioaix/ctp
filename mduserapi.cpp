@@ -122,6 +122,7 @@ void CMdUserApi::ReqUserLogin()
 void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (!IsErrorRspInfo(pRspInfo) && pRspUserLogin) {
+		(*m_fnOnRspUserLogin)(this, pRspUserLogin, pRspInfo, nRequestID, bIsLast);
 		//有可能断线了，本处是断线重连后重新订阅
 		set<string> mapOld = m_setInstrumentIDs;//记下上次订阅的合约
 		//Unsubscribe(mapOld);//由于已经断线了，没有必要再取消订阅
@@ -139,22 +140,15 @@ void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 	}
 }
 
-
 bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)   
 {
 	bool bRet = ((pRspInfo) && (pRspInfo->ErrorID != 0));
-	if(bRet)
-	{
-		//if(m_msgQueue)
-		//	m_msgQueue->Input_OnRspError(this,pRspInfo,nRequestID,bIsLast);
-	}
 	return bRet;
 }
 
 bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)   
 {
 	bool bRet = ((pRspInfo) && (pRspInfo->ErrorID != 0));
-
 	return bRet;
 }
 
@@ -415,6 +409,7 @@ void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecif
 //行情回调，得保证此函数尽快返回
 void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
+	(*m_fnOnRtnDepthMarketData)(this, pDepthMarketData);
 	//if(m_msgQueue)
 	//	m_msgQueue->Input_OnRtnDepthMarketData(this,pDepthMarketData);
 }
@@ -443,6 +438,7 @@ void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpeci
 
 void CMdUserApi::OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp)
 {
+	(*m_fnOnRtnForQuoteRsp)(this, pForQuoteRsp);
 	//if (m_msgQueue)
 	//	m_msgQueue->Input_OnRtnForQuoteRsp(this, pForQuoteRsp);
 }

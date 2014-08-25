@@ -7,5 +7,6 @@ a.out
 *.con
 trade
 quotation
+tags
 *.swp
 *.d
