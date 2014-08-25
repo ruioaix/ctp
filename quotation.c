@@ -10,9 +10,9 @@
 //HANDLE g_hEvent = CreateEvent(NULL, true, false, NULL);
 // participant ID
 
-#define bid 9016766
-#define uid 9016766
-#define pswd 1111111
+#define bid 1035
+#define uid "00000008"
+#define pswd 123456
 
 char g_chBrokerID[100];
 // user id
@@ -124,7 +124,8 @@ int main()
 	pUserApi->RegisterSpi(&sh);
 
 	// register the CTP front address and port
-	pUserApi->RegisterFront("tcp://222.66.97.241:41213");
+	pUserApi->RegisterFront("tcp://27.17.62.149:40213");
+	//pUserApi->RegisterFront("tcp://222.66.97.241:41213");
 	//pUserApi->RegisterFront("tcp://172.16.0.31:57205");
 
 	// start the connection between client and CTP server
