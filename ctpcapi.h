@@ -294,7 +294,7 @@ typedef struct CThostFtdcTradingAccountReserveField			CThostFtdcTradingAccountRe
 /********************For Market Data (related to ThostFtdcMdApi.h)***************************************/
 /********************************************************************************************************/
 //create object which is inherited from CThostFtdcMdSpi.
-void*  MD_create(char *flowpath,char *servername);
+void*  MD_create(char *flowpath,char *servername, char *brokerid, char *inverstorid, char *password);
 //free object which is created from create_MD.
 void  MD_free(void* md);
 

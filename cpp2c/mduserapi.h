@@ -13,10 +13,10 @@ using namespace std;
 class CMdUserApi : public CThostFtdcMdSpi
 {
 public:
-	CMdUserApi(char *flowpath, char *servername);
+	CMdUserApi(char *flowpath, char *servername, char *bid, char *iid, char *pd);
 	virtual ~CMdUserApi(void);
 
-	void Connect(const string& szAddresses, const string& szBrokerId, const string& szInvestorId, const string& szPassword);
+	void Connect();
 	void Disconnect();
 
 	void Subscribe(const string& szInstrumentIDs);
@@ -81,12 +81,12 @@ private:
 	set<string>					m_setQuoteInstrumentIDs;		//正在订阅的合约
 	CThostFtdcMdApi*			m_pApi;					//行情API
 
-	char *						m_szPath;				//生成配置文件的路径
-	char *						m_server;
 	set<string>					m_arrAddresses;			//服务器地址
-	string						m_szBrokerId;			//期商ID
-	string						m_szInvestorId;			//投资者ID
-	string						m_szPassword;			//密码
+	char *m_szPath;				//生成配置文件的路径
+	char *m_server;
+	char *m_szBrokerId;			//期商ID
+	char *m_szInvestorId;			//投资者ID
+	char *m_szPassword;			//密码
 
 	fnOnFrontConnected m_fnOnFrontConnected;
 	fnOnFrontDisconnected m_fnOnFrontDisconnected;

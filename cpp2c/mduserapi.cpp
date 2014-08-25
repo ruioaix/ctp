@@ -12,13 +12,23 @@ using namespace std;
 
 /***create and delete************************************************************************************/
 //create
-CMdUserApi::CMdUserApi(char *flowpath, char *servername)
+CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *password)
 {
 	m_pApi = NULL;
 	m_nRequestID = 0;
 
 	m_szPath = flowpath;
 	m_server = servername;
+	m_szBrokerId = brokerid;
+	m_szInvestorId = inverstorid;
+	m_szPassword = password;
+
+	mkdir(m_szPath, 0777);
+	m_pApi = CThostFtdcMdApi::CreateFtdcMdApi(m_szPath);
+	if (m_pApi) {
+		m_pApi->RegisterSpi(this);
+		m_pApi->RegisterNameServer(m_server);
+	}
 
 	//init 12 callback point.
 	m_fnOnFrontConnected = NULL;
@@ -43,45 +53,10 @@ CMdUserApi::~CMdUserApi(void)
 
 /***special function to simply connect&disconnect process*****************************************************/
 //connect: include CreateFtdcMdApi, RegisterSpi, RegisterFront, Init.
-void CMdUserApi::Connect(const string& szAddresses, const string& szBrokerId, const string& szInvestorId, const string& szPassword)
+void CMdUserApi::Connect()
 {
-	m_szBrokerId = szBrokerId;
-	m_szInvestorId = szInvestorId;
-	m_szPassword = szPassword;
-	
-	mkdir(m_szPath, 0777);
-	//printf("%s\n", pszPath);
-	
-	m_pApi = CThostFtdcMdApi::CreateFtdcMdApi(m_szPath);
-	//delete[] pszPath;
-
-	if (m_pApi)
-	{
-		m_pApi->RegisterSpi(this);
-		
-		//添加地址
-		//size_t len = szAddresses.length()+1;
-		//char* buf = new char[len];
-		//strncpy(buf,szAddresses.c_str(),len);
-
-		//char* token = strtok(buf, delimiter);
-		//while(token)
-		//{
-		//	if (strlen(token)>0)
-		//	{
-		//		char * pch = strstr(token,"udp://");
-		//		if(pch)
-		//		{
-		//			strncpy (pch,"tcp://",6);
-		//		}
-		//		m_pApi->RegisterFront(token);
-		//	}
-		//	token = strtok( NULL, delimiter);
-		//}
-		//delete[] buf;
-		m_pApi->RegisterNameServer(m_server);
+	if (m_pApi) {
 		printf("before init\n");
-		//初始化连接
 		m_pApi->Init();
 	}
 }
@@ -102,9 +77,9 @@ void CMdUserApi::ReqUserLogin()
 
 	CThostFtdcReqUserLoginField request = {0};
 	
-	strncpy(request.BrokerID, m_szBrokerId.c_str(),sizeof(TThostFtdcBrokerIDType));
-	strncpy(request.UserID, m_szInvestorId.c_str(),sizeof(TThostFtdcInvestorIDType));
-	strncpy(request.Password, m_szPassword.c_str(),sizeof(TThostFtdcPasswordType));
+	strncpy(request.BrokerID, m_szBrokerId, sizeof(TThostFtdcBrokerIDType));
+	strncpy(request.UserID, m_szInvestorId, sizeof(TThostFtdcInvestorIDType));
+	strncpy(request.Password, m_szPassword, sizeof(TThostFtdcPasswordType));
 	
 	//只有这一处用到了m_nRequestID，没有必要每次重连m_nRequestID都从0开始
 	m_pApi->ReqUserLogin(&request,++m_nRequestID);

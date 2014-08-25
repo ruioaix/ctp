@@ -5,8 +5,8 @@ static inline CMdUserApi* MD_GetApi(void* md) {
 	return static_cast<CMdUserApi*>(md);
 }
 
-void* MD_create(char *flowpath, char *servername) {
-	return new CMdUserApi(flowpath, servername);
+void* MD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd) {
+	return new CMdUserApi(flowpath, servername, bid, iid, pd);
 }
 
 void MD_free(void* md) {
@@ -79,7 +79,7 @@ void MD_RegOnRtnForQuoteRsp(void* md, fnOnRtnForQuoteRsp pCallback) {
 void MD_connect(void* md, const char* szPath, const char* szAddresses, const char* szBrokerId, const char* szInvestorId, const char* szPassword) {
 	if(md && szPath && szAddresses && szBrokerId && szInvestorId && szPassword) {
 		printf("xxx\n");
-		MD_GetApi(md)->Connect(szAddresses,szBrokerId,szInvestorId,szPassword);
+		MD_GetApi(md)->Connect();
 	}
 }
 
