@@ -293,42 +293,57 @@ typedef struct CThostFtdcTradingAccountReserveField			CThostFtdcTradingAccountRe
 /********************************************************************************************************/
 /********************For Market Data (related to ThostFtdcMdApi.h)***************************************/
 /********************************************************************************************************/
-//return your quotation object. for example: void *md = MD_CreateMdApi();
-//the returned object is the most important&common object.
-void*  Create_MD();
-//release md
-void  MD_ReleaseMdApi(void* md);
+//create object which is inherited from CThostFtdcMdSpi.
+void*  MD_create(char *flowpath,char *servername);
+//free object which is created from create_MD.
+void  MD_free(void* md);
 
-//In class CThostFtdcMdSpi, there are 12 callback functions.
-//Following is 12 typedef, you should implement your own callback functions according to these type.
-typedef void(* fnOnFrontConnected)(void* md);//连接后的结果状态
-typedef void(* fnOnFrontDisconnected)(void* md, int nReason);//出错时所处的状态
-typedef void(* fnOnHeartBeatWarning)(void* md, int nTimeLapse);
-typedef void(* fnOnRspUserLogin)(void *md, CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-typedef void(* fnOnRspUserLogout)(void *md, CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-typedef void(* fnOnRspError)(void* md, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-typedef void(* fnOnRspSubMarketData)(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-typedef void(* fnOnRspUnSubMarketData)(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-typedef void(* fnOnRspSubForQuoteRsp)(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-typedef void(* fnOnRspUnSubForQuoteRsp)(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-typedef void(* fnOnRtnDepthMarketData)(void* md, CThostFtdcDepthMarketDataField *pDepthMarketData);
-typedef void(* fnOnRtnForQuoteRsp)(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp);
-//Defining your callback function, then register them to md(the returned object of MD_CreateMdApi()).
+/*In class CThostFtdcMdSpi, there are 12 callback functions.*/
+// related to "virtual void OnFrontConnected(){};"
+typedef void(* fnOnFrontConnected)(void* md); 
 void MD_RegOnFrontConnected(void* md, fnOnFrontConnected pCallback);
+// related to "virtual void OnFrontDisconnected(int nReason){};"
+typedef void(* fnOnFrontDisconnected)(void* md, int nReason);
 void MD_RegOnFrontDisconnected(void* md, fnOnFrontDisconnected pCallback);
+// related to "virtual void OnHeartBeatWarning(int nTimeLapse){};"
+typedef void(* fnOnHeartBeatWarning)(void* md, int nTimeLapse);
 void MD_RegOnHeartBeatWarning(void* md, fnOnHeartBeatWarning pCallback);
+// related to "virtual void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};"
+typedef void(* fnOnRspUserLogin)(void *md, CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
 void MD_RegOnRspUserLogin(void *md, fnOnRspUserLogin pCallback);
+// related to "virtual void OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};"
+typedef void(* fnOnRspUserLogout)(void *md, CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
 void MD_RegOnRspUserLogout(void *md, fnOnRspUserLogout pCallback);
+// related to "virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};"
+typedef void(* fnOnRspError)(void* md, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
 void MD_RegOnRspError(void* md, fnOnRspError pCallback);
+// related to "virtual void OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};"
+typedef void(* fnOnRspSubMarketData)(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
 void MD_RegOnRspSubMarketData(void *md, fnOnRspSubMarketData pCallback);
+// related to "virtual void OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};"
+typedef void(* fnOnRspUnSubMarketData)(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
 void MD_RegOnRspUnSubMarketData(void *md, fnOnRspUnSubMarketData pCallback);
+// related to "virtual void OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};"
+typedef void(* fnOnRspSubForQuoteRsp)(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
 void MD_RegOnRspSubForQuoteRsp(void *md, fnOnRspSubForQuoteRsp pCallback);
+// related to "virtual void OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};"
+typedef void(* fnOnRspUnSubForQuoteRsp)(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
 void MD_RegOnRspUnSubForQuoteRsp(void *md, fnOnRspUnSubForQuoteRsp pCallback);
+// related to "virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData) {};"
+typedef void(* fnOnRtnDepthMarketData)(void* md, CThostFtdcDepthMarketDataField *pDepthMarketData);
 void MD_RegOnRtnDepthMarketData(void* md, fnOnRtnDepthMarketData pCallback);
+// related to "virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp) {};"
+typedef void(* fnOnRtnForQuoteRsp)(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp);
 void MD_RegOnRtnForQuoteRsp(void* md, fnOnRtnForQuoteRsp pCallback);
 
 //Connect to CTP server, this design is good, keep it.
-void  MD_Connect( void* md, const char* szPath, const char* szAddresses, const char* szBrokerId, const char* szInvestorId, const char* szPassword);
+//done three things:
+//	1, CreateFtdcMdApi, create a mdapi object and put it into mdspi object as a variable member.
+//	2, RegisterSpi, put mdspi object into mdapi object as a variable member. (we don't have the source code of class mdapi, but should be as a variable member)
+//	3, RegisterFront 
+//	4, Init, send connect request.
+//	5, I don't supply ReqUserLogin interface now, because it will be
+void  MD_connect( void* md, const char* szPath, const char* szAddresses, const char* szBrokerId, const char* szInvestorId, const char* szPassword);
 void  MD_Disconnect(void* md);
 
 //four api in class CThostFtdcMdApi.

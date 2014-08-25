@@ -42,19 +42,19 @@ void OnRtnForQuoteRsp_i(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp) {
 }
 
 int main(int argc, char **argv) {
-	void *md = Create_MD();
+	void *md = MD_create("/tmp/md", "tcp://222.66.97.241:41213");
 	MD_RegOnFrontConnected(md, OnFrontConnected_i);
 	MD_RegOnFrontDisconnected(md, OnFrontDisconnected_i);
 	MD_RegOnRspUserLogin(md, OnRspUserLogin_i);
 	MD_RegOnRtnDepthMarketData(md, OnRtnDepthMarketData_i);
 	MD_RegOnRtnForQuoteRsp(md, OnRtnForQuoteRsp_i);
-	MD_Connect(md, "/tmp/", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
+	MD_connect(md, "/tmp/", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
 	MD_Subscribe(md, "IF1409,IF1410", "IF1410");
 	sleep(5);
 	//MD_Unsubscribe(md, "IF1409", "IF1410");
 	sleep(2);
 	MD_Disconnect(md);
 	sleep(2);
-	MD_ReleaseMdApi(md);
+	MD_free(md);
 	return 0;
 }

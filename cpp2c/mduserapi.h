@@ -13,10 +13,10 @@ using namespace std;
 class CMdUserApi : public CThostFtdcMdSpi
 {
 public:
-	CMdUserApi(void);
+	CMdUserApi(char *flowpath, char *servername);
 	virtual ~CMdUserApi(void);
 
-	void Connect(const string& szPath, const string& szAddresses, const string& szBrokerId, const string& szInvestorId, const string& szPassword);
+	void Connect(const string& szAddresses, const string& szBrokerId, const string& szInvestorId, const string& szPassword);
 	void Disconnect();
 
 	void Subscribe(const string& szInstrumentIDs);
@@ -35,17 +35,20 @@ private:
 	//根据OnFrontDisconnected(int nReason)的值填上错误消息
 	void GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo);
 
+	//12 callback functions in CThostFtdcMdSpi
+	//these functions will only be called by the CTP server.
+	//the user defined callback function will be called in the following functions.
 	virtual void OnFrontConnected();
 	virtual void OnFrontDisconnected(int nReason);
+	virtual void OnHeartBeatWarning(int nTimeLapse);
 	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	virtual void OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
 	virtual void OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-	virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData);
-
 	virtual void OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData);
 	virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp);
 
 	//检查是否出错
@@ -54,7 +57,7 @@ private:
 
 
 public:
-	//set callback member
+	//12 callback register functions 
 	void RegisterCallback_ofc(fnOnFrontConnected pCallback) { m_fnOnFrontConnected = pCallback; }
 	void RegisterCallback_ofd(fnOnFrontDisconnected pCallback) { m_fnOnFrontDisconnected = pCallback; }
 	void RegisterCallback_ohb(fnOnHeartBeatWarning pCallback) { m_fnOnHeartBeatWarning = pCallback; }
@@ -68,7 +71,6 @@ public:
 	void RegisterCallback_ordmd(fnOnRtnDepthMarketData pCallback) { m_fnOnRtnDepthMarketData = pCallback; }
 	void RegisterCallback_orfqr(fnOnRtnForQuoteRsp pCallback) { m_fnOnRtnForQuoteRsp = pCallback; }
 
-
 private:
 	mutex						m_csMapInstrumentIDs;
 	mutex						m_csMapQuoteInstrumentIDs;
@@ -79,7 +81,8 @@ private:
 	set<string>					m_setQuoteInstrumentIDs;		//正在订阅的合约
 	CThostFtdcMdApi*			m_pApi;					//行情API
 
-	string						m_szPath;				//生成配置文件的路径
+	char *						m_szPath;				//生成配置文件的路径
+	char *						m_server;
 	set<string>					m_arrAddresses;			//服务器地址
 	string						m_szBrokerId;			//期商ID
 	string						m_szInvestorId;			//投资者ID

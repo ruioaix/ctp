@@ -10,13 +10,17 @@
 
 using namespace std;
 
+/***create and delete************************************************************************************/
 //create
-CMdUserApi::CMdUserApi(void)
+CMdUserApi::CMdUserApi(char *flowpath, char *servername)
 {
 	m_pApi = NULL;
 	m_nRequestID = 0;
 
-	//init callback function point
+	m_szPath = flowpath;
+	m_server = servername;
+
+	//init 12 callback point.
 	m_fnOnFrontConnected = NULL;
 	m_fnOnFrontDisconnected = NULL;
 	m_fnOnHeartBeatWarning = NULL;
@@ -37,71 +41,59 @@ CMdUserApi::~CMdUserApi(void)
 	Disconnect();
 }
 
+/***special function to simply connect&disconnect process*****************************************************/
 //connect: include CreateFtdcMdApi, RegisterSpi, RegisterFront, Init.
-void CMdUserApi::Connect(const string& szPath, const string& szAddresses, const string& szBrokerId, const string& szInvestorId, const string& szPassword)
+void CMdUserApi::Connect(const string& szAddresses, const string& szBrokerId, const string& szInvestorId, const string& szPassword)
 {
 	m_szBrokerId = szBrokerId;
 	m_szInvestorId = szInvestorId;
 	m_szPassword = szPassword;
 	
-	char *pszPath = new char[szPath.length()+20];
-	sprintf(pszPath,"%sMd",szPath.c_str());
-	mkdir(pszPath, 0777);
+	mkdir(m_szPath, 0777);
 	//printf("%s\n", pszPath);
 	
-	m_pApi = CThostFtdcMdApi::CreateFtdcMdApi(pszPath,(szAddresses.find("udp://") != szAddresses.npos));
-	delete[] pszPath;
+	m_pApi = CThostFtdcMdApi::CreateFtdcMdApi(m_szPath);
+	//delete[] pszPath;
 
 	if (m_pApi)
 	{
 		m_pApi->RegisterSpi(this);
 		
 		//添加地址
-		size_t len = szAddresses.length()+1;
-		char* buf = new char[len];
-		strncpy(buf,szAddresses.c_str(),len);
+		//size_t len = szAddresses.length()+1;
+		//char* buf = new char[len];
+		//strncpy(buf,szAddresses.c_str(),len);
 
-		char* token = strtok(buf, delimiter);
-		while(token)
-		{
-			if (strlen(token)>0)
-			{
-				char * pch = strstr(token,"udp://");
-				if(pch)
-				{
-					strncpy (pch,"tcp://",6);
-				}
-				m_pApi->RegisterFront(token);
-			}
-			token = strtok( NULL, delimiter);
-		}
-		delete[] buf;
+		//char* token = strtok(buf, delimiter);
+		//while(token)
+		//{
+		//	if (strlen(token)>0)
+		//	{
+		//		char * pch = strstr(token,"udp://");
+		//		if(pch)
+		//		{
+		//			strncpy (pch,"tcp://",6);
+		//		}
+		//		m_pApi->RegisterFront(token);
+		//	}
+		//	token = strtok( NULL, delimiter);
+		//}
+		//delete[] buf;
+		m_pApi->RegisterNameServer(m_server);
 		printf("before init\n");
 		//初始化连接
 		m_pApi->Init();
 	}
 }
 
-//callback when connect successful.
-//connect successful, and ReqUserLogin.
-void CMdUserApi::OnFrontConnected()
-{
-	//连接成功后自动请求登录
-	(*m_fnOnFrontConnected)(this);
-	ReqUserLogin();
+void CMdUserApi::Disconnect() {
+	if(m_pApi) {
+		m_pApi->RegisterSpi(NULL);
+		m_pApi->Release();
+		m_pApi = NULL;
+	}
 }
 
-//callback when connect unsuccessful.
-void CMdUserApi::OnFrontDisconnected(int nReason)
-{
-	(*m_fnOnFrontDisconnected)(this, nReason);
-	CThostFtdcRspInfoField RspInfo;
-	//连接失败返回的信息是拼接而成，主要是为了统一输出
-	RspInfo.ErrorID = nReason;
-	GetOnFrontDisconnectedMsg(&RspInfo);
-}
-
-//ReqUserLogin
 void CMdUserApi::ReqUserLogin()
 {
 	if (NULL == m_pApi) {
@@ -118,11 +110,43 @@ void CMdUserApi::ReqUserLogin()
 	m_pApi->ReqUserLogin(&request,++m_nRequestID);
 }
 
+/***12 callback functions********************************************************************************/
+//callback when connect successful.
+//connect successful, and ReqUserLogin.
+void CMdUserApi::OnFrontConnected()
+{
+	//连接成功后自动请求登录
+	if (m_fnOnFrontConnected != NULL) {
+		(*m_fnOnFrontConnected)(this);
+	}
+	ReqUserLogin();
+}
+
+//callback when connect unsuccessful.
+void CMdUserApi::OnFrontDisconnected(int nReason)
+{
+	if (m_fnOnFrontDisconnected != NULL) {
+		(*m_fnOnFrontDisconnected)(this, nReason);
+	}
+	CThostFtdcRspInfoField RspInfo;
+	//连接失败返回的信息是拼接而成，主要是为了统一输出
+	RspInfo.ErrorID = nReason;
+	GetOnFrontDisconnectedMsg(&RspInfo);
+}
+
+void CMdUserApi::OnHeartBeatWarning(int nTimeLapse) {
+	if (m_fnOnHeartBeatWarning != NULL) {
+		(*m_fnOnHeartBeatWarning)(this, nTimeLapse);
+	}
+}
+
 //callback for ReqUserLogin.
 void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	if (!IsErrorRspInfo(pRspInfo) && pRspUserLogin) {
+	if (m_fnOnRspUserLogin != NULL) {
 		(*m_fnOnRspUserLogin)(this, pRspUserLogin, pRspInfo, nRequestID, bIsLast);
+	}
+	if (!IsErrorRspInfo(pRspInfo) && pRspUserLogin) {
 		//有可能断线了，本处是断线重连后重新订阅
 		set<string> mapOld = m_setInstrumentIDs;//记下上次订阅的合约
 		//Unsubscribe(mapOld);//由于已经断线了，没有必要再取消订阅
@@ -140,6 +164,93 @@ void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 	}
 }
 
+void CMdUserApi::OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	if (m_fnOnRspUserLogout != NULL) {
+		(*m_fnOnRspUserLogout)(this, pUserLogout, pRspInfo, nRequestID, bIsLast);
+	}
+}
+
+void CMdUserApi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (m_fnOnRspError != NULL) {
+		(*m_fnOnRspError)(this, pRspInfo, nRequestID, bIsLast);
+	}
+}
+
+void CMdUserApi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (m_fnOnRspSubMarketData != NULL) {
+		(*m_fnOnRspSubMarketData)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
+	}
+	printf("Sub MD done.\n");
+	//在模拟平台可能这个函数不会触发，所以要自己维护一张已经订阅的合约列表
+	if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast) &&pSpecificInstrument)
+	{
+		lock_guard<mutex> cl(m_csMapInstrumentIDs);
+
+		m_setInstrumentIDs.insert(pSpecificInstrument->InstrumentID);
+	}
+}
+
+void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (m_fnOnRspUnSubMarketData != NULL) {
+		(*m_fnOnRspUnSubMarketData)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
+	}
+	//模拟平台可能这个函数不会触发
+	printf("UnSub MD done.\n");
+	if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast)
+		&&pSpecificInstrument)
+	{
+		lock_guard<mutex> cl(m_csMapInstrumentIDs);
+
+		m_setInstrumentIDs.erase(pSpecificInstrument->InstrumentID);
+	}
+}
+
+void CMdUserApi::OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) 
+{
+	if (m_fnOnRspSubForQuoteRsp != NULL) {
+		(*m_fnOnRspSubForQuoteRsp)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
+	}
+	if (!IsErrorRspInfo(pRspInfo, nRequestID, bIsLast)
+		&& pSpecificInstrument)
+	{
+		lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
+
+		m_setQuoteInstrumentIDs.insert(pSpecificInstrument->InstrumentID);
+	}
+}
+
+void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (m_fnOnRspUnSubForQuoteRsp) {
+		(*m_fnOnRspUnSubForQuoteRsp)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
+	}
+	if (!IsErrorRspInfo(pRspInfo, nRequestID, bIsLast)
+		&& pSpecificInstrument)
+	{
+		lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
+
+		m_setQuoteInstrumentIDs.erase(pSpecificInstrument->InstrumentID);
+	}
+}
+
+void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
+{
+	if (m_fnOnRtnDepthMarketData != NULL) {
+		(*m_fnOnRtnDepthMarketData)(this, pDepthMarketData);
+	}
+}
+
+void CMdUserApi::OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp)
+{
+	if (m_fnOnRtnForQuoteRsp != NULL) {
+		(*m_fnOnRtnForQuoteRsp)(this, pForQuoteRsp);
+	}
+}
+
+/***some help functions**********************************************************************************/
 bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)   
 {
 	bool bRet = ((pRspInfo) && (pRspInfo->ErrorID != 0));
@@ -152,14 +263,35 @@ bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
 	return bRet;
 }
 
-void CMdUserApi::Disconnect() {
-	if(m_pApi) {
-		m_pApi->RegisterSpi(NULL);
-		m_pApi->Release();
-		m_pApi = NULL;
+void CMdUserApi::GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo)
+{
+	if(NULL == pRspInfo)
+		return;
+
+	switch(pRspInfo->ErrorID)
+	{
+	case 0x1001:
+		strcpy(pRspInfo->ErrorMsg,"0x1001 网络读失败");
+		break;
+	case 0x1002:
+		strcpy(pRspInfo->ErrorMsg,"0x1002 网络写失败");
+		break;
+	case 0x2001:
+		strcpy(pRspInfo->ErrorMsg,"0x2001 接收心跳超时");
+		break;
+	case 0x2002:
+		strcpy(pRspInfo->ErrorMsg,"0x2002 发送心跳失败");
+		break;
+	case 0x2003:
+		strcpy(pRspInfo->ErrorMsg,"0x2003 收到错误报文");
+		break;
+	default:
+		sprintf(pRspInfo->ErrorMsg,"%x 未知错误", pRspInfo->ErrorID);
+		break;
 	}
 }
 
+/********************************************************************************************************/
 void CMdUserApi::Subscribe(const string& szInstrumentIDs)
 {
 	if(NULL == m_pApi)
@@ -374,98 +506,3 @@ void CMdUserApi::UnsubscribeQuote(const string& szInstrumentIDs)
 	delete[] buf;
 }
 
-void CMdUserApi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
-{
-//	if(m_msgQueue)
-//		m_msgQueue->Input_OnRspError(this,pRspInfo,nRequestID,bIsLast);
-}
-
-void CMdUserApi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
-{
-	printf("Sub MD done.\n");
-	//在模拟平台可能这个函数不会触发，所以要自己维护一张已经订阅的合约列表
-	if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast) &&pSpecificInstrument)
-	{
-		lock_guard<mutex> cl(m_csMapInstrumentIDs);
-
-		m_setInstrumentIDs.insert(pSpecificInstrument->InstrumentID);
-	}
-}
-
-void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
-{
-	//模拟平台可能这个函数不会触发
-	printf("UnSub MD done.\n");
-	if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast)
-		&&pSpecificInstrument)
-	{
-		lock_guard<mutex> cl(m_csMapInstrumentIDs);
-
-		m_setInstrumentIDs.erase(pSpecificInstrument->InstrumentID);
-	}
-}
-
-//行情回调，得保证此函数尽快返回
-void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
-{
-	(*m_fnOnRtnDepthMarketData)(this, pDepthMarketData);
-	//if(m_msgQueue)
-	//	m_msgQueue->Input_OnRtnDepthMarketData(this,pDepthMarketData);
-}
-
-void CMdUserApi::OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) 
-{
-	if (!IsErrorRspInfo(pRspInfo, nRequestID, bIsLast)
-		&& pSpecificInstrument)
-	{
-		lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
-
-		m_setQuoteInstrumentIDs.insert(pSpecificInstrument->InstrumentID);
-	}
-}
-
-void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
-{
-	if (!IsErrorRspInfo(pRspInfo, nRequestID, bIsLast)
-		&& pSpecificInstrument)
-	{
-		lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
-
-		m_setQuoteInstrumentIDs.erase(pSpecificInstrument->InstrumentID);
-	}
-}
-
-void CMdUserApi::OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp)
-{
-	(*m_fnOnRtnForQuoteRsp)(this, pForQuoteRsp);
-	//if (m_msgQueue)
-	//	m_msgQueue->Input_OnRtnForQuoteRsp(this, pForQuoteRsp);
-}
-
-void CMdUserApi::GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo)
-{
-	if(NULL == pRspInfo)
-		return;
-
-	switch(pRspInfo->ErrorID)
-	{
-	case 0x1001:
-		strcpy(pRspInfo->ErrorMsg,"0x1001 网络读失败");
-		break;
-	case 0x1002:
-		strcpy(pRspInfo->ErrorMsg,"0x1002 网络写失败");
-		break;
-	case 0x2001:
-		strcpy(pRspInfo->ErrorMsg,"0x2001 接收心跳超时");
-		break;
-	case 0x2002:
-		strcpy(pRspInfo->ErrorMsg,"0x2002 发送心跳失败");
-		break;
-	case 0x2003:
-		strcpy(pRspInfo->ErrorMsg,"0x2003 收到错误报文");
-		break;
-	default:
-		sprintf(pRspInfo->ErrorMsg,"%x 未知错误", pRspInfo->ErrorID);
-		break;
-	}
-}
