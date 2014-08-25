@@ -295,7 +295,7 @@ typedef struct CThostFtdcTradingAccountReserveField			CThostFtdcTradingAccountRe
 /********************************************************************************************************/
 //return your quotation object. for example: void *md = MD_CreateMdApi();
 //the returned object is the most important&common object.
-void*  MD_CreateMdApi();
+void*  Create_MD();
 //release md
 void  MD_ReleaseMdApi(void* md);
 

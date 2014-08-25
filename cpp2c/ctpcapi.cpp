@@ -5,7 +5,7 @@ static inline CMdUserApi* MD_GetApi(void* md) {
 	return static_cast<CMdUserApi*>(md);
 }
 
-void* MD_CreateMdApi() {
+void* Create_MD() {
 	return new CMdUserApi();
 }
 

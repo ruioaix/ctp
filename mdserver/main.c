@@ -42,7 +42,7 @@ void OnRtnForQuoteRsp_i(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp) {
 }
 
 int main(int argc, char **argv) {
-	void *md = MD_CreateMdApi();
+	void *md = Create_MD();
 	MD_RegOnFrontConnected(md, OnFrontConnected_i);
 	MD_RegOnFrontDisconnected(md, OnFrontDisconnected_i);
 	MD_RegOnRspUserLogin(md, OnRspUserLogin_i);
