@@ -90,7 +90,7 @@ class CSimpleHandler : public CThostFtdcMdSpi
 		virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 		{
 			//output the order insert result
-			printf("DMD InstrumentID: %s\n", pDepthMarketData->InstrumentID);
+			printf("DMD InstrumentID: %s, updattime: %s, milltime: %d\n", pDepthMarketData->InstrumentID, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec);fflush(stdout);
 			// set the flag when the quotation data received.
 			//SetEvent(g_hEvent);
 		}
