@@ -146,16 +146,16 @@ int MD_unSubscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount) {
 	return -1;
 }
 
-void MD_Subscribe(void* md,const char* szInstrumentIDs,const char* szExchageID) {
-	if(md && szInstrumentIDs) {
-		MD_GetApi(md)->Subscribe(szInstrumentIDs);
+int MD_reqUserLogin(void *md) {
+	if(md) {
+		return MD_GetApi(md)->ReqUserLogin();
 	}
+	return -1;
 }
 
-void  MD_Unsubscribe(void* md, const char* szInstrumentIDs, const char* szExchageID) {
-	if(md && szInstrumentIDs)
-	{
-		MD_GetApi(md)->Unsubscribe(szInstrumentIDs);
+int MD_reqUserLogout(void *md) {
+	if(md) {
+		return MD_GetApi(md)->ReqUserLogout();
 	}
+	return -1;
 }
-

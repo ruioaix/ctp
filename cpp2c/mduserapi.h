@@ -17,6 +17,7 @@ public:
 	CMdUserApi(char *flowpath, char *servername, char *bid, char *iid, char *pd);
 	virtual ~CMdUserApi(void);
 
+	//13 api functions, come from MdApi
 	void Init();
 	void Join();
 	void GetTradingDay();
@@ -28,23 +29,10 @@ public:
 	int UnSubscribeMarketData(char *ppInstrumentID[], int nCount);
 	int SubscribeForQuoteRsp(char *ppInstrumentID[], int nCount);
 	int UnSubscribeForQuoteRsp(char *ppInstrumentID[], int nCount);
+	int ReqUserLogin(void);
+	int ReqUserLogout(void);
 
-	void Subscribe(const string& szInstrumentIDs);
-	void Unsubscribe(const string& szInstrumentIDs);
-
-	void SubscribeQuote(const string& szInstrumentIDs);
-	void UnsubscribeQuote(const string& szInstrumentIDs);
-
-	void ReqUserLogin();
 private:
-	//订阅行情
-	void Subscribe(const set<string>& instrumentIDs);
-	void SubscribeQuote(const set<string>& instrumentIDs);
-	//登录请求
-
-	//根据OnFrontDisconnected(int nReason)的值填上错误消息
-	void GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo);
-
 	//12 callback functions in CThostFtdcMdSpi
 	//these functions will only be called by the CTP server.
 	//the user defined callback function will be called in the following functions.
@@ -64,7 +52,8 @@ private:
 	//检查是否出错
 	bool IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);//将出错消息送到消息队列
 	bool IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo);//不送出错消息
-
+	//根据OnFrontDisconnected(int nReason)的值填上错误消息
+	void GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo);
 
 public:
 	//12 callback register functions 
@@ -82,16 +71,9 @@ public:
 	void RegisterCallback_orfqr(fnOnRtnForQuoteRsp pCallback) { m_fnOnRtnForQuoteRsp = pCallback; }
 
 private:
-	mutex						m_csMapInstrumentIDs;
-	mutex						m_csMapQuoteInstrumentIDs;
-
-	int							m_nRequestID;
-	
-	set<string>					m_setInstrumentIDs;		//正在订阅的合约
-	set<string>					m_setQuoteInstrumentIDs;		//正在订阅的合约
 	CThostFtdcMdApi*			m_pApi;					//行情API
 
-	set<string>					m_arrAddresses;			//服务器地址
+	int							m_nRequestID;
 	char *m_szPath;				//生成配置文件的路径
 	char *m_server;
 	char *m_szBrokerId;			//期商ID

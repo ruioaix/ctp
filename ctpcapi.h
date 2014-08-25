@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-//In the following included file,  there are 281 structures.
+//In the following included file,  there are 281 basic structures.
 #include "cpp_api/ThostFtdcUserApiStruct.h"
 //281 typedef
 typedef struct CThostFtdcDisseminationField			CThostFtdcDisseminationField;
@@ -293,9 +293,8 @@ typedef struct CThostFtdcTradingAccountReserveField			CThostFtdcTradingAccountRe
 /********************************************************************************************************/
 /********************For Market Data (related to ThostFtdcMdApi.h)***************************************/
 /********************************************************************************************************/
-//create object which is inherited from CThostFtdcMdSpi.
+/*2 functions, MD object, create & free.*/
 void*  MD_create(char *flowpath,char *servername, char *brokerid, char *inverstorid, char *password);
-//free object which is created from create_MD.
 void  MD_free(void* md);
 
 /*In class CThostFtdcMdSpi, there are 12 callback functions.*/
@@ -336,7 +335,7 @@ void MD_RegOnRtnDepthMarketData(void* md, fnOnRtnDepthMarketData pCallback);
 typedef void(* fnOnRtnForQuoteRsp)(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp);
 void MD_RegOnRtnForQuoteRsp(void* md, fnOnRtnForQuoteRsp pCallback);
 
-//four api in class CThostFtdcMdApi.
+/*In class CThostFtdcMdApi, there are 13 api functions.*/
 void MD_init(void *md);
 void MD_join(void *md);
 void MD_getTradingDay(void *md);
@@ -348,11 +347,8 @@ int MD_subscribeMarketData(void *md, char *ppInstrumentID[], int nCount);
 int MD_unSubscribeMarketData(void *md, char *ppInstrumentID[], int nCount);
 int MD_subscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount);
 int MD_unSubscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount);
-
-void MD_Subscribe(void* md, const char* szInstrumentIDs, const char* szExchageID);
-void MD_Unsubscribe(void* md, const char* szInstrumentIDs, const char* szExchageID);
-void MD_SubscribeQuote(void* md, const char* szInstrumentIDs, const char* szExchageID);
-void MD_UnsubscribeQuote(void* md, const char* szInstrumentIDs, const char* szExchageID);
+int MD_reqUserLogin(void *md);
+int MD_reqUserLogout(void *md);
 
 #ifdef __cplusplus
 }

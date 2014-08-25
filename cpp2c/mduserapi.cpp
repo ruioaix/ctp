@@ -55,7 +55,7 @@ CMdUserApi::~CMdUserApi(void)
 	}
 }
 
-/***special function to simply connect&disconnect process*****************************************************/
+/***13 functions, merge api functions in MdApi class to MdSpi class****************************************************/
 //connect: include CreateFtdcMdApi, RegisterSpi, RegisterFront, Init.
 void CMdUserApi::Init()
 {
@@ -130,20 +130,27 @@ int CMdUserApi::UnSubscribeForQuoteRsp(char *ppInstrumentID[], int nCount) {
 	return -1;
 }
 
-void CMdUserApi::ReqUserLogin()
+int CMdUserApi::ReqUserLogin()
 {
-	if (NULL == m_pApi) {
-		return;
-	}
+	if (NULL == m_pApi) return -1;
 
 	CThostFtdcReqUserLoginField request = {0};
-	
 	strncpy(request.BrokerID, m_szBrokerId, sizeof(TThostFtdcBrokerIDType));
 	strncpy(request.UserID, m_szInvestorId, sizeof(TThostFtdcInvestorIDType));
 	strncpy(request.Password, m_szPassword, sizeof(TThostFtdcPasswordType));
 	
 	//只有这一处用到了m_nRequestID，没有必要每次重连m_nRequestID都从0开始
-	m_pApi->ReqUserLogin(&request,++m_nRequestID);
+	return m_pApi->ReqUserLogin(&request,++m_nRequestID);
+}
+
+int CMdUserApi::ReqUserLogout() {
+	if (NULL == m_pApi) return -1;
+
+	CThostFtdcUserLogoutField request = {0};
+	strncpy(request.BrokerID, m_szBrokerId, sizeof(TThostFtdcBrokerIDType));
+	strncpy(request.UserID, m_szInvestorId, sizeof(TThostFtdcInvestorIDType));
+
+	return m_pApi->ReqUserLogout(&request,++m_nRequestID);
 }
 
 /***12 callback functions********************************************************************************/
@@ -225,12 +232,12 @@ void CMdUserApi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecific
 		(*m_fnOnRspSubMarketData)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
 	}
 	//在模拟平台可能这个函数不会触发，所以要自己维护一张已经订阅的合约列表
-	if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast) &&pSpecificInstrument)
-	{
-		lock_guard<mutex> cl(m_csMapInstrumentIDs);
+	//if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast) &&pSpecificInstrument)
+	//{
+	//	lock_guard<mutex> cl(m_csMapInstrumentIDs);
 
-		m_setInstrumentIDs.insert(pSpecificInstrument->InstrumentID);
-	}
+	//	m_setInstrumentIDs.insert(pSpecificInstrument->InstrumentID);
+	//}
 }
 
 void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -240,13 +247,13 @@ void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecif
 	}
 	//模拟平台可能这个函数不会触发
 	printf("UnSub MD done.\n");
-	if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast)
-		&&pSpecificInstrument)
-	{
-		lock_guard<mutex> cl(m_csMapInstrumentIDs);
+	//if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast)
+	//	&&pSpecificInstrument)
+	//{
+	//	lock_guard<mutex> cl(m_csMapInstrumentIDs);
 
-		m_setInstrumentIDs.erase(pSpecificInstrument->InstrumentID);
-	}
+	//	m_setInstrumentIDs.erase(pSpecificInstrument->InstrumentID);
+	//}
 }
 
 void CMdUserApi::OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) 
@@ -254,13 +261,13 @@ void CMdUserApi::OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecifi
 	if (m_fnOnRspSubForQuoteRsp != NULL) {
 		(*m_fnOnRspSubForQuoteRsp)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
 	}
-	if (!IsErrorRspInfo(pRspInfo, nRequestID, bIsLast)
-		&& pSpecificInstrument)
-	{
-		lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
+	//if (!IsErrorRspInfo(pRspInfo, nRequestID, bIsLast)
+	//	&& pSpecificInstrument)
+	//{
+	//	lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
 
-		m_setQuoteInstrumentIDs.insert(pSpecificInstrument->InstrumentID);
-	}
+	//	m_setQuoteInstrumentIDs.insert(pSpecificInstrument->InstrumentID);
+	//}
 }
 
 void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -268,13 +275,13 @@ void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpeci
 	if (m_fnOnRspUnSubForQuoteRsp) {
 		(*m_fnOnRspUnSubForQuoteRsp)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
 	}
-	if (!IsErrorRspInfo(pRspInfo, nRequestID, bIsLast)
-		&& pSpecificInstrument)
-	{
-		lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
+	//if (!IsErrorRspInfo(pRspInfo, nRequestID, bIsLast)
+	//	&& pSpecificInstrument)
+	//{
+	//	lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
 
-		m_setQuoteInstrumentIDs.erase(pSpecificInstrument->InstrumentID);
-	}
+	//	m_setQuoteInstrumentIDs.erase(pSpecificInstrument->InstrumentID);
+	//}
 }
 
 void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
@@ -291,7 +298,7 @@ void CMdUserApi::OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp)
 	}
 }
 
-/***some help functions**********************************************************************************/
+/***help functions**********************************************************************************/
 bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)   
 {
 	bool bRet = ((pRspInfo) && (pRspInfo->ErrorID != 0));
@@ -330,223 +337,5 @@ void CMdUserApi::GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo)
 		sprintf(pRspInfo->ErrorMsg,"%x 未知错误", pRspInfo->ErrorID);
 		break;
 	}
-}
-
-/********************************************************************************************************/
-void CMdUserApi::Subscribe(const string& szInstrumentIDs)
-{
-	if(NULL == m_pApi)
-		return;
-
-	vector<char*> vct;
-
-	size_t len = szInstrumentIDs.length()+1;
-	char* buf = new char[len];
-	strncpy(buf,szInstrumentIDs.c_str(),len);
-
-	lock_guard<mutex> cl(m_csMapInstrumentIDs);
-
-	char* token = strtok(buf, delimiter);
-	while(token)
-	{
-		size_t l = strlen(token);
-		if (l>0)
-		{
-			//合约已经存在，不用再订阅，但多次订阅也没关系
-			m_setInstrumentIDs.insert(token);//记录此合约进行订阅
-			vct.push_back(token);
-		}
-		token = strtok( NULL, delimiter);
-	}
-	
-	if(vct.size()>0)
-	{
-		//转成字符串数组
-		char** pArray = new char*[vct.size()];
-		for (size_t j = 0; j<vct.size(); ++j)
-		{
-			pArray[j] = vct[j];
-		}
-
-		//订阅
-		m_pApi->SubscribeMarketData(pArray,(int)vct.size());
-		printf("iiiii: %s\n", pArray[0]);
-		printf("iiiii: %s\n", pArray[1]);
-		printf("iiiii: %d\n", (int)vct.size());
-
-		delete[] pArray;
-	}
-
-	//释放内存
-	delete[] buf;
-}
-
-void CMdUserApi::Subscribe(const set<string>& instrumentIDs)
-{
-	if(NULL == m_pApi)
-		return;
-
-	string szInstrumentIDs;
-	for(set<string>::iterator i=instrumentIDs.begin();i!=instrumentIDs.end();++i)
-	{
-		szInstrumentIDs.append(*i);
-		szInstrumentIDs.append(";");
-	}
-
-	if (szInstrumentIDs.length()>1)
-	{
-		Subscribe(szInstrumentIDs);
-	}
-}
-
-void CMdUserApi::Unsubscribe(const string& szInstrumentIDs)
-{
-	if(NULL == m_pApi)
-		return;
-
-	vector<char*> vct;
-	size_t len = szInstrumentIDs.length()+1;
-	char* buf = new char[len];
-	strncpy(buf,szInstrumentIDs.c_str(),len);
-
-	lock_guard<mutex> cl(m_csMapInstrumentIDs);
-
-	char* token = strtok(buf, delimiter);
-	while(token)
-	{
-		size_t l = strlen(token);
-		if (l>0)
-		{
-			//合约已经不存在，不用再取消订阅，但多次取消也没什么关系
-			m_setInstrumentIDs.erase(token);
-			vct.push_back(token);
-		}
-		token = strtok( NULL, delimiter);
-	}
-	
-	if(vct.size()>0)
-	{
-		//转成字符串数组
-		char** pArray = new char*[vct.size()];
-		for (size_t j = 0; j<vct.size(); ++j)
-		{
-			pArray[j] = vct[j];
-		}
-
-		//订阅
-		m_pApi->UnSubscribeMarketData(pArray,(int)vct.size());
-
-		delete[] pArray;
-	}
-
-	//释放内存
-	delete[] buf;
-}
-
-void CMdUserApi::SubscribeQuote(const string& szInstrumentIDs)
-{
-	if (NULL == m_pApi)
-		return;
-
-	vector<char*> vct;
-
-	size_t len = szInstrumentIDs.length() + 1;
-	char* buf = new char[len];
-	strncpy(buf, szInstrumentIDs.c_str(), len);
-
-	lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
-
-	char* token = strtok(buf, delimiter);
-	while (token)
-	{
-		size_t l = strlen(token);
-		if (l>0)
-		{
-			//合约已经存在，不用再订阅，但多次订阅也没关系
-			m_setQuoteInstrumentIDs.insert(token);//记录此合约进行订阅
-			vct.push_back(token);
-		}
-		token = strtok(NULL, delimiter);
-	}
-
-	if (vct.size()>0)
-	{
-		//转成字符串数组
-		char** pArray = new char*[vct.size()];
-		for (size_t j = 0; j<vct.size(); ++j)
-		{
-			pArray[j] = vct[j];
-		}
-
-		//订阅
-		m_pApi->SubscribeForQuoteRsp(pArray, (int)vct.size());
-
-		delete[] pArray;
-	}
-
-	//释放内存
-	delete[] buf;
-}
-
-void CMdUserApi::SubscribeQuote(const set<string>& instrumentIDs)
-{
-	if (NULL == m_pApi)
-		return;
-
-	string szInstrumentIDs;
-	for (set<string>::iterator i = instrumentIDs.begin(); i != instrumentIDs.end(); ++i)
-	{
-		szInstrumentIDs.append(*i);
-		szInstrumentIDs.append(";");
-	}
-
-	if (szInstrumentIDs.length()>1)
-	{
-		SubscribeQuote(szInstrumentIDs);
-	}
-}
-
-void CMdUserApi::UnsubscribeQuote(const string& szInstrumentIDs)
-{
-	if (NULL == m_pApi)
-		return;
-
-	vector<char*> vct;
-	size_t len = szInstrumentIDs.length() + 1;
-	char* buf = new char[len];
-	strncpy(buf, szInstrumentIDs.c_str(), len);
-
-	lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
-
-	char* token = strtok(buf, delimiter);
-	while (token)
-	{
-		size_t l = strlen(token);
-		if (l>0)
-		{
-			//合约已经不存在，不用再取消订阅，但多次取消也没什么关系
-			m_setQuoteInstrumentIDs.erase(token);
-			vct.push_back(token);
-		}
-		token = strtok(NULL, delimiter);
-	}
-
-	if (vct.size()>0)
-	{
-		//转成字符串数组
-		char** pArray = new char*[vct.size()];
-		for (size_t j = 0; j<vct.size(); ++j)
-		{
-			pArray[j] = vct[j];
-		}
-
-		//订阅
-		m_pApi->UnSubscribeForQuoteRsp(pArray, (int)vct.size());
-
-		delete[] pArray;
-	}
-
-	//释放内存
-	delete[] buf;
 }
 
