@@ -1,4 +1,6 @@
 *.o
+*.log
+tags
 a.out
 1
 2

@@ -1,10 +1,10 @@
 all : trade quotation
 
 trade : trade.c 
-	g++ $< -lthosttraderapi -o $@
+	g++ $< -lthosttraderapi -g -o $@
 
 quotation : quotation.c
-	g++ $< -lthostmduserapi -o $@
+	g++ $< -lthostmduserapi -g -o $@
 	
 
 .PHONY : clean all 
