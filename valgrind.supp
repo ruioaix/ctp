@@ -1,0 +1,886 @@
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN14CPackageBufferD0Ev
+   fun:_ZN8CPackage10BufReleaseEv
+   fun:_ZN12CXMPProtocol16SendWriteTimeoutEj
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   socketcall.sendto(msg)
+   fun:send
+   fun:_ZN11CTcpChannel8WriteImpEiPc
+   fun:_ZN8CChannel5WriteEiPc
+   fun:_ZN16CChannelProtocol11FlushNoLockEv
+   fun:_ZN16CChannelProtocol4PushEP8CPackageP9CProtocol
+   fun:_ZN9CProtocol4SendEP8CPackagePS_
+   fun:_ZN9CProtocol4PushEP8CPackagePS_
+   fun:_ZN9CProtocol4SendEP8CPackagePS_
+   fun:_ZN9CProtocol4PushEP8CPackagePS_
+   fun:_ZN17CCompressProtocol4PushEP8CPackageP9CProtocol
+   fun:_ZN9CProtocol4SendEP8CPackagePS_
+   fun:_ZN25CThostFtdcUserApiImplBase15RequestDirectlyEv
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN14CPackageBufferD0Ev
+   fun:_ZN8CPackage10BufReleaseEv
+   fun:_ZN16CFTDCPubEndPointD0Ev
+   fun:_ZN13CFTDCProtocol5ClearEv
+   fun:_ZN12CFTDCSession10DisconnectEi
+   fun:_ZN18CAPISessionFactory13DisconnectAllEi
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN10CCacheListD1Ev
+   fun:_ZN11CCachedFlowD2Ev
+   fun:_ZN24CThostFtdcUserDialogFlowD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase16RemoveDialogFlowEv
+   fun:_ZN25CThostFtdcUserApiImplBase21OnSessionDisconnectedEP8CSessioni
+   fun:_ZN8CSession10DisconnectEi
+   fun:_ZN18CAPISessionFactory13DisconnectAllEi
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN27CThostMarketDataFlowManagerD1Ev
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN14CPackageBufferD0Ev
+   fun:_ZN8CPackage10BufReleaseEv
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN12CServiceNameD1Ev
+   fun:_ZN20CAPIConnecterManager16Clear_ConnectersEv
+   fun:_ZN20CAPIConnecterManagerD0Ev
+   fun:_ZN18CAPISessionFactoryD2Ev
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN12CServiceNameD1Ev
+   fun:_ZN20CAPIConnecterManager16Clear_ConnectersEv
+   fun:_ZN20CAPIConnecterManagerD0Ev
+   fun:_ZN18CAPISessionFactoryD2Ev
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN12CServiceNameD1Ev
+   fun:_ZN20CAPIConnecterManager16Clear_ConnectersEv
+   fun:_ZN20CAPIConnecterManagerD0Ev
+   fun:_ZN18CAPISessionFactoryD2Ev
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN20CAPIConnecterManager16Clear_ConnectersEv
+   fun:_ZN20CAPIConnecterManagerD0Ev
+   fun:_ZN18CAPISessionFactoryD2Ev
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN18CAPISessionFactoryD2Ev
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:__tcf_0
+   fun:__cxa_finalize
+   obj:/usr/lib64/libthostmduserapi.so
+   obj:/usr/lib64/libthostmduserapi.so
+   fun:__run_exit_handlers
+   fun:exit
+   fun:(below main)
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:_Znwm
+   fun:_ZN16CEventDispatcherC2Ev
+   fun:_ZN8CReactorC2Ev
+   fun:_ZN14CSelectReactorC1Ev
+   fun:_ZN18CAPISessionFactoryC2EP8CReactori
+   fun:_ZN17CNsSessionFactoryC2EP8CReactori
+   fun:_ZN25CThostFtdcUserApiImplBaseC2EPKcP14CSelectReactorbb
+   fun:_ZN21CThostFtdcUserApiImplC1EPKcP14CSelectReactorbb
+   fun:_ZN17CThostFtdcUserApi17CreateFtdcUserApiEPKcbb
+   fun:_ZN14CFtdcMdApiImplC1EPKcbb
+   fun:_ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbb
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:_Znwm
+   fun:_ZN16CEventDispatcherC2Ev
+   fun:_ZN8CReactorC2Ev
+   fun:_ZN14CSelectReactorC1Ev
+   fun:_ZN17CThostFtdcUserApi17CreateFtdcUserApiEPKcbb
+   fun:_ZN14CFtdcMdApiImplC1EPKcbb
+   fun:_ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbb
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:__tcf_0
+   fun:__cxa_finalize
+   obj:/usr/lib64/libthostmduserapi.so
+   obj:/usr/lib64/libthostmduserapi.so
+   fun:__run_exit_handlers
+   fun:exit
+   fun:(below main)
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN18CAPISessionFactoryD2Ev
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN20CAPIConnecterManager16Clear_ConnectersEv
+   fun:_ZN20CAPIConnecterManagerD0Ev
+   fun:_ZN18CAPISessionFactoryD2Ev
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN12CServiceNameD1Ev
+   fun:_ZN20CAPIConnecterManager16Clear_ConnectersEv
+   fun:_ZN20CAPIConnecterManagerD0Ev
+   fun:_ZN18CAPISessionFactoryD2Ev
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN12CServiceNameD1Ev
+   fun:_ZN20CAPIConnecterManager16Clear_ConnectersEv
+   fun:_ZN20CAPIConnecterManagerD0Ev
+   fun:_ZN18CAPISessionFactoryD2Ev
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN12CServiceNameD1Ev
+   fun:_ZN20CAPIConnecterManager16Clear_ConnectersEv
+   fun:_ZN20CAPIConnecterManagerD0Ev
+   fun:_ZN18CAPISessionFactoryD2Ev
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN14CPackageBufferD0Ev
+   fun:_ZN8CPackage10BufReleaseEv
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN27CThostMarketDataFlowManagerD1Ev
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   socketcall.sendto(msg)
+   fun:send
+   fun:_ZN11CTcpChannel8WriteImpEiPc
+   fun:_ZN8CChannel5WriteEiPc
+   fun:_ZN16CChannelProtocol11FlushNoLockEv
+   fun:_ZN16CChannelProtocol4PushEP8CPackageP9CProtocol
+   fun:_ZN9CProtocol4SendEP8CPackagePS_
+   fun:_ZN9CProtocol4PushEP8CPackagePS_
+   fun:_ZN9CProtocol4SendEP8CPackagePS_
+   fun:_ZN9CProtocol4PushEP8CPackagePS_
+   fun:_ZN17CCompressProtocol4PushEP8CPackageP9CProtocol
+   fun:_ZN9CProtocol4SendEP8CPackagePS_
+   fun:_ZN25CThostFtdcUserApiImplBase15RequestDirectlyEv
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN14CPackageBufferD0Ev
+   fun:_ZN8CPackage10BufReleaseEv
+   fun:_ZN12CXMPProtocol16SendWriteTimeoutEj
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN10CCacheListD1Ev
+   fun:_ZN11CCachedFlowD2Ev
+   fun:_ZN24CThostFtdcUserDialogFlowD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase16RemoveDialogFlowEv
+   fun:_ZN25CThostFtdcUserApiImplBase21OnSessionDisconnectedEP8CSessioni
+   fun:_ZN8CSession10DisconnectEi
+   fun:_ZN18CAPISessionFactory13DisconnectAllEi
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   fun:_ZdlPv
+   fun:_ZN14CPackageBufferD0Ev
+   fun:_ZN8CPackage10BufReleaseEv
+   fun:_ZN16CFTDCPubEndPointD0Ev
+   fun:_ZN13CFTDCProtocol5ClearEv
+   fun:_ZN12CFTDCSession10DisconnectEi
+   fun:_ZN18CAPISessionFactory13DisconnectAllEi
+   fun:_ZN25CThostFtdcUserApiImplBaseD2Ev
+   fun:_ZN21CThostFtdcUserApiImplD0Ev
+   fun:_ZN25CThostFtdcUserApiImplBase7ReleaseEv
+   fun:_ZN14CFtdcMdApiImpl7ReleaseEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN10CTimerHeapC1Ej
+   fun:_ZN16CEventDispatcherC2Ev
+   fun:_ZN8CReactorC2Ev
+   fun:_ZN14CSelectReactorC1Ev
+   fun:_ZN18CAPISessionFactoryC2EP8CReactori
+   fun:_ZN17CNsSessionFactoryC2EP8CReactori
+   fun:_ZN25CThostFtdcUserApiImplBaseC2EPKcP14CSelectReactorbb
+   fun:_ZN21CThostFtdcUserApiImplC1EPKcP14CSelectReactorbb
+   fun:_ZN17CThostFtdcUserApi17CreateFtdcUserApiEPKcbb
+   fun:_ZN14CFtdcMdApiImplC1EPKcbb
+   fun:_ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbb
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZNSt6vectorIP9CProtocolSaIS1_EE13_M_insert_auxEN9__gnu_cxx17__normal_iteratorIPS1_S3_EERKS1_
+   fun:_ZN9CProtocol11AttachLowerEPS_j
+   fun:_ZN11CXMPSessionC2EP8CReactorP8CChannel
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZNSt6vectorIP9CProtocolSaIS1_EE13_M_insert_auxEN9__gnu_cxx17__normal_iteratorIPS1_S3_EERKS1_
+   fun:_ZN9CProtocol11AttachLowerEPS_j
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZNSt6vectorIP9CProtocolSaIS1_EE13_M_insert_auxEN9__gnu_cxx17__normal_iteratorIPS1_S3_EERKS1_
+   fun:_ZN9CProtocol11AttachLowerEPS_j
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:_Znwm
+   fun:_Z41__static_initialization_and_destruction_0ii
+   obj:/usr/lib64/libthostmduserapi.so
+   obj:/usr/lib64/libthostmduserapi.so
+   obj:*
+   fun:call_init.part.0
+   fun:_dl_init
+   obj:/usr/lib64/ld-2.18.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN10CTcpClient7ConnectEP12CServiceNamei
+   fun:_ZN15CNetworkFactory13CreateChannelEP12CServiceNamei
+   fun:_ZN20CAPISessionConnecter14ConnectChannelEi
+   fun:_ZN20CAPIConnecterManager14Connect_ServerERjb
+   fun:_ZN20CAPIConnecterManager14Connect_ServerEj
+   fun:_ZN20CAPIConnecterManager11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN8CPackage17ConstructAllocateEii
+   fun:_ZN15CChannelPackageC1Ei
+   fun:_ZN16CChannelProtocolC1EP8CReactorP8CChanneli
+   fun:_ZN8CSessionC2EP8CReactorP8CChanneli
+   fun:_ZN11CXMPSessionC2EP8CReactorP8CChannel
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN8CPackage17ConstructAllocateEii
+   fun:_ZN17CCompressProtocolC1EP8CReactor
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN10CCacheListC1Ei
+   fun:_ZN16CChannelProtocolC1EP8CReactorP8CChanneli
+   fun:_ZN8CSessionC2EP8CReactorP8CChanneli
+   fun:_ZN11CXMPSessionC2EP8CReactorP8CChannel
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZNSt6vectorI14CTimerHeapNodeSaIS0_EE13_M_insert_auxEN9__gnu_cxx17__normal_iteratorIPS0_S2_EERKS0_
+   fun:_ZN10CTimerHeap13RegisterTimerEP13CEventHandlerii
+   fun:_ZN12CXMPProtocol15EnableHeartbeatEb
+   fun:_ZN12CXMPProtocolC1EP8CReactor
+   fun:_ZN11CXMPSessionC2EP8CReactorP8CChannel
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN17CCompressProtocolC1EP8CReactor
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN17CCompressProtocolC1EP8CReactor
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN13CFTDCProtocolC1EP8CReactor
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN13CFTDCProtocolC1EP8CReactor
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZNSt11_Deque_baseI9CHashNodeItP16CFTDCSubEndPointESaIS3_EE17_M_initialize_mapEm
+   fun:_ZN13CFTDCProtocolC1EP8CReactor
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZNSt11_Deque_baseI9CHashNodeItP16CFTDCPubEndPointESaIS3_EE17_M_initialize_mapEm
+   fun:_ZN13CFTDCProtocolC1EP8CReactor
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN11CXMPSessionC2EP8CReactorP8CChannel
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN12CXMPProtocolC1EP8CReactor
+   fun:_ZN11CXMPSessionC2EP8CReactorP8CChannel
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN12CXMPProtocolC1EP8CReactor
+   fun:_ZN11CXMPSessionC2EP8CReactorP8CChannel
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN8CSessionC2EP8CReactorP8CChanneli
+   fun:_ZN11CXMPSessionC2EP8CReactorP8CChannel
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znam
+   fun:_ZN13CFTDCProtocolC1EP8CReactor
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znam
+   fun:_ZN13CFTDCProtocolC1EP8CReactor
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZNSt11_Deque_baseI9CHashNodeItP16CFTDCSubEndPointESaIS3_EE15_M_create_nodesEPPS3_S7_
+   fun:_ZNSt11_Deque_baseI9CHashNodeItP16CFTDCSubEndPointESaIS3_EE17_M_initialize_mapEm
+   fun:_ZN13CFTDCProtocolC1EP8CReactor
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZNSt11_Deque_baseI9CHashNodeItP16CFTDCPubEndPointESaIS3_EE15_M_create_nodesEPPS3_S7_
+   fun:_ZNSt11_Deque_baseI9CHashNodeItP16CFTDCPubEndPointESaIS3_EE17_M_initialize_mapEm
+   fun:_ZN13CFTDCProtocolC1EP8CReactor
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znam
+   fun:_ZN14CPackageBufferC1Ei
+   fun:_ZN8CPackage17ConstructAllocateEii
+   fun:_ZN15CChannelPackageC1Ei
+   fun:_ZN16CChannelProtocolC1EP8CReactorP8CChanneli
+   fun:_ZN8CSessionC2EP8CReactorP8CChanneli
+   fun:_ZN11CXMPSessionC2EP8CReactorP8CChannel
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znam
+   fun:_ZN14CPackageBufferC1Ei
+   fun:_ZN8CPackage17ConstructAllocateEii
+   fun:_ZN17CCompressProtocolC1EP8CReactor
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:_ZN7CMemory8newBlockEv
+   fun:_ZN7CMemoryC1Ei
+   fun:_Z41__static_initialization_and_destruction_0ii
+   obj:/usr/lib64/libthostmduserapi.so
+   obj:/usr/lib64/libthostmduserapi.so
+   obj:*
+   fun:call_init.part.0
+   fun:_dl_init
+   obj:/usr/lib64/ld-2.18.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znam
+   fun:_ZN10CCacheListC1Ei
+   fun:_ZN16CChannelProtocolC1EP8CReactorP8CChanneli
+   fun:_ZN8CSessionC2EP8CReactorP8CChanneli
+   fun:_ZN11CXMPSessionC2EP8CReactorP8CChannel
+   fun:_ZN12CFTDCSessionC1EP8CReactorP8CChannel
+   fun:_ZN25CThostFtdcUserApiImplBase13CreateSessionEP8CChannelb
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:_Znwm
+   fun:_ZNSt6vectorI14CTimerHeapNodeSaIS0_EE13_M_insert_auxEN9__gnu_cxx17__normal_iteratorIPS0_S2_EERKS0_
+   fun:_ZN10CTimerHeap13RegisterTimerEP13CEventHandlerii
+   fun:_ZN18CAPISessionFactory11HandleEventEijPv
+   fun:_ZN17CNsSessionFactory11HandleEventEijPv
+   fun:_ZN16CEventDispatcher9SendEventEP13CEventHandlerijPv
+   fun:_ZN20CAPIConnecterManager11HandleEventEijPv
+   fun:_ZN16CEventDispatcher14DispatchEventsEv
+   fun:_ZN16CEventDispatcher3RunEv
+   fun:_ZN7CThread12_ThreadEntryEPv
+   fun:start_thread
+   fun:clone
+}
