@@ -28,13 +28,13 @@ void OnRspUserLogin_i(void *md, CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 }
 
 void OnRtnDepthMarketData_i(void* md, CThostFtdcDepthMarketDataField *pDepthMarketData) {
-	//long ms;
-	//time_t s;
+	long ms;
+	time_t s;
 	struct timespec spec;
 	clock_gettime(CLOCK_REALTIME, &spec);
-	//s = spec.tv_sec;
-	//ms = round(spec.tv_nsec/1E6);
-	printf("InstrumentID: %s, LastPrice: %f, UpdateTime: %s, UpdateMillisec: %d, realtime: %"PRIdMAX"\n", pDepthMarketData->InstrumentID, pDepthMarketData->LastPrice, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, (intmax_t)(spec.tv_sec));fflush(stdout);
+	s = spec.tv_sec;
+	ms = round(spec.tv_nsec/1E6);
+	printf("InstrumentID: %s, LastPrice: %f, UpdateTime: %s, UpdateMillisec: %5d, realtime: %"PRIdMAX".%03ld\n", pDepthMarketData->InstrumentID, pDepthMarketData->LastPrice, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, (intmax_t)s, ms);fflush(stdout);
 }
 
 void OnRtnForQuoteRsp_i(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp) {
