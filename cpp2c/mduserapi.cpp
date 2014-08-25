@@ -49,6 +49,9 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 CMdUserApi::~CMdUserApi(void)
 {
 	Disconnect();
+	if (m_pApi) {
+		m_pApi->Release();
+	}
 }
 
 /***special function to simply connect&disconnect process*****************************************************/
@@ -56,7 +59,6 @@ CMdUserApi::~CMdUserApi(void)
 void CMdUserApi::Connect()
 {
 	if (m_pApi) {
-		printf("before init\n");
 		m_pApi->Init();
 	}
 }

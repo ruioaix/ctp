@@ -13,6 +13,7 @@ using namespace std;
 class CMdUserApi : public CThostFtdcMdSpi
 {
 public:
+	//create api object. 
 	CMdUserApi(char *flowpath, char *servername, char *bid, char *iid, char *pd);
 	virtual ~CMdUserApi(void);
 

@@ -42,7 +42,8 @@ void OnRtnForQuoteRsp_i(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp) {
 }
 
 int main(int argc, char **argv) {
-	void *md = MD_create("/tmp/md", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
+	//void *md = MD_create("/tmp/md", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
+	void *md = MD_create("/tmp/md", "tcp://27.17.62.149:40213", "1035", "00000008", "123456");
 	MD_RegOnFrontConnected(md, OnFrontConnected_i);
 	MD_RegOnFrontDisconnected(md, OnFrontDisconnected_i);
 	MD_RegOnRspUserLogin(md, OnRspUserLogin_i);
