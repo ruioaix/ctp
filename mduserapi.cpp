@@ -10,6 +10,7 @@
 
 using namespace std;
 
+//create
 CMdUserApi::CMdUserApi(void)
 {
 	m_pApi = NULL;
@@ -30,11 +31,13 @@ CMdUserApi::CMdUserApi(void)
 	m_fnOnRtnForQuoteRsp = NULL;
 }
 
+//delete
 CMdUserApi::~CMdUserApi(void)
 {
 	Disconnect();
 }
 
+//connect: include CreateFtdcMdApi, RegisterSpi, RegisterFront, Init.
 void CMdUserApi::Connect(const string& szPath, const string& szAddresses, const string& szBrokerId, const string& szInvestorId, const string& szPassword)
 {
 	m_szBrokerId = szBrokerId;
@@ -77,9 +80,65 @@ void CMdUserApi::Connect(const string& szPath, const string& szAddresses, const 
 		//初始化连接
 		m_pApi->Init();
 	}
-	/*
-	*/
 }
+
+//callback when connect successful.
+//connect successful, and ReqUserLogin.
+void CMdUserApi::OnFrontConnected()
+{
+	//连接成功后自动请求登录
+	(*m_fnOnFrontConnected)(this);
+	ReqUserLogin();
+}
+
+//callback when connect unsuccessful.
+void CMdUserApi::OnFrontDisconnected(int nReason)
+{
+	(*m_fnOnFrontDisconnected)(this, nReason);
+	CThostFtdcRspInfoField RspInfo;
+	//连接失败返回的信息是拼接而成，主要是为了统一输出
+	RspInfo.ErrorID = nReason;
+	GetOnFrontDisconnectedMsg(&RspInfo);
+}
+
+//ReqUserLogin
+void CMdUserApi::ReqUserLogin()
+{
+	if (NULL == m_pApi) {
+		return;
+	}
+
+	CThostFtdcReqUserLoginField request = {0};
+	
+	strncpy(request.BrokerID, m_szBrokerId.c_str(),sizeof(TThostFtdcBrokerIDType));
+	strncpy(request.UserID, m_szInvestorId.c_str(),sizeof(TThostFtdcInvestorIDType));
+	strncpy(request.Password, m_szPassword.c_str(),sizeof(TThostFtdcPasswordType));
+	
+	//只有这一处用到了m_nRequestID，没有必要每次重连m_nRequestID都从0开始
+	m_pApi->ReqUserLogin(&request,++m_nRequestID);
+}
+
+//callback for ReqUserLogin.
+void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (!IsErrorRspInfo(pRspInfo) && pRspUserLogin) {
+		//有可能断线了，本处是断线重连后重新订阅
+		set<string> mapOld = m_setInstrumentIDs;//记下上次订阅的合约
+		//Unsubscribe(mapOld);//由于已经断线了，没有必要再取消订阅
+		Subscribe(mapOld);//订阅
+
+		//有可能断线了，本处是断线重连后重新订阅
+		mapOld = m_setQuoteInstrumentIDs;//记下上次订阅的合约
+		SubscribeQuote(mapOld);//订阅
+	}
+	else
+	{
+		//m_status = E_authed;
+		//if(m_msgQueue)
+		//	m_msgQueue->Input_OnDisconnect(this,pRspInfo,E_logining);
+	}
+}
+
 
 bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)   
 {
@@ -97,21 +156,6 @@ bool CMdUserApi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
 	bool bRet = ((pRspInfo) && (pRspInfo->ErrorID != 0));
 
 	return bRet;
-}
-
-void CMdUserApi::ReqUserLogin()
-{
-	if (NULL == m_pApi)
-		return;
-
-	CThostFtdcReqUserLoginField request = {0};
-	
-	strncpy(request.BrokerID, m_szBrokerId.c_str(),sizeof(TThostFtdcBrokerIDType));
-	strncpy(request.UserID, m_szInvestorId.c_str(),sizeof(TThostFtdcInvestorIDType));
-	strncpy(request.Password, m_szPassword.c_str(),sizeof(TThostFtdcPasswordType));
-	
-	//只有这一处用到了m_nRequestID，没有必要每次重连m_nRequestID都从0开始
-	m_pApi->ReqUserLogin(&request,++m_nRequestID);
 }
 
 void CMdUserApi::Disconnect()
@@ -336,45 +380,6 @@ void CMdUserApi::UnsubscribeQuote(const string& szInstrumentIDs)
 
 	//释放内存
 	delete[] buf;
-}
-
-void CMdUserApi::OnFrontConnected()
-{
-	//连接成功后自动请求登录
-	(*m_fnOnFrontConnected)(this);
-
-	ReqUserLogin();
-}
-
-void CMdUserApi::OnFrontDisconnected(int nReason)
-{
-	(*m_fnOnFrontDisconnected)(this, nReason);
-	CThostFtdcRspInfoField RspInfo;
-	//连接失败返回的信息是拼接而成，主要是为了统一输出
-	RspInfo.ErrorID = nReason;
-	GetOnFrontDisconnectedMsg(&RspInfo);
-}
-
-void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
-{
-	if (!IsErrorRspInfo(pRspInfo)
-		&&pRspUserLogin)
-	{
-		//有可能断线了，本处是断线重连后重新订阅
-		set<string> mapOld = m_setInstrumentIDs;//记下上次订阅的合约
-		//Unsubscribe(mapOld);//由于已经断线了，没有必要再取消订阅
-		Subscribe(mapOld);//订阅
-
-		//有可能断线了，本处是断线重连后重新订阅
-		mapOld = m_setQuoteInstrumentIDs;//记下上次订阅的合约
-		SubscribeQuote(mapOld);//订阅
-	}
-	else
-	{
-		//m_status = E_authed;
-		//if(m_msgQueue)
-		//	m_msgQueue->Input_OnDisconnect(this,pRspInfo,E_logining);
-	}
 }
 
 void CMdUserApi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)

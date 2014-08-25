@@ -294,6 +294,7 @@ typedef struct CThostFtdcTradingAccountReserveField			CThostFtdcTradingAccountRe
 /********************For Market Data (related to ThostFtdcMdApi.h)***************************************/
 /********************************************************************************************************/
 //return your quotation object. for example: void *md = MD_CreateMdApi();
+//the returned object is the most important&common object.
 void*  MD_CreateMdApi();
 //release md
 void  MD_ReleaseMdApi(void* md);
