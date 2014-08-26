@@ -294,8 +294,9 @@ typedef struct CThostFtdcTradingAccountReserveField			CThostFtdcTradingAccountRe
 /********************For Market Data (related to ThostFtdcMdApi.h)***************************************/
 /********************************************************************************************************/
 /*2 functions, MD object, create & free.*/
-void*  MD_create(char *flowpath,char *servername, char *brokerid, char *inverstorid, char *password);
-void  MD_free(void* md);
+//void *MD_create(char *flowpath,char *servername, char *brokerid, char *inverstorid, char *password);
+void* MD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd, char **InstrumentIDs, int InstrumentNum);
+void MD_free(void* md);
 
 /*In class CThostFtdcMdSpi, there are 12 callback functions.*/
 // related to "virtual void OnFrontConnected(){};"

@@ -14,7 +14,7 @@ class CMdUserApi : public CThostFtdcMdSpi
 {
 public:
 	//create api object. 
-	CMdUserApi(char *flowpath, char *servername, char *bid, char *iid, char *pd);
+	CMdUserApi(char *flowpath, char *servername, char *bid, char *iid, char *pd, char **InstrumentIDs, int InstrumentNum);
 	virtual ~CMdUserApi(void);
 
 	//13 api functions, come from MdApi
@@ -79,6 +79,9 @@ private:
 	char *m_szBrokerId;			//期商ID
 	char *m_szInvestorId;			//投资者ID
 	char *m_szPassword;			//密码
+
+	char **m_InstrumentIDs;
+	int m_InstrumentNum;
 
 	fnOnFrontConnected m_fnOnFrontConnected;
 	fnOnFrontDisconnected m_fnOnFrontDisconnected;

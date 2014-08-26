@@ -12,7 +12,7 @@ using namespace std;
 
 /***create and delete************************************************************************************/
 //create
-CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *password)
+CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *password, char ** InstrumentIDs, int InstrumentNum)
 {
 	m_pApi = NULL;
 	m_nRequestID = 0;
@@ -22,6 +22,9 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 	m_szBrokerId = brokerid;
 	m_szInvestorId = inverstorid;
 	m_szPassword = password;
+
+	m_InstrumentIDs = InstrumentIDs;
+	m_InstrumentNum = InstrumentNum;
 
 	mkdir(m_szPath, 0777);
 	m_pApi = CThostFtdcMdApi::CreateFtdcMdApi(m_szPath);
@@ -189,27 +192,9 @@ void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 	if (m_fnOnRspUserLogin != NULL) {
 		(*m_fnOnRspUserLogin)(this, pRspUserLogin, pRspInfo, nRequestID, bIsLast);
 	}
-	printf("ErrorId: %d, ErrorMsg: %s\n", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
 	if (!IsErrorRspInfo(pRspInfo) && pRspUserLogin) {
-		////有可能断线了，本处是断线重连后重新订阅
-		//set<string> mapOld = m_setInstrumentIDs;//记下上次订阅的合约
-		////Unsubscribe(mapOld);//由于已经断线了，没有必要再取消订阅
-		//Subscribe(mapOld);//订阅
-
-		////有可能断线了，本处是断线重连后重新订阅
-		//mapOld = m_setQuoteInstrumentIDs;//记下上次订阅的合约
-		//SubscribeQuote(mapOld);//订阅
-
-		char *i1[2] = {"IF1409", "IF1410"};
-		m_pApi->SubscribeMarketData(i1, 2);
-		m_pApi->SubscribeForQuoteRsp(i1, 2);
+		m_pApi->SubscribeMarketData(m_InstrumentIDs, m_InstrumentNum);
 	}
-	//else
-	//{
-	//	//m_status = E_authed;
-	//	//if(m_msgQueue)
-	//	//	m_msgQueue->Input_OnDisconnect(this,pRspInfo,E_logining);
-	//}
 }
 
 void CMdUserApi::OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
@@ -227,17 +212,10 @@ void CMdUserApi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bo
 
 void CMdUserApi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	printf("Sub MD done.\n");
 	if (m_fnOnRspSubMarketData != NULL) {
 		(*m_fnOnRspSubMarketData)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
 	}
-	//在模拟平台可能这个函数不会触发，所以要自己维护一张已经订阅的合约列表
-	//if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast) &&pSpecificInstrument)
-	//{
-	//	lock_guard<mutex> cl(m_csMapInstrumentIDs);
-
-	//	m_setInstrumentIDs.insert(pSpecificInstrument->InstrumentID);
-	//}
+	printf("Sub_MD_done.\n");
 }
 
 void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -245,15 +223,7 @@ void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecif
 	if (m_fnOnRspUnSubMarketData != NULL) {
 		(*m_fnOnRspUnSubMarketData)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
 	}
-	//模拟平台可能这个函数不会触发
 	printf("UnSub MD done.\n");
-	//if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast)
-	//	&&pSpecificInstrument)
-	//{
-	//	lock_guard<mutex> cl(m_csMapInstrumentIDs);
-
-	//	m_setInstrumentIDs.erase(pSpecificInstrument->InstrumentID);
-	//}
 }
 
 void CMdUserApi::OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) 
@@ -261,13 +231,6 @@ void CMdUserApi::OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecifi
 	if (m_fnOnRspSubForQuoteRsp != NULL) {
 		(*m_fnOnRspSubForQuoteRsp)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
 	}
-	//if (!IsErrorRspInfo(pRspInfo, nRequestID, bIsLast)
-	//	&& pSpecificInstrument)
-	//{
-	//	lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
-
-	//	m_setQuoteInstrumentIDs.insert(pSpecificInstrument->InstrumentID);
-	//}
 }
 
 void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -275,13 +238,6 @@ void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpeci
 	if (m_fnOnRspUnSubForQuoteRsp) {
 		(*m_fnOnRspUnSubForQuoteRsp)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
 	}
-	//if (!IsErrorRspInfo(pRspInfo, nRequestID, bIsLast)
-	//	&& pSpecificInstrument)
-	//{
-	//	lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
-
-	//	m_setQuoteInstrumentIDs.erase(pSpecificInstrument->InstrumentID);
-	//}
 }
 
 void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)

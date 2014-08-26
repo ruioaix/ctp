@@ -5,8 +5,8 @@ static inline CMdUserApi* MD_GetApi(void* md) {
 	return static_cast<CMdUserApi*>(md);
 }
 
-void* MD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd) {
-	return new CMdUserApi(flowpath, servername, bid, iid, pd);
+void* MD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd, char **InstrumentIDs, int InstrumentNum) {
+	return new CMdUserApi(flowpath, servername, bid, iid, pd, InstrumentIDs, InstrumentNum);
 }
 
 void MD_free(void* md) {
