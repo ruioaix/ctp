@@ -3,10 +3,7 @@
 
 #include "ctpcapi.h"
 #include "cpp_api/ThostFtdcMdApi.h"
-
-#include <set>
-#include <string>
-#include <mutex>
+#include <pthread.h>
 
 using namespace std;
 
@@ -105,6 +102,11 @@ private:
 	CThostFtdcDepthMarketDataField *queue;
 	bool hasValueinqueue;
 	int loopL;
+
+	pthread_mutex_t hasValue_mutex;
+	pthread_cond_t hasValue_cond;
+
+	int running;
 };
 
 #endif

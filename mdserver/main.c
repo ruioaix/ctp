@@ -4,6 +4,7 @@
 #include <math.h>
 #include <inttypes.h>
 #include <time.h>
+#include <pthread.h>
 
 void OnFrontConnected_i(void * md) {
 	printf("connect successful.\n");
@@ -28,21 +29,27 @@ void OnRspUserLogin_i(void *md, CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 }
 
 void OnRtnDepthMarketData_i(void* md, CThostFtdcDepthMarketDataField *pDepthMarketData_p) {
-	CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md);
-	long ms;
-	time_t s;
-	struct timespec spec;
-	clock_gettime(CLOCK_REALTIME, &spec);
-	s = spec.tv_sec;
-	ms = round(spec.tv_nsec/1E6);
-	printf("InstrumentID: %s, LastPrice: %f, UpdateTime: %s, UpdateMillisec: %5d, realtime: %"PRIdMAX".%03ld\n", pDepthMarketData->InstrumentID, pDepthMarketData->LastPrice, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, (intmax_t)s, ms);fflush(stdout);
-	printf(" TradingDay: %s\n InstrumentID: %s\n ExchangeID: %s\n ExchangeInstID: %s\n LastPrice: %f\n PreSettlementPrice: %f\n PreClosePrice: %f\n PreOpenInterest: %f\n OpenPrice: %f\n HighestPrice: %f\n LowestPrice: %f\n Volume: %d\n Turnover: %f\n OpenInterest: %f\n ClosePrice: %f\n SettlementPrice: %f\n UpperLimitPrice: %f\n LowerLimitPrice: %f\n PreDelta: %f\n CurrDelta: %f\n UpdateTime: %s\n UpdateMillisec: %d\n BidPrice1: %f\n BidVolume1: %d\n AskPrice1: %f\n AskVolume1: %d\n BidPrice2: %f\n BidVolume2: %d\n AskPrice2: %f\n AskVolume2: %d\n BidPrice3: %f\n BidVolume3: %d\n AskPrice3: %f\n AskVolume3: %d\n BidPrice4: %f\n BidVolume4: %d\n AskPrice4: %f\n AskVolume4: %d\n BidPrice5: %f\n BidVolume5: %d\n AskPrice5: %f\n AskVolume5: %d\n AveragePrice: %f\n ActionDay: %s\n", pDepthMarketData->TradingDay, pDepthMarketData->InstrumentID, pDepthMarketData->ExchangeID, pDepthMarketData->ExchangeInstID, pDepthMarketData->LastPrice, pDepthMarketData->PreSettlementPrice, pDepthMarketData->PreClosePrice, pDepthMarketData->PreOpenInterest, pDepthMarketData->OpenPrice, pDepthMarketData->HighestPrice, pDepthMarketData->LowestPrice, pDepthMarketData->Volume, pDepthMarketData->Turnover, pDepthMarketData->OpenInterest, pDepthMarketData->ClosePrice, pDepthMarketData->SettlementPrice, pDepthMarketData->UpperLimitPrice, pDepthMarketData->LowerLimitPrice, pDepthMarketData->PreDelta, pDepthMarketData->CurrDelta, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, pDepthMarketData->BidPrice1, pDepthMarketData->BidVolume1, pDepthMarketData->AskPrice1, pDepthMarketData->AskVolume1, pDepthMarketData->BidPrice2, pDepthMarketData->BidVolume2, pDepthMarketData->AskPrice2, pDepthMarketData->AskVolume2, pDepthMarketData->BidPrice3, pDepthMarketData->BidVolume3, pDepthMarketData->AskPrice3, pDepthMarketData->AskVolume3, pDepthMarketData->BidPrice4, pDepthMarketData->BidVolume4, pDepthMarketData->AskPrice4, pDepthMarketData->AskVolume4, pDepthMarketData->BidPrice5, pDepthMarketData->BidVolume5, pDepthMarketData->AskPrice5, pDepthMarketData->AskVolume5, pDepthMarketData->AveragePrice, pDepthMarketData->ActionDay);           
-	printf("/********************************************************************************************************/\n");
 
 }
 
 void OnRtnForQuoteRsp_i(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp) {
 	//printf("InstrumentID: %s, ForQuoteSysID: %s\n", pForQuoteRsp->InstrumentID, pForQuoteRsp->ForQuoteSysID);fflush(stdout);
+}
+
+void *ProcessDMD(void *md) {
+	while (1) {
+		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md);
+		printf("now, I get DMD msg.\n");
+		long ms;
+		time_t s;
+		struct timespec spec;
+		clock_gettime(CLOCK_REALTIME, &spec);
+		s = spec.tv_sec;
+		ms = round(spec.tv_nsec/1E6);
+		printf("InstrumentID: %s, LastPrice: %f, UpdateTime: %s, UpdateMillisec: %5d, realtime: %"PRIdMAX".%03ld\n", pDepthMarketData->InstrumentID, pDepthMarketData->LastPrice, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, (intmax_t)s, ms);fflush(stdout);
+		//printf(" TradingDay: %s\n InstrumentID: %s\n ExchangeID: %s\n ExchangeInstID: %s\n LastPrice: %f\n PreSettlementPrice: %f\n PreClosePrice: %f\n PreOpenInterest: %f\n OpenPrice: %f\n HighestPrice: %f\n LowestPrice: %f\n Volume: %d\n Turnover: %f\n OpenInterest: %f\n ClosePrice: %f\n SettlementPrice: %f\n UpperLimitPrice: %f\n LowerLimitPrice: %f\n PreDelta: %f\n CurrDelta: %f\n UpdateTime: %s\n UpdateMillisec: %d\n BidPrice1: %f\n BidVolume1: %d\n AskPrice1: %f\n AskVolume1: %d\n BidPrice2: %f\n BidVolume2: %d\n AskPrice2: %f\n AskVolume2: %d\n BidPrice3: %f\n BidVolume3: %d\n AskPrice3: %f\n AskVolume3: %d\n BidPrice4: %f\n BidVolume4: %d\n AskPrice4: %f\n AskVolume4: %d\n BidPrice5: %f\n BidVolume5: %d\n AskPrice5: %f\n AskVolume5: %d\n AveragePrice: %f\n ActionDay: %s\n", pDepthMarketData->TradingDay, pDepthMarketData->InstrumentID, pDepthMarketData->ExchangeID, pDepthMarketData->ExchangeInstID, pDepthMarketData->LastPrice, pDepthMarketData->PreSettlementPrice, pDepthMarketData->PreClosePrice, pDepthMarketData->PreOpenInterest, pDepthMarketData->OpenPrice, pDepthMarketData->HighestPrice, pDepthMarketData->LowestPrice, pDepthMarketData->Volume, pDepthMarketData->Turnover, pDepthMarketData->OpenInterest, pDepthMarketData->ClosePrice, pDepthMarketData->SettlementPrice, pDepthMarketData->UpperLimitPrice, pDepthMarketData->LowerLimitPrice, pDepthMarketData->PreDelta, pDepthMarketData->CurrDelta, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, pDepthMarketData->BidPrice1, pDepthMarketData->BidVolume1, pDepthMarketData->AskPrice1, pDepthMarketData->AskVolume1, pDepthMarketData->BidPrice2, pDepthMarketData->BidVolume2, pDepthMarketData->AskPrice2, pDepthMarketData->AskVolume2, pDepthMarketData->BidPrice3, pDepthMarketData->BidVolume3, pDepthMarketData->AskPrice3, pDepthMarketData->AskVolume3, pDepthMarketData->BidPrice4, pDepthMarketData->BidVolume4, pDepthMarketData->AskPrice4, pDepthMarketData->AskVolume4, pDepthMarketData->BidPrice5, pDepthMarketData->BidVolume5, pDepthMarketData->AskPrice5, pDepthMarketData->AskVolume5, pDepthMarketData->AveragePrice, pDepthMarketData->ActionDay);           
+		printf("/********************************************************************************************************/\n");
+	}
 }
 
 int main(int argc, char **argv) {
@@ -54,9 +61,11 @@ int main(int argc, char **argv) {
 	MD_RegOnRspUserLogin(md, OnRspUserLogin_i);
 	MD_RegOnRtnDepthMarketData(md, OnRtnDepthMarketData_i);
 	MD_RegOnRtnForQuoteRsp(md, OnRtnForQuoteRsp_i);
+	pthread_t p;
+	pthread_create(&p, NULL, ProcessDMD, md);
 	MD_init(md);
+	sleep(30);
 
-	sleep(9);
 	MD_free(md);
 	return 0;
 }

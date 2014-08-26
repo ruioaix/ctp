@@ -52,6 +52,9 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 	header = queue;
 	tail = queue;
 	hasValueinqueue = false;
+	pthread_mutex_init(&hasValue_mutex, NULL);
+	pthread_cond_init(&hasValue_cond, NULL);
+	running = 1;
 }
 
 //delete
@@ -305,8 +308,13 @@ void CMdUserApi::GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo)
 void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData) {
 	*tail=*pDepthMarketData;
 	tail++;
-	hasValueinqueue = true;
 	if (tail == queue + loopL) tail = queue;
+	if (hasValueinqueue == false) {
+		pthread_mutex_lock(&hasValue_mutex);
+		hasValueinqueue = true;
+		pthread_cond_signal(&hasValue_cond);
+		pthread_mutex_unlock(&hasValue_mutex);
+	}
 }
 
 CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ() {
@@ -314,8 +322,25 @@ CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ() {
 		CThostFtdcDepthMarketDataField *h = header;
 		header++;
 		if (header == queue+loopL) header = queue;
-		//if (header == tail) hasValueinqueue = false;
+		if (header == tail) {
+			pthread_mutex_lock(&hasValue_mutex);
+			hasValueinqueue = false;
+			pthread_mutex_unlock(&hasValue_mutex);
+		}
 		return h;
 	}
-	else return NULL;
+	else {
+		pthread_mutex_lock(&hasValue_mutex);
+		pthread_cond_wait(&hasValue_cond, &hasValue_mutex);
+
+		CThostFtdcDepthMarketDataField *h = header;
+		header++;
+		if (header == queue+loopL) header = queue;
+		if (header == tail) {
+			hasValueinqueue = false;
+		}
+
+		pthread_mutex_unlock(&hasValue_mutex);
+		return h;
+	}
 }
