@@ -319,29 +319,18 @@ void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData) {
 }
 
 CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ() {
-	if (hasValueinqueue) {
-		CThostFtdcDepthMarketDataField *h = header;
-		header++;
-		if (header == queue+loopL) header = queue;
-		if (header == tail) {
-			pthread_mutex_lock(&hasValue_mutex);
-			hasValueinqueue = false;
-			pthread_mutex_unlock(&hasValue_mutex);
-		}
-		return h;
-	}
-	else {
-		pthread_mutex_lock(&hasValue_mutex);
+	pthread_mutex_lock(&hasValue_mutex);
+	if (hasValueinqueue == false) {
 		pthread_cond_wait(&hasValue_cond, &hasValue_mutex);
-
-		CThostFtdcDepthMarketDataField *h = header;
-		header++;
-		if (header == queue+loopL) header = queue;
-		if (header == tail) {
-			hasValueinqueue = false;
-		}
-
-		pthread_mutex_unlock(&hasValue_mutex);
-		return h;
 	}
+	pthread_mutex_unlock(&hasValue_mutex);
+	CThostFtdcDepthMarketDataField *h = header;
+	header++;
+	if (header == queue+loopL) header = queue;
+	if (header == tail) {
+		pthread_mutex_lock(&hasValue_mutex);
+		hasValueinqueue = false;
+		pthread_mutex_unlock(&hasValue_mutex);
+	}
+	return h;
 }
