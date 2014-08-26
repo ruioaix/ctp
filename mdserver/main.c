@@ -52,6 +52,45 @@ void *ProcessDMD(void *md) {
 	}
 }
 
+#include <bson.h>
+#include <mongoc.h>
+
+void insert_mongodb() {
+	mongoc_client_t *client;
+	mongoc_collection_t *collection;
+	//mongoc_cursor_t *cursor;
+	bson_error_t error;
+	bson_oid_t oid;
+	bson_t *doc;
+
+	mongoc_init ();
+
+	client = mongoc_client_new ("mongodb://localhost:27017/");
+	collection = mongoc_client_get_collection (client, "test", "test");
+
+	doc = bson_new ();
+	bson_oid_init (&oid, NULL);
+	BSON_APPEND_OID (doc, "_id", &oid);
+	BSON_APPEND_UTF8 (doc, "hello", "world");
+
+	if (!mongoc_collection_insert (collection, MONGOC_INSERT_NONE, doc, NULL, &error)) {
+		printf ("Insert failed: %s\n", error.message);
+	}
+
+	bson_destroy (doc);
+
+	doc = bson_new ();
+	BSON_APPEND_OID (doc, "_id", &oid);
+
+	//if (!mongoc_collection_delete (collection, MONGOC_DELETE_SINGLE_REMOVE, doc, NULL, &error)) {
+	//	printf ("Delete failed: %s\n", error.message);
+	//}
+
+	bson_destroy (doc);
+	mongoc_collection_destroy (collection);
+	mongoc_client_destroy (client);
+}
+
 int main(int argc, char **argv) {
 	//void *md = MD_create("/tmp/md", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
 	char *i1[2] = {"IF1409", "IF1410"};
@@ -65,6 +104,8 @@ int main(int argc, char **argv) {
 	pthread_create(&p, NULL, ProcessDMD, md);
 	MD_init(md);
 	sleep(30);
+
+	insert_mongodb();
 
 	MD_free(md);
 	return 0;

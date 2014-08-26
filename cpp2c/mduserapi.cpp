@@ -65,6 +65,7 @@ CMdUserApi::~CMdUserApi(void)
 		m_pApi->Release();
 		m_pApi = NULL;
 	}
+	free(queue);
 }
 
 /***13 functions, merge api functions in MdApi class to MdSpi class****************************************************/
