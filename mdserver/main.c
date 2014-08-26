@@ -28,6 +28,7 @@ void OnRspUserLogin_i(void *md, CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 }
 
 void OnRtnDepthMarketData_i(void* md, CThostFtdcDepthMarketDataField *pDepthMarketData) {
+	//CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md);
 	long ms;
 	time_t s;
 	struct timespec spec;
@@ -53,6 +54,7 @@ int main(int argc, char **argv) {
 	MD_RegOnRspUserLogin(md, OnRspUserLogin_i);
 	MD_RegOnRtnDepthMarketData(md, OnRtnDepthMarketData_i);
 	MD_RegOnRtnForQuoteRsp(md, OnRtnForQuoteRsp_i);
+
 	MD_init(md);
 	sleep(9);
 	MD_free(md);

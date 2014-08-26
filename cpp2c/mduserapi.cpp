@@ -46,6 +46,12 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 	m_fnOnRspUnSubForQuoteRsp = NULL;
 	m_fnOnRtnDepthMarketData = NULL;
 	m_fnOnRtnForQuoteRsp = NULL;
+
+	loopL = 100;
+	queue = (CThostFtdcDepthMarketDataField *)malloc(loopL * sizeof(CThostFtdcDepthMarketDataField));
+	header = queue;
+	tail = queue;
+	hasValueinqueue = false;
 }
 
 //delete
@@ -242,6 +248,7 @@ void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpeci
 
 void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
+	input_DMDQ(pDepthMarketData);
 	if (m_fnOnRtnDepthMarketData != NULL) {
 		(*m_fnOnRtnDepthMarketData)(this, pDepthMarketData);
 	}
@@ -295,3 +302,20 @@ void CMdUserApi::GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo)
 	}
 }
 
+void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData) {
+	*tail=*pDepthMarketData;
+	tail++;
+	hasValueinqueue = true;
+	if (tail == queue + loopL) tail = queue;
+}
+
+CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ() {
+	if (hasValueinqueue) {
+		CThostFtdcDepthMarketDataField *h = header;
+		header++;
+		if (header == queue+loopL) header = queue;
+		//if (header == tail) hasValueinqueue = false;
+		return h;
+	}
+	else return NULL;
+}

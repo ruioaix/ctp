@@ -10,8 +10,10 @@
 
 using namespace std;
 
+
 class CMdUserApi : public CThostFtdcMdSpi
 {
+
 public:
 	//create api object. 
 	CMdUserApi(char *flowpath, char *servername, char *bid, char *iid, char *pd, char **InstrumentIDs, int InstrumentNum);
@@ -70,6 +72,8 @@ public:
 	void RegisterCallback_ordmd(fnOnRtnDepthMarketData pCallback) { m_fnOnRtnDepthMarketData = pCallback; }
 	void RegisterCallback_orfqr(fnOnRtnForQuoteRsp pCallback) { m_fnOnRtnForQuoteRsp = pCallback; }
 
+	void input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData);
+	CThostFtdcDepthMarketDataField *output_DMDQ();
 private:
 	CThostFtdcMdApi*			m_pApi;					//––«ÈAPI
 
@@ -96,6 +100,11 @@ private:
 	fnOnRtnDepthMarketData m_fnOnRtnDepthMarketData;
 	fnOnRtnForQuoteRsp m_fnOnRtnForQuoteRsp;
 	
+	CThostFtdcDepthMarketDataField *header;
+	CThostFtdcDepthMarketDataField *tail;
+	CThostFtdcDepthMarketDataField *queue;
+	bool hasValueinqueue;
+	int loopL;
 };
 
 #endif
