@@ -6,6 +6,15 @@
 #include <time.h>
 #include <pthread.h>
 
+#include <bson.h>
+#include <mongoc.h>
+
+struct MongoIM {
+	void *md;
+	mongoc_client_t *client;
+	mongoc_collection_t *collection;
+};
+
 void OnFrontConnected_i(void * md) {
 	printf("connect successful.\n");
 }
@@ -36,7 +45,36 @@ void OnRtnForQuoteRsp_i(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp) {
 	//printf("InstrumentID: %s, ForQuoteSysID: %s\n", pForQuoteRsp->InstrumentID, pForQuoteRsp->ForQuoteSysID);fflush(stdout);
 }
 
-void *ProcessDMD(void *md) {
+void insert_mongodb(mongoc_client_t *client, mongoc_collection_t *collection, CThostFtdcDepthMarketDataField *pd) {
+
+	bson_t *doc = BCON_NEW ("TradingDay", BCON_UTF8 (pd->TradingDay),
+			"InstrumentID", BCON_UTF8 (pd->InstrumentID),
+			"ExchangeID", BCON_UTF8 (pd->ExchangeID),
+			"LastPrice", BCON_DOUBLE (pd->LastPrice),
+			"UpdateTime", BCON_UTF8(pd->UpdateTime)
+//			"hits", BCON_INT32 (2873),
+//			"home_runs", BCON_INT32 (714),
+//			"rbi", BCON_INT32 (2213),
+//			"nicknames", "[",
+//			BCON_UTF8 ("the Sultan of Swat"),
+//			BCON_UTF8 ("the Bambino"),
+//			"]"
+			);
+
+	if (!mongoc_collection_insert (collection, MONGOC_INSERT_NONE, doc, NULL, NULL)) {
+		printf("error insert db\n");
+	}
+
+	bson_destroy(doc);
+
+}
+
+
+void *ProcessDMD(void *mim_p) {
+	struct MongoIM *mim = mim_p;
+	void *md = mim->md;
+	mongoc_client_t *client = mim->client;
+	mongoc_collection_t *collection = mim->collection;
 	while (1) {
 		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md);
 		printf("now, I get DMD msg.\n");
@@ -49,46 +87,8 @@ void *ProcessDMD(void *md) {
 		printf("InstrumentID: %s, LastPrice: %f, UpdateTime: %s, UpdateMillisec: %5d, realtime: %"PRIdMAX".%03ld\n", pDepthMarketData->InstrumentID, pDepthMarketData->LastPrice, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, (intmax_t)s, ms);fflush(stdout);
 		//printf(" TradingDay: %s\n InstrumentID: %s\n ExchangeID: %s\n ExchangeInstID: %s\n LastPrice: %f\n PreSettlementPrice: %f\n PreClosePrice: %f\n PreOpenInterest: %f\n OpenPrice: %f\n HighestPrice: %f\n LowestPrice: %f\n Volume: %d\n Turnover: %f\n OpenInterest: %f\n ClosePrice: %f\n SettlementPrice: %f\n UpperLimitPrice: %f\n LowerLimitPrice: %f\n PreDelta: %f\n CurrDelta: %f\n UpdateTime: %s\n UpdateMillisec: %d\n BidPrice1: %f\n BidVolume1: %d\n AskPrice1: %f\n AskVolume1: %d\n BidPrice2: %f\n BidVolume2: %d\n AskPrice2: %f\n AskVolume2: %d\n BidPrice3: %f\n BidVolume3: %d\n AskPrice3: %f\n AskVolume3: %d\n BidPrice4: %f\n BidVolume4: %d\n AskPrice4: %f\n AskVolume4: %d\n BidPrice5: %f\n BidVolume5: %d\n AskPrice5: %f\n AskVolume5: %d\n AveragePrice: %f\n ActionDay: %s\n", pDepthMarketData->TradingDay, pDepthMarketData->InstrumentID, pDepthMarketData->ExchangeID, pDepthMarketData->ExchangeInstID, pDepthMarketData->LastPrice, pDepthMarketData->PreSettlementPrice, pDepthMarketData->PreClosePrice, pDepthMarketData->PreOpenInterest, pDepthMarketData->OpenPrice, pDepthMarketData->HighestPrice, pDepthMarketData->LowestPrice, pDepthMarketData->Volume, pDepthMarketData->Turnover, pDepthMarketData->OpenInterest, pDepthMarketData->ClosePrice, pDepthMarketData->SettlementPrice, pDepthMarketData->UpperLimitPrice, pDepthMarketData->LowerLimitPrice, pDepthMarketData->PreDelta, pDepthMarketData->CurrDelta, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, pDepthMarketData->BidPrice1, pDepthMarketData->BidVolume1, pDepthMarketData->AskPrice1, pDepthMarketData->AskVolume1, pDepthMarketData->BidPrice2, pDepthMarketData->BidVolume2, pDepthMarketData->AskPrice2, pDepthMarketData->AskVolume2, pDepthMarketData->BidPrice3, pDepthMarketData->BidVolume3, pDepthMarketData->AskPrice3, pDepthMarketData->AskVolume3, pDepthMarketData->BidPrice4, pDepthMarketData->BidVolume4, pDepthMarketData->AskPrice4, pDepthMarketData->AskVolume4, pDepthMarketData->BidPrice5, pDepthMarketData->BidVolume5, pDepthMarketData->AskPrice5, pDepthMarketData->AskVolume5, pDepthMarketData->AveragePrice, pDepthMarketData->ActionDay);           
 		printf("/********************************************************************************************************/\n");
+		insert_mongodb(client, collection, pDepthMarketData);
 	}
-}
-
-#include <bson.h>
-#include <mongoc.h>
-
-void insert_mongodb() {
-	mongoc_client_t *client;
-	mongoc_collection_t *collection;
-	//mongoc_cursor_t *cursor;
-	bson_error_t error;
-	bson_oid_t oid;
-	bson_t *doc;
-
-	mongoc_init ();
-
-	client = mongoc_client_new ("mongodb://localhost:27017/");
-	collection = mongoc_client_get_collection (client, "test", "test");
-
-	doc = bson_new ();
-	bson_oid_init (&oid, NULL);
-	BSON_APPEND_OID (doc, "_id", &oid);
-	BSON_APPEND_UTF8 (doc, "hello", "world");
-
-	if (!mongoc_collection_insert (collection, MONGOC_INSERT_NONE, doc, NULL, &error)) {
-		printf ("Insert failed: %s\n", error.message);
-	}
-
-	bson_destroy (doc);
-
-	doc = bson_new ();
-	BSON_APPEND_OID (doc, "_id", &oid);
-
-	//if (!mongoc_collection_delete (collection, MONGOC_DELETE_SINGLE_REMOVE, doc, NULL, &error)) {
-	//	printf ("Delete failed: %s\n", error.message);
-	//}
-
-	bson_destroy (doc);
-	mongoc_collection_destroy (collection);
-	mongoc_client_destroy (client);
 }
 
 int main(int argc, char **argv) {
@@ -100,12 +100,26 @@ int main(int argc, char **argv) {
 	MD_RegOnRspUserLogin(md, OnRspUserLogin_i);
 	MD_RegOnRtnDepthMarketData(md, OnRtnDepthMarketData_i);
 	MD_RegOnRtnForQuoteRsp(md, OnRtnForQuoteRsp_i);
+
+	mongoc_client_t *client;
+	mongoc_collection_t *collection;
+	mongoc_init ();
+	client = mongoc_client_new ("mongodb://localhost:27017/");
+	collection = mongoc_client_get_collection (client, "ctp", "ctp");
+
+	struct MongoIM mim;
+	mim.client = client;
+	mim.collection = collection;
+	mim.md = md;
+
 	pthread_t p;
-	pthread_create(&p, NULL, ProcessDMD, md);
+	pthread_create(&p, NULL, ProcessDMD, &mim);
+
 	MD_init(md);
 	sleep(30);
 
-	insert_mongodb();
+	mongoc_collection_destroy (collection);
+	mongoc_client_destroy (client);
 
 	MD_free(md);
 	return 0;
