@@ -45,7 +45,7 @@ void OnRtnForQuoteRsp_i(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp) {
 	//printf("InstrumentID: %s, ForQuoteSysID: %s\n", pForQuoteRsp->InstrumentID, pForQuoteRsp->ForQuoteSysID);fflush(stdout);
 }
 
-void insert_mongodb(mongoc_client_t *client, mongoc_collection_t *collection, CThostFtdcDepthMarketDataField *pd) {
+void insert_mongodb(mongoc_client_t *client, mongoc_collection_t *collection, CThostFtdcDepthMarketDataField *pd, double arrivedtime, double processtime) {
 
 	bson_t *doc = BCON_NEW (
 			"TradingDay", BCON_UTF8 (pd->TradingDay),
@@ -90,7 +90,10 @@ void insert_mongodb(mongoc_client_t *client, mongoc_collection_t *collection, CT
 			"AskPrice5", BCON_DOUBLE (pd->AskPrice5),
 			"AskVolume5", BCON_INT32 (pd->AskVolume5),
 			"AveragePrice", BCON_DOUBLE (pd->AveragePrice),
-			"ActionDay", BCON_UTF8 (pd->ActionDay)
+			"ActionDay", BCON_UTF8 (pd->ActionDay),
+			"DMDMsgArrivedTime", BCON_DOUBLE (arrivedtime),
+			"DMDMsgProcessTime", BCON_DOUBLE (processtime),
+			"DMDMsgDelayedTime", BCON_DOUBLE (processtime - arrivedtime)
 				);
 
 	if (!mongoc_collection_insert (collection, MONGOC_INSERT_NONE, doc, NULL, NULL)) {
@@ -108,17 +111,15 @@ void *ProcessDMD(void *mim_p) {
 	mongoc_client_t *client = mim->client;
 	mongoc_collection_t *collection = mim->collection;
 	while (1) {
-		double arrivetime;
-		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md, &arrivetime);
+		double arrivedtime;
+		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md, &arrivedtime);
 		struct timeval tv;
 		gettimeofday (&tv, NULL);
 		double processtime = tv.tv_sec + ((double)(tv.tv_usec))/1E6;
-		printf("arrived time: %.6f\n", arrivetime);
-		printf("process time: %.6f\n", processtime);
-		printf("delayed time: %.6f\n", processtime-arrivetime);
+		printf("arrived time: %.6f, process time: %.6f, delayed time: %.6f\n", arrivedtime, processtime, processtime-arrivedtime);
 
 		printf("/********************************************************************************************************/\n");
-		insert_mongodb(client, collection, pDepthMarketData);
+		insert_mongodb(client, collection, pDepthMarketData, arrivedtime, processtime);
 	}
 }
 
