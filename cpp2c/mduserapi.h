@@ -69,7 +69,7 @@ public:
 	void RegisterCallback_ordmd(fnOnRtnDepthMarketData pCallback) { m_fnOnRtnDepthMarketData = pCallback; }
 	void RegisterCallback_orfqr(fnOnRtnForQuoteRsp pCallback) { m_fnOnRtnForQuoteRsp = pCallback; }
 
-	void input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData);
+	void input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData, long sec, int usec);
 	CThostFtdcDepthMarketDataField *output_DMDQ();
 private:
 	CThostFtdcMdApi*			m_pApi;					//––«ÈAPI

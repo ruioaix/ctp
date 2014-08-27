@@ -5,6 +5,7 @@
 #include <vector>
 #include <mutex>
 #include <sys/stat.h>
+#include <sys/time.h>
 
 #define delimiter ",;"
 
@@ -152,7 +153,7 @@ int CMdUserApi::ReqUserLogin()
 	strncpy(request.BrokerID, m_szBrokerId, sizeof(TThostFtdcBrokerIDType));
 	strncpy(request.UserID, m_szInvestorId, sizeof(TThostFtdcInvestorIDType));
 	strncpy(request.Password, m_szPassword, sizeof(TThostFtdcPasswordType));
-	
+
 	//只有这一处用到了m_nRequestID，没有必要每次重连m_nRequestID都从0开始
 	return m_pApi->ReqUserLogin(&request,++m_nRequestID);
 }
@@ -253,7 +254,11 @@ void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpeci
 
 void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	input_DMDQ(pDepthMarketData);
+	struct timeval tv;
+	gettimeofday (&tv, NULL);
+	//printf("%ld.%06ld\n", tv.tv_sec, tv.tv_usec);
+	input_DMDQ(pDepthMarketData, tv.tv_sec, tv.tv_usec);
+
 	if (m_fnOnRtnDepthMarketData != NULL) {
 		(*m_fnOnRtnDepthMarketData)(this, pDepthMarketData);
 	}
@@ -286,28 +291,28 @@ void CMdUserApi::GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo)
 
 	switch(pRspInfo->ErrorID)
 	{
-	case 0x1001:
-		strcpy(pRspInfo->ErrorMsg,"0x1001 网络读失败");
-		break;
-	case 0x1002:
-		strcpy(pRspInfo->ErrorMsg,"0x1002 网络写失败");
-		break;
-	case 0x2001:
-		strcpy(pRspInfo->ErrorMsg,"0x2001 接收心跳超时");
-		break;
-	case 0x2002:
-		strcpy(pRspInfo->ErrorMsg,"0x2002 发送心跳失败");
-		break;
-	case 0x2003:
-		strcpy(pRspInfo->ErrorMsg,"0x2003 收到错误报文");
-		break;
-	default:
-		sprintf(pRspInfo->ErrorMsg,"%x 未知错误", pRspInfo->ErrorID);
-		break;
+		case 0x1001:
+			strcpy(pRspInfo->ErrorMsg,"0x1001 网络读失败");
+			break;
+		case 0x1002:
+			strcpy(pRspInfo->ErrorMsg,"0x1002 网络写失败");
+			break;
+		case 0x2001:
+			strcpy(pRspInfo->ErrorMsg,"0x2001 接收心跳超时");
+			break;
+		case 0x2002:
+			strcpy(pRspInfo->ErrorMsg,"0x2002 发送心跳失败");
+			break;
+		case 0x2003:
+			strcpy(pRspInfo->ErrorMsg,"0x2003 收到错误报文");
+			break;
+		default:
+			sprintf(pRspInfo->ErrorMsg,"%x 未知错误", pRspInfo->ErrorID);
+			break;
 	}
 }
 
-void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData) {
+void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData, long tv_sec, int tv_usec) {
 	*tail=*pDepthMarketData;
 	tail++;
 	if (tail == queue + loopL) tail = queue;

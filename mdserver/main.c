@@ -76,8 +76,12 @@ void *ProcessDMD(void *mim_p) {
 	mongoc_client_t *client = mim->client;
 	mongoc_collection_t *collection = mim->collection;
 	while (1) {
+
 		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md);
-		printf("now, I get DMD msg.\n");
+		struct timeval tv;
+		gettimeofday (&tv, NULL);
+		printf("%ld.%06ld\n", tv.tv_sec, tv.tv_usec);
+
 		long ms;
 		time_t s;
 		struct timespec spec;
@@ -93,8 +97,8 @@ void *ProcessDMD(void *mim_p) {
 
 int main(int argc, char **argv) {
 	//void *md = MD_create("/tmp/md", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
-	char *i1[2] = {"IF1409", "IF1410"};
-	void *md = MD_create("/tmp/md", "tcp://27.17.62.149:40213", "1035", "00000008", "123456", i1, 2);
+	char *i1[2] = {"IF1409"};
+	void *md = MD_create("/tmp/md", "tcp://27.17.62.149:40213", "1035", "00000008", "123456", i1, 1);
 	MD_RegOnFrontConnected(md, OnFrontConnected_i);
 	MD_RegOnFrontDisconnected(md, OnFrontDisconnected_i);
 	MD_RegOnRspUserLogin(md, OnRspUserLogin_i);
