@@ -351,7 +351,7 @@ int MD_unSubscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount);
 int MD_reqUserLogin(void *md);
 int MD_reqUserLogout(void *md);
 
-CThostFtdcDepthMarketDataField *MD_getOneDMDmsg(void *md);
+CThostFtdcDepthMarketDataField *MD_getOneDMDmsg(void *md, double *arrivetime);
 
 #ifdef __cplusplus
 }

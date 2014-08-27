@@ -50,6 +50,13 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 
 	loopL = 100;
 	queue = (CThostFtdcDepthMarketDataField *)malloc(loopL * sizeof(CThostFtdcDepthMarketDataField));
+	intime = (double *)malloc(loopL * sizeof(double));
+	int i;
+	for (i = 0; i < loopL; ++i) {
+		intime[i] = -1;
+	}
+	itm = 0;
+	otm = 0;
 	header = queue;
 	tail = queue;
 	pthread_mutex_init(&hasValue_mutex, NULL);
@@ -68,6 +75,7 @@ CMdUserApi::~CMdUserApi(void)
 	pthread_mutex_destroy(&hasValue_mutex);
 	pthread_cond_destroy(&hasValue_cond);
 	free(queue);
+	free(intime);
 }
 
 /***13 functions, merge api functions in MdApi class to MdSpi class****************************************************/
@@ -257,7 +265,8 @@ void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMark
 	struct timeval tv;
 	gettimeofday (&tv, NULL);
 	//printf("%ld.%06ld\n", tv.tv_sec, tv.tv_usec);
-	input_DMDQ(pDepthMarketData, tv.tv_sec, tv.tv_usec);
+	double t = tv.tv_sec + ((double)(tv.tv_usec))/1E6;
+	input_DMDQ(pDepthMarketData, t);
 
 	if (m_fnOnRtnDepthMarketData != NULL) {
 		(*m_fnOnRtnDepthMarketData)(this, pDepthMarketData);
@@ -312,16 +321,17 @@ void CMdUserApi::GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo)
 	}
 }
 
-void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData, long tv_sec, int tv_usec) {
+void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData, double t) {
 	*tail=*pDepthMarketData;
 	tail++;
+	intime[itm++] = t;
 	if (tail == queue + loopL) tail = queue;
 	pthread_mutex_lock(&hasValue_mutex);
 	pthread_cond_signal(&hasValue_cond);
 	pthread_mutex_unlock(&hasValue_mutex);
 }
 
-CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ() {
+CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ(double *arrivetime) {
 	if (header == tail) {
 		pthread_mutex_lock(&hasValue_mutex);
 		pthread_cond_wait(&hasValue_cond, &hasValue_mutex);
@@ -329,6 +339,7 @@ CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ() {
 	}
 	CThostFtdcDepthMarketDataField *h = header;
 	header++;
+	*arrivetime = intime[otm++];
 	if (header == queue+loopL) header = queue;
 	return h;
 }

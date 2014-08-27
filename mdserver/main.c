@@ -47,19 +47,51 @@ void OnRtnForQuoteRsp_i(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp) {
 
 void insert_mongodb(mongoc_client_t *client, mongoc_collection_t *collection, CThostFtdcDepthMarketDataField *pd) {
 
-	bson_t *doc = BCON_NEW ("TradingDay", BCON_UTF8 (pd->TradingDay),
+	bson_t *doc = BCON_NEW (
+			"TradingDay", BCON_UTF8 (pd->TradingDay),
 			"InstrumentID", BCON_UTF8 (pd->InstrumentID),
 			"ExchangeID", BCON_UTF8 (pd->ExchangeID),
 			"LastPrice", BCON_DOUBLE (pd->LastPrice),
-			"UpdateTime", BCON_UTF8(pd->UpdateTime)
-//			"hits", BCON_INT32 (2873),
-//			"home_runs", BCON_INT32 (714),
-//			"rbi", BCON_INT32 (2213),
-//			"nicknames", "[",
-//			BCON_UTF8 ("the Sultan of Swat"),
-//			BCON_UTF8 ("the Bambino"),
-//			"]"
-			);
+			"PreSettlementPrice", BCON_DOUBLE (pd->PreSettlementPrice),
+			"PreClosePrice", BCON_DOUBLE (pd->PreClosePrice),
+			"PreOpenInterest", BCON_DOUBLE (pd->PreOpenInterest),
+			"OpenPrice", BCON_DOUBLE (pd->OpenPrice),
+			"HighestPrice", BCON_DOUBLE (pd->HighestPrice),
+			"LowestPrice", BCON_DOUBLE (pd->LowestPrice),
+			"Volume", BCON_INT32 (pd->Volume),
+			"Turnover", BCON_DOUBLE (pd->Turnover),
+			"OpenInterest", BCON_DOUBLE (pd->OpenInterest),
+			"ClosePrice", BCON_DOUBLE (pd->ClosePrice),
+			"SettlementPrice", BCON_DOUBLE (pd->SettlementPrice),
+			"UpperLimitPrice", BCON_DOUBLE (pd->UpperLimitPrice),
+			"LowerLimitPrice", BCON_DOUBLE (pd->LowerLimitPrice),
+			"PreDelta", BCON_DOUBLE (pd->PreDelta),
+			"CurrDelta", BCON_DOUBLE (pd->CurrDelta),
+			"UpdateTime", BCON_UTF8 (pd->UpdateTime),
+			"UpdateMillisec", BCON_INT32 (pd->UpdateMillisec),
+			"BidPrice1", BCON_DOUBLE (pd->BidPrice1),
+			"BidVolume1", BCON_INT32 (pd->BidVolume1),
+			"AskPrice1", BCON_DOUBLE (pd->AskPrice1),
+			"AskVolume1", BCON_INT32 (pd->AskVolume1),
+			"BidPrice2", BCON_DOUBLE (pd->BidPrice2),
+			"BidVolume2", BCON_INT32 (pd->BidVolume2),
+			"AskPrice2", BCON_DOUBLE (pd->AskPrice2),
+			"AskVolume2", BCON_INT32 (pd->AskVolume2),
+			"BidPrice3", BCON_DOUBLE (pd->BidPrice3),
+			"BidVolume3", BCON_INT32 (pd->BidVolume3),
+			"AskPrice3", BCON_DOUBLE (pd->AskPrice3),
+			"AskVolume3", BCON_INT32 (pd->AskVolume3),
+			"BidPrice4", BCON_DOUBLE (pd->BidPrice4),
+			"BidVolume4", BCON_INT32 (pd->BidVolume4),
+			"AskPrice4", BCON_DOUBLE (pd->AskPrice4),
+			"AskVolume4", BCON_INT32 (pd->AskVolume4),
+			"BidPrice5", BCON_DOUBLE (pd->BidPrice5),
+			"BidVolume5", BCON_INT32 (pd->BidVolume5),
+			"AskPrice5", BCON_DOUBLE (pd->AskPrice5),
+			"AskVolume5", BCON_INT32 (pd->AskVolume5),
+			"AveragePrice", BCON_DOUBLE (pd->AveragePrice),
+			"ActionDay", BCON_UTF8 (pd->ActionDay)
+				);
 
 	if (!mongoc_collection_insert (collection, MONGOC_INSERT_NONE, doc, NULL, NULL)) {
 		printf("error insert db\n");
@@ -76,20 +108,15 @@ void *ProcessDMD(void *mim_p) {
 	mongoc_client_t *client = mim->client;
 	mongoc_collection_t *collection = mim->collection;
 	while (1) {
-
-		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md);
+		double arrivetime;
+		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md, &arrivetime);
 		struct timeval tv;
 		gettimeofday (&tv, NULL);
-		printf("%ld.%06ld\n", tv.tv_sec, tv.tv_usec);
+		double processtime = tv.tv_sec + ((double)(tv.tv_usec))/1E6;
+		printf("arrived time: %.6f\n", arrivetime);
+		printf("process time: %.6f\n", processtime);
+		printf("delayed time: %.6f\n", processtime-arrivetime);
 
-		long ms;
-		time_t s;
-		struct timespec spec;
-		clock_gettime(CLOCK_REALTIME, &spec);
-		s = spec.tv_sec;
-		ms = round(spec.tv_nsec/1E6);
-		printf("InstrumentID: %s, LastPrice: %f, UpdateTime: %s, UpdateMillisec: %5d, realtime: %"PRIdMAX".%03ld\n", pDepthMarketData->InstrumentID, pDepthMarketData->LastPrice, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, (intmax_t)s, ms);fflush(stdout);
-		//printf(" TradingDay: %s\n InstrumentID: %s\n ExchangeID: %s\n ExchangeInstID: %s\n LastPrice: %f\n PreSettlementPrice: %f\n PreClosePrice: %f\n PreOpenInterest: %f\n OpenPrice: %f\n HighestPrice: %f\n LowestPrice: %f\n Volume: %d\n Turnover: %f\n OpenInterest: %f\n ClosePrice: %f\n SettlementPrice: %f\n UpperLimitPrice: %f\n LowerLimitPrice: %f\n PreDelta: %f\n CurrDelta: %f\n UpdateTime: %s\n UpdateMillisec: %d\n BidPrice1: %f\n BidVolume1: %d\n AskPrice1: %f\n AskVolume1: %d\n BidPrice2: %f\n BidVolume2: %d\n AskPrice2: %f\n AskVolume2: %d\n BidPrice3: %f\n BidVolume3: %d\n AskPrice3: %f\n AskVolume3: %d\n BidPrice4: %f\n BidVolume4: %d\n AskPrice4: %f\n AskVolume4: %d\n BidPrice5: %f\n BidVolume5: %d\n AskPrice5: %f\n AskVolume5: %d\n AveragePrice: %f\n ActionDay: %s\n", pDepthMarketData->TradingDay, pDepthMarketData->InstrumentID, pDepthMarketData->ExchangeID, pDepthMarketData->ExchangeInstID, pDepthMarketData->LastPrice, pDepthMarketData->PreSettlementPrice, pDepthMarketData->PreClosePrice, pDepthMarketData->PreOpenInterest, pDepthMarketData->OpenPrice, pDepthMarketData->HighestPrice, pDepthMarketData->LowestPrice, pDepthMarketData->Volume, pDepthMarketData->Turnover, pDepthMarketData->OpenInterest, pDepthMarketData->ClosePrice, pDepthMarketData->SettlementPrice, pDepthMarketData->UpperLimitPrice, pDepthMarketData->LowerLimitPrice, pDepthMarketData->PreDelta, pDepthMarketData->CurrDelta, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, pDepthMarketData->BidPrice1, pDepthMarketData->BidVolume1, pDepthMarketData->AskPrice1, pDepthMarketData->AskVolume1, pDepthMarketData->BidPrice2, pDepthMarketData->BidVolume2, pDepthMarketData->AskPrice2, pDepthMarketData->AskVolume2, pDepthMarketData->BidPrice3, pDepthMarketData->BidVolume3, pDepthMarketData->AskPrice3, pDepthMarketData->AskVolume3, pDepthMarketData->BidPrice4, pDepthMarketData->BidVolume4, pDepthMarketData->AskPrice4, pDepthMarketData->AskVolume4, pDepthMarketData->BidPrice5, pDepthMarketData->BidVolume5, pDepthMarketData->AskPrice5, pDepthMarketData->AskVolume5, pDepthMarketData->AveragePrice, pDepthMarketData->ActionDay);           
 		printf("/********************************************************************************************************/\n");
 		insert_mongodb(client, collection, pDepthMarketData);
 	}

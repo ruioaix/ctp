@@ -69,12 +69,12 @@ public:
 	void RegisterCallback_ordmd(fnOnRtnDepthMarketData pCallback) { m_fnOnRtnDepthMarketData = pCallback; }
 	void RegisterCallback_orfqr(fnOnRtnForQuoteRsp pCallback) { m_fnOnRtnForQuoteRsp = pCallback; }
 
-	void input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData, long sec, int usec);
-	CThostFtdcDepthMarketDataField *output_DMDQ();
+	void input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData, double t);
+	CThostFtdcDepthMarketDataField *output_DMDQ(double *arrivetime);
 private:
 	CThostFtdcMdApi*			m_pApi;					//行情API
 
-	int							m_nRequestID;
+	int	m_nRequestID;
 	char *m_szPath;				//生成配置文件的路径
 	char *m_server;
 	char *m_szBrokerId;			//期商ID
@@ -100,7 +100,9 @@ private:
 	CThostFtdcDepthMarketDataField *header;
 	CThostFtdcDepthMarketDataField *tail;
 	CThostFtdcDepthMarketDataField *queue;
-	bool hasValueinqueue;
+	double *intime;
+	int itm;
+	int otm;
 	int loopL;
 
 	pthread_mutex_t hasValue_mutex;

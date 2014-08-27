@@ -161,9 +161,9 @@ int MD_reqUserLogout(void *md) {
 	return -1;
 }
 
-CThostFtdcDepthMarketDataField *MD_getOneDMDmsg(void *md) {
+CThostFtdcDepthMarketDataField *MD_getOneDMDmsg(void *md, double *arrivetime) {
 	if(md) {
-		return MD_GetApi(md)->output_DMDQ();
+		return MD_GetApi(md)->output_DMDQ(arrivetime);
 	}
 	return NULL;
 }
