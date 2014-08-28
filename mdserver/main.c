@@ -66,10 +66,13 @@ void insert_mongodb(mongoc_client_t *client, mongoc_collection_t *collection, CT
 			"DMDMsgDelayedTime", BCON_DOUBLE (processtime - arrivedtime)
 				);
 
-	if (!mongoc_collection_insert (collection, MONGOC_INSERT_NONE, doc, NULL, NULL)) {
-		printf("error insert db\n");
+	int mci = mongoc_collection_insert (collection, MONGOC_INSERT_NONE, doc, NULL, NULL);
+	while (!mci) {
+		printf("mongo insert error.\n");
+		sleep(1);
+		mci = mongoc_collection_insert (collection, MONGOC_INSERT_NONE, doc, NULL, NULL);
 	}
-
+	
 	bson_destroy(doc);
 
 }
@@ -86,8 +89,7 @@ void *ProcessDMD(void *mim_p) {
 		struct timeval tv;
 		gettimeofday (&tv, NULL);
 		double processtime = tv.tv_sec + ((double)(tv.tv_usec))/1E6;
-		printf("arrived time: %.6f, process time: %.6f, delayed time: %.6f\n", arrivedtime, processtime, processtime-arrivedtime);
-
+		printf("arrived time: %.6f, process time: %.6f, delayed time: %.6f\n", arrivedtime, processtime, processtime-arrivedtime);fflush(stdout);
 		printf("/********************************************************************************************************/\n");
 		insert_mongodb(client, collection, pDepthMarketData, arrivedtime, processtime);
 	}
@@ -112,7 +114,7 @@ int main(int argc, char **argv) {
 
 	MD_init(md);
 
-	while(1);
+	pthread_join(p, NULL);
 
 	mongoc_collection_destroy (collection);
 	mongoc_client_destroy (client);
