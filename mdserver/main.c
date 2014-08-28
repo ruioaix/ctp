@@ -15,36 +15,6 @@ struct MongoIM {
 	mongoc_collection_t *collection;
 };
 
-void OnFrontConnected_i(void * md) {
-	printf("connect successful.\n");
-}
-
-void OnFrontDisconnected_i(void *md, int nReason) {
-	printf("connect unsuccessful.\n");
-}
-
-void OnRspUserLogin_i(void *md, CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast) {
-	printf("Date: %s\n", pRspUserLogin->TradingDay);
-	printf("LoginTime: %s\n", pRspUserLogin->LoginTime);
-	printf("BrokerID: %s, UserID: %s\n", pRspUserLogin->BrokerID, pRspUserLogin->UserID);
-	printf("SystemName: %s\n", pRspUserLogin->SystemName);
-	printf("FrontID: %d, SessionID: %d\n", pRspUserLogin->FrontID, pRspUserLogin->SessionID);
-	printf("MaxOrderRef: %s\n", pRspUserLogin->MaxOrderRef);
-	printf("SHFETime: %s\n", pRspUserLogin->SHFETime);
-	printf("DCETime: %s\n", pRspUserLogin->DCETime);
-	printf("FFEXTime: %s\n", pRspUserLogin->FFEXTime);
-	printf("INETime: %s\n", pRspUserLogin->INETime);
-	printf("ErrorID: %d, ErrorMsg: %s\n", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
-}
-
-void OnRtnDepthMarketData_i(void* md, CThostFtdcDepthMarketDataField *pDepthMarketData_p) {
-
-}
-
-void OnRtnForQuoteRsp_i(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp) {
-	//printf("InstrumentID: %s, ForQuoteSysID: %s\n", pForQuoteRsp->InstrumentID, pForQuoteRsp->ForQuoteSysID);fflush(stdout);
-}
-
 void insert_mongodb(mongoc_client_t *client, mongoc_collection_t *collection, CThostFtdcDepthMarketDataField *pd, double arrivedtime, double processtime) {
 
 	bson_t *doc = BCON_NEW (
@@ -127,17 +97,10 @@ int main(int argc, char **argv) {
 	//void *md = MD_create("/tmp/md", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
 	char *i1[2] = {"IF1409"};
 	void *md = MD_create("/tmp/md", "tcp://27.17.62.149:40213", "1035", "00000008", "123456", i1, 1);
-	MD_RegOnFrontConnected(md, OnFrontConnected_i);
-	MD_RegOnFrontDisconnected(md, OnFrontDisconnected_i);
-	MD_RegOnRspUserLogin(md, OnRspUserLogin_i);
-	MD_RegOnRtnDepthMarketData(md, OnRtnDepthMarketData_i);
-	MD_RegOnRtnForQuoteRsp(md, OnRtnForQuoteRsp_i);
 
-	mongoc_client_t *client;
-	mongoc_collection_t *collection;
 	mongoc_init ();
-	client = mongoc_client_new ("mongodb://localhost:27017/");
-	collection = mongoc_client_get_collection (client, "ctp", "ctp");
+	mongoc_client_t *client = mongoc_client_new ("mongodb://ctp_md:ctp_md@localhost:27017/?authSource=ctp");
+	mongoc_collection_t *collection = mongoc_client_get_collection (client, "ctp", "ctp");
 
 	struct MongoIM mim;
 	mim.client = client;
@@ -148,7 +111,8 @@ int main(int argc, char **argv) {
 	pthread_create(&p, NULL, ProcessDMD, &mim);
 
 	MD_init(md);
-	sleep(30);
+
+	while(1);
 
 	mongoc_collection_destroy (collection);
 	mongoc_client_destroy (client);
