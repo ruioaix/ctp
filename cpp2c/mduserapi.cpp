@@ -266,7 +266,8 @@ void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMark
 	gettimeofday (&tv, NULL);
 	//printf("%ld.%06ld\n", tv.tv_sec, tv.tv_usec);
 	double t = tv.tv_sec + ((double)(tv.tv_usec))/1E6;
-	input_DMDQ(pDepthMarketData, t);
+	printf("arrived time: %f\n", t);fflush(stdout);
+	//input_DMDQ(pDepthMarketData, t);
 
 	if (m_fnOnRtnDepthMarketData != NULL) {
 		(*m_fnOnRtnDepthMarketData)(this, pDepthMarketData);
