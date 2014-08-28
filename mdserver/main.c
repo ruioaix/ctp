@@ -97,7 +97,7 @@ void *ProcessDMD(void *mim_p) {
 
 int main(int argc, char **argv) {
 	//void *md = MD_create("/tmp/md", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
-	char *i1[2] = {"IF1409"};
+	char *i1[2] = {"IF1410"};
 	void *md = MD_create("/tmp/md", "tcp://27.17.62.149:40213", "1035", "00000008", "123456", i1, 1);
 
 	mongoc_init ();

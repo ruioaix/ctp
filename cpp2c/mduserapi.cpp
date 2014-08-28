@@ -262,18 +262,18 @@ void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpeci
 
 void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	static int si = 0;
-	printf("%d\n", si);
-	//struct timeval tv;
-	//gettimeofday (&tv, NULL);
-	////printf("%ld.%06ld\n", tv.tv_sec, tv.tv_usec);
-	//double t = tv.tv_sec + ((double)(tv.tv_usec))/1E6;
-	//printf("arrived time: %f\n", t);fflush(stdout);
-	//input_DMDQ(pDepthMarketData, t);
-
-	//if (m_fnOnRtnDepthMarketData != NULL) {
-	//	(*m_fnOnRtnDepthMarketData)(this, pDepthMarketData);
-	//}
+	//static int si = 0;
+	//printf("%d\t", si++);
+	struct timeval tv;
+	gettimeofday (&tv, NULL);
+	//printf("%ld.%06ld\n", tv.tv_sec, tv.tv_usec);
+	double t = tv.tv_sec + ((double)(tv.tv_usec))/1E6;
+	printf("arrived time: %f\t", t);fflush(stdout);
+	printf("|||||||||: %d, %s", (int)tv.tv_usec, ctime(&(tv.tv_sec)));fflush(stdout);
+	input_DMDQ(pDepthMarketData, t);
+	if (m_fnOnRtnDepthMarketData != NULL) {
+		(*m_fnOnRtnDepthMarketData)(this, pDepthMarketData);
+	}
 }
 
 void CMdUserApi::OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp)
