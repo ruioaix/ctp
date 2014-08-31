@@ -67,7 +67,7 @@ void insert_mongodb(mongoc_client_t *client, mongoc_collection_t *collection, CT
 				);
 
 	int mci = mongoc_collection_insert (collection, MONGOC_INSERT_NONE, doc, NULL, NULL);
-	while (!mci) {
+	while (mci) {
 		printf("mongo insert error.\n");
 		sleep(1);
 		mci = mongoc_collection_insert (collection, MONGOC_INSERT_NONE, doc, NULL, NULL);
@@ -100,25 +100,25 @@ int main(int argc, char **argv) {
 	char *i1[2] = {"IF1409"};
 	void *md = MD_create("/tmp/md", "tcp://27.17.62.149:40213", "1035", "00000008", "123456", i1, 1);
 
-	//mongoc_init ();
-	//mongoc_client_t *client = mongoc_client_new ("mongodb://ctp_md:ctp_md@localhost:27017/?authSource=ctp");
-	//mongoc_collection_t *collection = mongoc_client_get_collection (client, "ctp", "ctp");
+	mongoc_init ();
+	mongoc_client_t *client = mongoc_client_new ("mongodb://ctp_md:ctp_md@localhost:27017/?authSource=ctp");
+	mongoc_collection_t *collection = mongoc_client_get_collection (client, "ctp", "ctp");
 
-	//struct MongoIM mim;
-	//mim.client = client;
-	//mim.collection = collection;
-	//mim.md = md;
+	struct MongoIM mim;
+	mim.client = client;
+	mim.collection = collection;
+	mim.md = md;
 
-	//pthread_t p;
-	//pthread_create(&p, NULL, ProcessDMD, &mim);
+	pthread_t p;
+	pthread_create(&p, NULL, ProcessDMD, &mim);
 
 	MD_init(md);
 	sleep(10000);
 
-	//pthread_join(p, NULL);
+	pthread_join(p, NULL);
 
-	//mongoc_collection_destroy (collection);
-	//mongoc_client_destroy (client);
+	mongoc_collection_destroy (collection);
+	mongoc_client_destroy (client);
 
 	MD_free(md);
 	return 0;
