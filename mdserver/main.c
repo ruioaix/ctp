@@ -90,7 +90,7 @@ void *ProcessDMD(void *mim_p) {
 		gettimeofday (&tv, NULL);
 		double processtime = tv.tv_sec + ((double)(tv.tv_usec))/1E6;
 		printf("arrived time: %.6f, process time: %.6f, delayed time: %.6f\n", arrivedtime, processtime, processtime-arrivedtime);fflush(stdout);
-		printf("/********************************************************************************************************/\n");
+		printf("updated time: %s, update mill time : %d\n", pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec);
 		insert_mongodb(client, collection, pDepthMarketData, arrivedtime, processtime);
 	}
 }
