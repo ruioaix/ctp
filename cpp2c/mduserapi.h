@@ -69,8 +69,8 @@ public:
 	void RegisterCallback_ordmd(fnOnRtnDepthMarketData pCallback) { m_fnOnRtnDepthMarketData = pCallback; }
 	void RegisterCallback_orfqr(fnOnRtnForQuoteRsp pCallback) { m_fnOnRtnForQuoteRsp = pCallback; }
 
-	void input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData, double t);
-	CThostFtdcDepthMarketDataField *output_DMDQ(double *arrivetime);
+	void input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData, long ts, int tus);
+	CThostFtdcDepthMarketDataField *output_DMDQ(long *ts, int *tus);
 private:
 	CThostFtdcMdApi*			m_pApi;					//––«ÈAPI
 
@@ -100,7 +100,9 @@ private:
 	CThostFtdcDepthMarketDataField *header;
 	CThostFtdcDepthMarketDataField *tail;
 	CThostFtdcDepthMarketDataField *queue;
-	double *intime;
+	long *intime_ts;
+	int *intime_tus;
+
 	int itm;
 	int otm;
 	int loopL;

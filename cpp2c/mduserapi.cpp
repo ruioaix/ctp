@@ -5,6 +5,9 @@
 #include <vector>
 #include <mutex>
 #include <sys/stat.h>
+#include <sys/syscall.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include <sys/time.h>
 
 #define delimiter ",;"
@@ -50,10 +53,12 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 
 	loopL = 100;
 	queue = (CThostFtdcDepthMarketDataField *)malloc(loopL * sizeof(CThostFtdcDepthMarketDataField));
-	intime = (double *)malloc(loopL * sizeof(double));
+	intime_ts = (long *)malloc(loopL * sizeof(long));
+	intime_tus = (int *)malloc(loopL * sizeof(int));
 	int i;
 	for (i = 0; i < loopL; ++i) {
-		intime[i] = -1;
+		intime_ts[i] = -1;
+		intime_tus[i] = -1;
 	}
 	itm = 0;
 	otm = 0;
@@ -75,7 +80,8 @@ CMdUserApi::~CMdUserApi(void)
 	pthread_mutex_destroy(&hasValue_mutex);
 	pthread_cond_destroy(&hasValue_cond);
 	free(queue);
-	free(intime);
+	free(intime_ts);
+	free(intime_tus);
 }
 
 /***13 functions, merge api functions in MdApi class to MdSpi class****************************************************/
@@ -262,15 +268,11 @@ void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpeci
 
 void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	//static int si = 0;
-	//printf("%d\t", si++);
 	struct timeval tv;
 	gettimeofday (&tv, NULL);
-	//printf("%ld.%06ld\n", tv.tv_sec, tv.tv_usec);
-	double t = tv.tv_sec + ((double)(tv.tv_usec))/1E6;
-	printf("arrived time: %f\t", t);fflush(stdout);
-	printf("|||||||||: %d, %s", (int)tv.tv_usec, ctime(&(tv.tv_sec)));fflush(stdout);
-	input_DMDQ(pDepthMarketData, t);
+	long ts = tv.tv_sec;
+    int tus = tv.tv_usec;
+	input_DMDQ(pDepthMarketData, ts, tus);
 	if (m_fnOnRtnDepthMarketData != NULL) {
 		(*m_fnOnRtnDepthMarketData)(this, pDepthMarketData);
 	}
@@ -324,17 +326,22 @@ void CMdUserApi::GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo)
 	}
 }
 
-void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData, double t) {
+void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData, long ts, int tus) {
 	*tail=*pDepthMarketData;
 	tail++;
-	intime[itm++] = t;
+	intime_ts[itm] = ts;
+	intime_tus[itm++] = tus;
+	pid_t tid = syscall(SYS_gettid);
+	pid_t pid = getpid();
+	printf("tid: %d, pid: %d\n", tid, pid);
+	printf("updated time: %s, update mill time : %4d, arrive: %ld.%06d\n", pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, ts, tus);
 	if (tail == queue + loopL) tail = queue;
 	pthread_mutex_lock(&hasValue_mutex);
 	pthread_cond_signal(&hasValue_cond);
 	pthread_mutex_unlock(&hasValue_mutex);
 }
 
-CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ(double *arrivetime) {
+CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ(long *ts, int *tus) {
 	if (header == tail) {
 		pthread_mutex_lock(&hasValue_mutex);
 		pthread_cond_wait(&hasValue_cond, &hasValue_mutex);
@@ -342,7 +349,8 @@ CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ(double *arrivetime) {
 	}
 	CThostFtdcDepthMarketDataField *h = header;
 	header++;
-	*arrivetime = intime[otm++];
+	*ts = intime_ts[otm];
+	*tus = intime_tus[otm++];
 	if (header == queue+loopL) header = queue;
 	return h;
 }
