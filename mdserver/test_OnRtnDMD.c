@@ -102,6 +102,7 @@ int main(int argc, char **argv) {
 	void *md = MD_create("/tmp/md", "tcp://27.17.62.149:40213", "1035", "00000008", "123456", i1, 1);
 
 	
+	/*
 	mongoc_init ();
 	mongoc_client_t *client = mongoc_client_new ("mongodb://ctp_md:ctp_md@localhost:27017/?authSource=ctp");
 	mongoc_collection_t *collection = mongoc_client_get_collection (client, "ctp", "ctp");
@@ -115,14 +116,18 @@ int main(int argc, char **argv) {
 	pthread_create(&p, NULL, ProcessDMD, &mim);
 
 	
+	*/
 	MD_init(md);
+	sleep(1000000);
 	
+	/*
 
 	pthread_join(p, NULL);
 
 	mongoc_collection_destroy (collection);
 	mongoc_client_destroy (client);
 	
+	*/
 
 	MD_free(md);
 	return 0;
