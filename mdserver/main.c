@@ -86,13 +86,14 @@ void *ProcessDMD(void *mim_p) {
 	while (1) {
 		long ts;
 		long tus;
-		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md, &ts, &tus);
+		int size;
+		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md, &ts, &tus, &size);
 		if (pDepthMarketData != NULL) {
 			struct timeval tv;
 			gettimeofday (&tv, NULL);
 			//printf("arrived time: %ld.%06d, EasyRead: %s", ts, tus, ctime(&ts));
 			//printf("process time: %ld.%06d, EasyRead: %s", tv.tv_sec, (int)tv.tv_usec, ctime(&(tv.tv_sec)));
-			printf("updated time: %s, update mill time : %4d, arrive: %ld.%06ld, delay: %f\n", pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, ts, tus, tv.tv_sec-ts+(tv.tv_usec-tus)*1E-6);
+			printf("updated time: %s, update mill time : %4d, arrive: %ld.%06ld, delay: %f, valid size: %3d\n", pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, ts, tus, tv.tv_sec-ts+(tv.tv_usec-tus)*1E-6, size);
 			insert_mongodb(client, collection, pDepthMarketData, 0.1, 0.1);
 		}
 	}
