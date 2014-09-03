@@ -335,9 +335,6 @@ void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData) {
 	m_intime_second[m_tail_index] = ts;
 	m_intime_usecond[m_tail_index] = tus;
 	m_tail_index = (m_tail_index+1)&(m_queue_size-1);
-
-	pid_t tid = syscall(SYS_gettid);
-	pid_t pid = getpid();
 	m_current_size[m_tail_index] = __sync_add_and_fetch(&m_validmsg_size, 1);
 }
 
