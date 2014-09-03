@@ -51,7 +51,8 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 	m_fnOnRtnDepthMarketData = NULL;
 	m_fnOnRtnForQuoteRsp = NULL;
 
-	loopL = 100;
+
+	loopL = 1024;
 	queue = (CThostFtdcDepthMarketDataField *)malloc(loopL * sizeof(CThostFtdcDepthMarketDataField));
 	intime_ts = (long *)malloc(loopL * sizeof(long));
 	intime_tus = (int *)malloc(loopL * sizeof(int));
@@ -64,6 +65,9 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 	otm = 0;
 	header = queue;
 	tail = queue;
+	hi = 0;
+	ti = 0;
+	size = 0;
 	pthread_mutex_init(&hasValue_mutex, NULL);
 	pthread_cond_init(&hasValue_cond, NULL);
 	running = 1;
@@ -327,8 +331,11 @@ void CMdUserApi::GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo)
 }
 
 void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData, long ts, int tus) {
-	*tail=*pDepthMarketData;
+	queue[ti]=*pDepthMarketData;
+	ti = (ti+1)&(loopL-1);
 	tail++;
+
+	
 	intime_ts[itm] = ts;
 	intime_tus[itm++] = tus;
 	pid_t tid = syscall(SYS_gettid);
@@ -336,21 +343,22 @@ void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData, lo
 	printf("tid: %d, pid: %d\n", tid, pid);
 	printf("updated time: %s, update mill time : %4d, arrive: %ld.%06d\n", pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, ts, tus);
 	if (tail == queue + loopL) tail = queue;
+	__sync_fetch_and_add(&size, 1);
+	printf("size_after_input_%d\n", size);
 	pthread_mutex_lock(&hasValue_mutex);
 	pthread_cond_signal(&hasValue_cond);
 	pthread_mutex_unlock(&hasValue_mutex);
 }
 
 CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ(long *ts, int *tus) {
-	if (header == tail) {
-		pthread_mutex_lock(&hasValue_mutex);
-		pthread_cond_wait(&hasValue_cond, &hasValue_mutex);
-		pthread_mutex_unlock(&hasValue_mutex);
+	if (size > 0) {
+		__sync_fetch_and_sub(&size, 1);
+		*ts = intime_ts[otm];
+		*tus = intime_tus[otm++];
+		CThostFtdcDepthMarketDataField *h=queue + hi;
+		hi = (hi+1)&(loopL-1);
+		printf("size_after_output_%d\n", size);
+		return h;
 	}
-	CThostFtdcDepthMarketDataField *h = header;
-	header++;
-	*ts = intime_ts[otm];
-	*tus = intime_tus[otm++];
-	if (header == queue+loopL) header = queue;
-	return h;
+	return NULL;
 }

@@ -12,3 +12,5 @@ tags
 *.swp
 *.d
 test
+1_*
+2_*

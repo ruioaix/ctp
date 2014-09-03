@@ -72,7 +72,7 @@ void insert_mongodb(mongoc_client_t *client, mongoc_collection_t *collection, CT
 		sleep(1);
 		mci = mongoc_collection_insert (collection, MONGOC_INSERT_NONE, doc, NULL, NULL);
 	}
-	
+
 	bson_destroy(doc);
 
 }
@@ -87,12 +87,14 @@ void *ProcessDMD(void *mim_p) {
 		long ts;
 		int tus;
 		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md, &ts, &tus);
-		struct timeval tv;
-		gettimeofday (&tv, NULL);
-		//printf("arrived time: %ld.%06d, EasyRead: %s", ts, tus, ctime(&ts));
-		//printf("process time: %ld.%06d, EasyRead: %s", tv.tv_sec, (int)tv.tv_usec, ctime(&(tv.tv_sec)));
-		printf("updated time: %s, update mill time : %4d, arrive: %ld.%06d, delay: %f\n", pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, ts, tus, tv.tv_sec-ts+(tv.tv_usec-tus)*1E-6);
-		insert_mongodb(client, collection, pDepthMarketData, 0.1, 0.1);
+		if (pDepthMarketData != NULL) {
+			struct timeval tv;
+			gettimeofday (&tv, NULL);
+			//printf("arrived time: %ld.%06d, EasyRead: %s", ts, tus, ctime(&ts));
+			//printf("process time: %ld.%06d, EasyRead: %s", tv.tv_sec, (int)tv.tv_usec, ctime(&(tv.tv_sec)));
+			printf("updated time: %s, update mill time : %4d, arrive: %ld.%06d, delay: %f\n", pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, ts, tus, tv.tv_sec-ts+(tv.tv_usec-tus)*1E-6);
+			insert_mongodb(client, collection, pDepthMarketData, 0.1, 0.1);
+		}
 	}
 }
 
@@ -101,7 +103,7 @@ int main(int argc, char **argv) {
 	char *i1[2] = {"IF1410"};
 	void *md = MD_create("/tmp/md", "tcp://27.17.62.149:40213", "1035", "00000008", "123456", i1, 1);
 
-	
+
 	mongoc_init ();
 	mongoc_client_t *client = mongoc_client_new ("mongodb://ctp_md:ctp_md@localhost:27017/?authSource=ctp");
 	mongoc_collection_t *collection = mongoc_client_get_collection (client, "ctp", "ctp");
@@ -114,15 +116,15 @@ int main(int argc, char **argv) {
 	pthread_t p;
 	pthread_create(&p, NULL, ProcessDMD, &mim);
 
-	
+
 	MD_init(md);
-	
+
 
 	pthread_join(p, NULL);
 
 	mongoc_collection_destroy (collection);
 	mongoc_client_destroy (client);
-	
+
 
 	MD_free(md);
 	return 0;

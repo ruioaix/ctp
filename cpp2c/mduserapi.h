@@ -103,6 +103,10 @@ private:
 	long *intime_ts;
 	int *intime_tus;
 
+	int size;
+	int hi;
+	int ti;
+
 	int itm;
 	int otm;
 	int loopL;
