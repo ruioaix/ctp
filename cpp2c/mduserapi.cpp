@@ -339,7 +339,6 @@ void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData) {
 	pid_t tid = syscall(SYS_gettid);
 	pid_t pid = getpid();
 	m_current_size[m_tail_index] = __sync_add_and_fetch(&m_validmsg_size, 1);
-	printf("tid: %d, pid: %d, updated time: %s, update mill time : %4d, arrive: %ld.%06ld, valid size: %d\n", tid, pid, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, ts, tus, m_current_size[m_tail_index]);
 }
 
 CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ(long *ts, long *tus, int *size) {
