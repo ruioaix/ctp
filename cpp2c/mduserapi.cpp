@@ -32,10 +32,11 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 
 	mkdir(m_szPath, 0777);
 	m_pApi = CThostFtdcMdApi::CreateFtdcMdApi(m_szPath);
-	if (m_pApi) {
-		m_pApi->RegisterSpi(this);
-		m_pApi->RegisterFront(m_server);
+	if (m_pApi == NULL) {
+		exit(-1);
 	}
+	m_pApi->RegisterSpi(this);
+	m_pApi->RegisterFront(m_server);
 
 	//init 12 callback point.
 	m_fnOnFrontConnected = NULL;
@@ -51,41 +52,43 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 	m_fnOnRtnDepthMarketData = NULL;
 	m_fnOnRtnForQuoteRsp = NULL;
 
-
-	loopL = 1024;
-	queue = (CThostFtdcDepthMarketDataField *)malloc(loopL * sizeof(CThostFtdcDepthMarketDataField));
-	intime_ts = (long *)malloc(loopL * sizeof(long));
-	intime_tus = (int *)malloc(loopL * sizeof(int));
-	int i;
-	for (i = 0; i < loopL; ++i) {
-		intime_ts[i] = -1;
-		intime_tus[i] = -1;
+	m_queue_size = 8192;
+	m_queue = (CThostFtdcDepthMarketDataField *)malloc(m_queue_size * sizeof(CThostFtdcDepthMarketDataField));
+	if (m_queue == NULL) {
+		exit(-1);
 	}
-	itm = 0;
-	otm = 0;
-	header = queue;
-	tail = queue;
-	hi = 0;
-	ti = 0;
-	size = 0;
-	pthread_mutex_init(&hasValue_mutex, NULL);
-	pthread_cond_init(&hasValue_cond, NULL);
-	running = 1;
+	m_intime_second = (long *)malloc(m_queue_size * sizeof(long));
+	if (m_intime_second == NULL) {
+		exit(-1);
+	}
+	m_intime_usecond = (long *)malloc(m_queue_size * sizeof(long));
+	if (m_intime_usecond == NULL) {
+		exit(-1);
+	}
+	m_current_size = (int *)malloc(m_queue_size * sizeof(int));
+	if (m_current_size == NULL) {
+		exit(-1);
+	}
+	int i;
+	for (i = 0; i < m_queue_size; ++i) {
+		m_intime_second[i] = -1;
+		m_intime_usecond[i] = -1;
+	}
+	m_header_index = 0;
+	m_tail_index = 0;
+	m_validmsg_size = 0;
 }
 
 //delete
 CMdUserApi::~CMdUserApi(void)
 {
-	if(m_pApi) {
-		m_pApi->RegisterSpi(NULL);
-		m_pApi->Release();
-		m_pApi = NULL;
-	}
-	pthread_mutex_destroy(&hasValue_mutex);
-	pthread_cond_destroy(&hasValue_cond);
-	free(queue);
-	free(intime_ts);
-	free(intime_tus);
+	m_pApi->RegisterSpi(NULL);
+	m_pApi->Release();
+	m_pApi = NULL;
+	free(m_queue);
+	free(m_intime_second);
+	free(m_intime_usecond);
+	free(m_current_size);
 }
 
 /***13 functions, merge api functions in MdApi class to MdSpi class****************************************************/
@@ -191,10 +194,10 @@ int CMdUserApi::ReqUserLogout() {
 //connect successful, and ReqUserLogin.
 void CMdUserApi::OnFrontConnected()
 {
-	//连接成功后自动请求登录
 	if (m_fnOnFrontConnected != NULL) {
 		(*m_fnOnFrontConnected)(this);
 	}
+	//login automatically after connected.
 	ReqUserLogin();
 }
 
@@ -205,7 +208,6 @@ void CMdUserApi::OnFrontDisconnected(int nReason)
 		(*m_fnOnFrontDisconnected)(this, nReason);
 	}
 	CThostFtdcRspInfoField RspInfo;
-	//连接失败返回的信息是拼接而成，主要是为了统一输出
 	RspInfo.ErrorID = nReason;
 	GetOnFrontDisconnectedMsg(&RspInfo);
 }
@@ -245,7 +247,6 @@ void CMdUserApi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecific
 	if (m_fnOnRspSubMarketData != NULL) {
 		(*m_fnOnRspSubMarketData)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
 	}
-	printf("Sub_MD_done.\n");
 }
 
 void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -253,7 +254,6 @@ void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecif
 	if (m_fnOnRspUnSubMarketData != NULL) {
 		(*m_fnOnRspUnSubMarketData)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
 	}
-	printf("UnSub MD done.\n");
 }
 
 void CMdUserApi::OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) 
@@ -272,14 +272,10 @@ void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpeci
 
 void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	struct timeval tv;
-	gettimeofday (&tv, NULL);
-	long ts = tv.tv_sec;
-    int tus = tv.tv_usec;
-	input_DMDQ(pDepthMarketData, ts, tus);
 	if (m_fnOnRtnDepthMarketData != NULL) {
 		(*m_fnOnRtnDepthMarketData)(this, pDepthMarketData);
 	}
+	input_DMDQ(pDepthMarketData);
 }
 
 void CMdUserApi::OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp)
@@ -310,54 +306,50 @@ void CMdUserApi::GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo)
 	switch(pRspInfo->ErrorID)
 	{
 		case 0x1001:
-			strcpy(pRspInfo->ErrorMsg,"0x1001 网络读失败");
+			strcpy(pRspInfo->ErrorMsg,"0x1001 network read failed");
 			break;
 		case 0x1002:
-			strcpy(pRspInfo->ErrorMsg,"0x1002 网络写失败");
+			strcpy(pRspInfo->ErrorMsg,"0x1002 network write failed");
 			break;
 		case 0x2001:
-			strcpy(pRspInfo->ErrorMsg,"0x2001 接收心跳超时");
+			strcpy(pRspInfo->ErrorMsg,"0x2001 receive heartbeat timeout");
 			break;
 		case 0x2002:
-			strcpy(pRspInfo->ErrorMsg,"0x2002 发送心跳失败");
+			strcpy(pRspInfo->ErrorMsg,"0x2002 send heartbeat failed");
 			break;
 		case 0x2003:
-			strcpy(pRspInfo->ErrorMsg,"0x2003 收到错误报文");
+			strcpy(pRspInfo->ErrorMsg,"0x2003 receive error msg");
 			break;
 		default:
-			sprintf(pRspInfo->ErrorMsg,"%x 未知错误", pRspInfo->ErrorID);
+			sprintf(pRspInfo->ErrorMsg,"%x unkown error", pRspInfo->ErrorID);
 			break;
 	}
 }
 
-void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData, long ts, int tus) {
-	queue[ti]=*pDepthMarketData;
-	ti = (ti+1)&(loopL-1);
-	tail++;
+void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData) {
+	struct timeval tv;
+	gettimeofday (&tv, NULL);
+	long ts = tv.tv_sec;
+    long tus = tv.tv_usec;
+	m_queue[m_tail_index]=*pDepthMarketData;
+	m_intime_second[m_tail_index] = ts;
+	m_intime_usecond[m_tail_index] = tus;
+	m_tail_index = (m_tail_index+1)&(m_queue_size-1);
 
-	
-	intime_ts[itm] = ts;
-	intime_tus[itm++] = tus;
 	pid_t tid = syscall(SYS_gettid);
 	pid_t pid = getpid();
-	printf("tid: %d, pid: %d\n", tid, pid);
-	printf("updated time: %s, update mill time : %4d, arrive: %ld.%06d\n", pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, ts, tus);
-	if (tail == queue + loopL) tail = queue;
-	__sync_fetch_and_add(&size, 1);
-	printf("size_after_input_%d\n", size);
-	pthread_mutex_lock(&hasValue_mutex);
-	pthread_cond_signal(&hasValue_cond);
-	pthread_mutex_unlock(&hasValue_mutex);
+	m_current_size[m_tail_index] = __sync_add_and_fetch(&m_validmsg_size, 1);
+	printf("tid: %d, pid: %d, updated time: %s, update mill time : %4d, arrive: %ld.%06ld, valid size: %d\n", tid, pid, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, ts, tus, m_current_size[m_tail_index]);
 }
 
-CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ(long *ts, int *tus) {
-	if (size > 0) {
-		__sync_fetch_and_sub(&size, 1);
-		*ts = intime_ts[otm];
-		*tus = intime_tus[otm++];
-		CThostFtdcDepthMarketDataField *h=queue + hi;
-		hi = (hi+1)&(loopL-1);
-		printf("size_after_output_%d\n", size);
+CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ(long *ts, long *tus, int *size) {
+	if (m_validmsg_size> 0) {
+		__sync_fetch_and_sub(&m_validmsg_size, 1);
+		*ts = m_intime_second[m_header_index];
+		*tus = m_intime_usecond[m_header_index];
+		*size = m_current_size[m_header_index];
+		CThostFtdcDepthMarketDataField *h = m_queue + m_header_index;
+		m_header_index = (m_header_index + 1)&(m_queue_size-1);
 		return h;
 	}
 	return NULL;
