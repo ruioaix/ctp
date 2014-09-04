@@ -10,6 +10,7 @@
 #include <mongoc.h>
 
 #include "mdcallback.h"
+#include "vbmal.h"
 
 struct MongoIM {
 	void *md;
@@ -101,10 +102,57 @@ void *ProcessDMD(void *mim_p) {
 	}
 }
 
+void readinfo(char *filename, char **logfilepath, char **server, char **BrokerID, char **UserID, char **pd, char *(*InstrumentIDs)[], int *InstrumentNum) {
+	FILE *fp = sfopen(filename, "r");
+	char line[1000];
+	int i = 0;
+	int j = 0;
+	while(fgets(line, 1000, fp)) {
+		switch(i++) {
+			case 0:
+				*logfilepath = smalloc(strlen(line));
+				memcpy(*logfilepath, line, strlen(line));
+				(*logfilepath)[strlen(line)-1] = '\0';
+				break;
+			case 1:
+				*server = smalloc(strlen(line));
+				memcpy(*server, line, strlen(line));
+				(*server)[strlen(line)-1] = '\0';
+				break;
+			case 2:
+				*BrokerID= smalloc(strlen(line));
+				memcpy(*BrokerID, line, strlen(line));
+				(*BrokerID)[strlen(line)-1] = '\0';
+				break;
+			case 3:
+				*UserID= smalloc(strlen(line));
+				memcpy(*UserID, line, strlen(line));
+				(*UserID)[strlen(line)-1] = '\0';
+				break;
+			case 4:
+				*pd = smalloc(strlen(line));
+				memcpy(*pd, line, strlen(line));
+				(*pd)[strlen(line)-1] = '\0';
+				break;
+			default:
+				(*InstrumentIDs)[j] = smalloc(strlen(line));
+				memcpy((*InstrumentIDs)[j], line, strlen(line));
+				(*InstrumentIDs)[j][strlen(line)-1] = '\0';
+				j++;
+				break;
+		}
+	}
+	*InstrumentNum = j;
+}
+
+
 int main(int argc, char **argv) {
 	//void *md = MD_create("/tmp/md", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
-	char *i1[2] = {"IF1410"};
-	void *md = MD_create("/tmp/md", "tcp://27.17.62.149:40213", "1035", "00000008", "123456", i1, 1);
+	char *InstrumentIDs[10]={"IF1410"};
+	int InstrumentNum = 1;
+	char *logfilepath, *server, *BrokerID, *UserID, *pd;
+	readinfo("others/xxx_real", &logfilepath, &server, &BrokerID, &UserID, &pd, &InstrumentIDs, &InstrumentNum);
+	void *md = MD_create(logfilepath, server, BrokerID, UserID, pd, InstrumentIDs, InstrumentNum);
 
 	mongoc_init ();
 	mongoc_client_t *client = mongoc_client_new ("mongodb://ctp_md:ctp_md@localhost:27017/?authSource=ctp");

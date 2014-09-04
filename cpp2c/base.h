@@ -7,10 +7,6 @@
 #ifndef CTP_C_API_BASE_H
 #define CTP_C_API_BASE_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /****************VERBOSE LEVEL*******************************************************************/
 //LEVEL  0 : all functions defined here will be extended to ((void)0).
 //LEVEL  1 : basic
@@ -74,9 +70,5 @@ void *realloc_safe(void *p, size_t size, const char *funcname, const char *filen
 FILE *fopen_safe(const char *openfilename, const char *mode, const char *functionname, char *filename, const int lineNum);
 #define sfopen(fn, mode) fopen_safe(fn, mode, __func__, __FILE__, __LINE__)
 /********************************************************************************************************/
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
