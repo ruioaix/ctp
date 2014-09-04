@@ -42,12 +42,13 @@ extern "C" {
 
 /*******use everywhere.**********************************************************************************/
 #include <stdio.h> //for FILE, perror, fprintf, stderr
-void iserror(char *format, ...);
 #define isError(format, ...) do {\
 		fflush(stdout);\
 		fprintf(stderr, "[ERROR]:\n\tfile: \"%s\", line: %d.\n\t%s =>> ", \
 				__FILE__, __LINE__, __func__);\
-		iserror(format, ##__VA_ARGS__);\
+		fprintf(stderr, format, ##__VA_ARGS__);\
+		fprintf(stderr, "\n");\
+		exit(EXIT_FAILURE);\
 } while(0)
 /********************************************************************************************************/
 

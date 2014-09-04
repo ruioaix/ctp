@@ -36,7 +36,7 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 	mkdir(m_szPath, 0777);
 	m_pApi = CThostFtdcMdApi::CreateFtdcMdApi(m_szPath);
 	if (m_pApi == NULL) {
-		exit(-1);
+		isError("mdapi created failed");
 	}
 	m_pApi->RegisterSpi(this);
 	m_pApi->RegisterFront(m_server);
@@ -60,15 +60,15 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 	if (m_queue == NULL) {
 		exit(-1);
 	}
-	m_intime_second = (long *)malloc(m_queue_size * sizeof(long));
+	m_intime_second = (long *)smalloc(m_queue_size * sizeof(long));
 	if (m_intime_second == NULL) {
 		exit(-1);
 	}
-	m_intime_usecond = (long *)malloc(m_queue_size * sizeof(long));
+	m_intime_usecond = (long *)smalloc(m_queue_size * sizeof(long));
 	if (m_intime_usecond == NULL) {
 		exit(-1);
 	}
-	m_current_size = (int *)malloc(m_queue_size * sizeof(int));
+	m_current_size = (int *)smalloc(m_queue_size * sizeof(int));
 	if (m_current_size == NULL) {
 		exit(-1);
 	}
@@ -92,102 +92,92 @@ CMdUserApi::~CMdUserApi(void)
 	free(m_intime_second);
 	free(m_intime_usecond);
 	free(m_current_size);
+	printlb("delete md");
 }
 
 /***13 functions, merge api functions in MdApi class to MdSpi class****************************************************/
 //connect: include CreateFtdcMdApi, RegisterSpi, RegisterFront, Init.
 void CMdUserApi::Init()
 {
-	if (m_pApi) {
-		m_pApi->Init();
-	}
+	printlb("api init");
+	m_pApi->Init();
 }
 
 void CMdUserApi::Join()
 {
-	if (m_pApi) {
-		m_pApi->Join();
-	}
+	printlb("api join");
+	m_pApi->Join();
 }
 
-void CMdUserApi::GetTradingDay()
+const char *CMdUserApi::GetTradingDay()
 {
-	if (m_pApi) {
-		m_pApi->GetTradingDay();
-	}
+	printlb("api gettradingday");
+	return m_pApi->GetTradingDay();
 }
 
 void CMdUserApi::RegisterFront(char *pszFrontAddress) {
-	if (m_pApi) {
-		m_pApi->RegisterFront(pszFrontAddress);
-	}
+	printlb("api register front");
+	m_pApi->RegisterFront(pszFrontAddress);
 }
 
 void CMdUserApi::RegisterNameServer(char *pszNsAddress) {
-	if (m_pApi) {
-		m_pApi->RegisterNameServer(pszNsAddress);
-	}
+	printlb("api register name server");
+	m_pApi->RegisterNameServer(pszNsAddress);
 }
 
 void CMdUserApi::RegisterFensUserInfo(CThostFtdcFensUserInfoField *pFensUserInfo) {
-	if (m_pApi) {
-		m_pApi->RegisterFensUserInfo(pFensUserInfo);
-	}
+	printlb("api register fens user info");
+	m_pApi->RegisterFensUserInfo(pFensUserInfo);
 }
 
 void CMdUserApi::RegisterSpi() {
-	if (m_pApi) {
-		m_pApi->RegisterSpi(this);
-	}
+	printlb("api register spi");
+	m_pApi->RegisterSpi(this);
 }
 
 int CMdUserApi::SubscribeMarketData(char *ppInstrumentID[], int nCount) {
-	if (m_pApi) {
-		return m_pApi->SubscribeMarketData(ppInstrumentID, nCount);
-	}
-	return -1;
+	printlb("api sub market data");
+	return m_pApi->SubscribeMarketData(ppInstrumentID, nCount);
 }
 
 int CMdUserApi::UnSubscribeMarketData(char *ppInstrumentID[], int nCount) {
-	if (m_pApi) {
-		return m_pApi->UnSubscribeMarketData(ppInstrumentID, nCount);
-	}
-	return -1;
+	printlb("api un sub market data");
+	return m_pApi->UnSubscribeMarketData(ppInstrumentID, nCount);
 }
 
 int CMdUserApi::SubscribeForQuoteRsp(char *ppInstrumentID[], int nCount) {
-	if (m_pApi) {
-		return m_pApi->SubscribeForQuoteRsp(ppInstrumentID, nCount);
-	}
-	return -1;
+	printlb("api sub quota rsp");
+	return m_pApi->SubscribeForQuoteRsp(ppInstrumentID, nCount);
 }
 
 int CMdUserApi::UnSubscribeForQuoteRsp(char *ppInstrumentID[], int nCount) {
-	if (m_pApi) {
-		return m_pApi->UnSubscribeForQuoteRsp(ppInstrumentID, nCount);
-	}
-	return -1;
+	printlb("api un sub quota rsp");
+	return m_pApi->UnSubscribeForQuoteRsp(ppInstrumentID, nCount);
 }
 
 int CMdUserApi::ReqUserLogin()
 {
-	if (NULL == m_pApi) return -1;
+	printlb("api req user login");
 
 	CThostFtdcReqUserLoginField request = {0};
 	strncpy(request.BrokerID, m_szBrokerId, sizeof(TThostFtdcBrokerIDType));
 	strncpy(request.UserID, m_szInvestorId, sizeof(TThostFtdcInvestorIDType));
 	strncpy(request.Password, m_szPassword, sizeof(TThostFtdcPasswordType));
+	printlc("request.BrokerID: %s", request.BrokerID);
+	printlc("request.UserID: %s", request.UserID);
+	printlc("request.Password: %s", request.Password);
 
-	//只有这一处用到了m_nRequestID，没有必要每次重连m_nRequestID都从0开始
 	return m_pApi->ReqUserLogin(&request,++m_nRequestID);
 }
 
 int CMdUserApi::ReqUserLogout() {
-	if (NULL == m_pApi) return -1;
+	printlb("api req user logout");
 
 	CThostFtdcUserLogoutField request = {0};
 	strncpy(request.BrokerID, m_szBrokerId, sizeof(TThostFtdcBrokerIDType));
 	strncpy(request.UserID, m_szInvestorId, sizeof(TThostFtdcInvestorIDType));
+	printlc("request.BrokerID: %s", request.BrokerID);
+	printlc("request.UserID: %s", request.UserID);
 
 	return m_pApi->ReqUserLogout(&request,++m_nRequestID);
 }

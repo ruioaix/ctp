@@ -3,19 +3,6 @@
 /********************************************************************************************************/
 #include <stddef.h> //for NULL
 #include <stdlib.h> //for exit & EXIT_FAILURE
-#include <stdarg.h>
-void iserror(char *format, ...) {
-	fflush(stdout);
-	va_list args;
-	va_start(args, format);
-	vfprintf(stderr, format, args);
-	va_end(args);
-	fprintf(stderr, "\n");
-	exit(EXIT_FAILURE);
-}
-/********************************************************************************************************/
-
-/********************************************************************************************************/
 void *malloc_safe(size_t size, const char *funcname, const char *filename, const int lineNum) {
 	void *tmp = malloc(size);
 	if (tmp == NULL) {

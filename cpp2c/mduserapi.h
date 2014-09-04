@@ -19,7 +19,7 @@ public:
 	//13 api functions, come from MdApi
 	void Init();
 	void Join();
-	void GetTradingDay();
+	const char *GetTradingDay();
 	void RegisterFront(char *pszFrontAddress);
 	void RegisterNameServer(char *pszNsAddress);
 	void RegisterFensUserInfo(CThostFtdcFensUserInfoField *pFensUserInfo);
