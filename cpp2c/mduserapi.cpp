@@ -10,6 +10,8 @@
 #include <unistd.h>
 #include <sys/time.h>
 
+#include "base.h"
+
 #define delimiter ",;"
 
 using namespace std;
@@ -18,6 +20,7 @@ using namespace std;
 //create
 CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *password, char ** InstrumentIDs, int InstrumentNum)
 {
+	printlb("create md.\n");
 	m_pApi = NULL;
 	m_nRequestID = 0;
 
@@ -53,7 +56,7 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 	m_fnOnRtnForQuoteRsp = NULL;
 
 	m_queue_size = 8192;
-	m_queue = (CThostFtdcDepthMarketDataField *)malloc(m_queue_size * sizeof(CThostFtdcDepthMarketDataField));
+	m_queue = (CThostFtdcDepthMarketDataField *)smalloc(m_queue_size * sizeof(CThostFtdcDepthMarketDataField));
 	if (m_queue == NULL) {
 		exit(-1);
 	}
