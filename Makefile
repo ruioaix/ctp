@@ -20,4 +20,4 @@ test :
 	
 
 clean :
-	@$(RM) a.out bin/* run *.log *.o ./*.so *.con 1
+	@$(RM) a.out bin/* run *.log *.o ./*.so *.con 1 test
