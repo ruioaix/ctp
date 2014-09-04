@@ -148,7 +148,7 @@ void readinfo(char *filename, char **logfilepath, char **server, char **BrokerID
 
 int main(int argc, char **argv) {
 	//void *md = MD_create("/tmp/md", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
-	char *InstrumentIDs[10]={"IF1410"};
+	char *InstrumentIDs[10]={NULL};
 	int InstrumentNum = 1;
 	char *logfilepath, *server, *BrokerID, *UserID, *pd;
 	readinfo("others/xxx_real", &logfilepath, &server, &BrokerID, &UserID, &pd, &InstrumentIDs, &InstrumentNum);
@@ -175,6 +175,15 @@ int main(int argc, char **argv) {
 	mongoc_collection_destroy (collection);
 	mongoc_client_destroy (client);
 
+	free(logfilepath);
+	free(server);
+	free(BrokerID);
+	free(UserID);
+	free(pd);
+	int i;
+	for (i = 0; i < InstrumentNum; ++i) {
+		free(InstrumentIDs[i]);
+	}
 
 	MD_free(md);
 	return 0;
