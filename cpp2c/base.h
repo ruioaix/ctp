@@ -15,10 +15,12 @@ extern "C" {
 //LEVEL  0 : all functions defined here will be extended to ((void)0).
 //LEVEL  1 : basic
 //LEVEL  2 : complete
+//LEVEL  3 : more and more
 
 #define VERBOSE_LEVEL 2
 #define printlb(format, ...) ((void)0)
 #define printlc(format, ...) ((void)0)
+#define printld(format, ...) ((void)0)
 
 #if VERBOSE_LEVEL >= 1
 #undef printlb
@@ -36,6 +38,15 @@ extern "C" {
 		printf(format, ##__VA_ARGS__);\
 		printf("\n");\
 } while(0)
+#if VERBOSE_LEVEL >= 3
+#undef printld
+#define printld(format, ...) do {\
+		printf("[LEVLE %d] ", VERBOSE_LEVEL);\
+		printf("%s ==> ", __func__);\
+		printf(format, ##__VA_ARGS__);\
+		printf("\n");\
+} while(0)
+#endif
 #endif
 #endif
 /********************************************************************************************************/

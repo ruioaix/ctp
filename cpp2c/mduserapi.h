@@ -72,16 +72,15 @@ public:
 	void input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData);
 	CThostFtdcDepthMarketDataField *output_DMDQ(long *ts, long *tus, int *size);
 
-
 private:
-	CThostFtdcMdApi*			m_pApi;
+	CThostFtdcMdApi*			api;
 
 	int	m_nRequestID;
-	char *m_szPath;
+	char *m_logFilePath;
 	char *m_server;
-	char *m_szBrokerId;
-	char *m_szInvestorId;
-	char *m_szPassword;
+	char *m_BrokerId;
+	char *m_InvestorId;
+	char *m_Password;
 
 	char **m_InstrumentIDs;
 	int m_InstrumentNum;
