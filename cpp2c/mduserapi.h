@@ -12,10 +12,10 @@ class CMdUserApi : public CThostFtdcMdSpi
 {
 
 public:
-	//create api object. 
+	//there are 15 functions in CThostFtdcMdApi.
+	//create api object. 2 api functions: CreateFtdcMdApi & Release are included in the following two.
 	CMdUserApi(char *flowpath, char *servername, char *bid, char *iid, char *pd, char **InstrumentIDs, int InstrumentNum);
 	virtual ~CMdUserApi(void);
-
 	//13 api functions, come from MdApi
 	void Init();
 	void Join();

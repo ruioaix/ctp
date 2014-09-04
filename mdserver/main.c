@@ -9,6 +9,8 @@
 #include <bson.h>
 #include <mongoc.h>
 
+#include "mdcallback.h"
+
 struct MongoIM {
 	void *md;
 	mongoc_client_t *client;
@@ -104,6 +106,18 @@ int main(int argc, char **argv) {
 	char *i1[2] = {"IF1410"};
 	void *md = MD_create("/tmp/md", "tcp://27.17.62.149:40213", "1035", "00000008", "123456", i1, 1);
 
+	MD_RegOnFrontConnected(md, OnFrontConnected_d);
+	MD_RegOnFrontDisconnected(md, OnFrontDisconnected_d);
+	MD_RegOnHeartBeatWarning(md, OnHeartBeatWarning_d);
+	MD_RegOnRspUserLogin(md, OnRspUserLogin_d);
+	MD_RegOnRspUserLogout(md, OnRspUserLogout_d);
+	MD_RegOnRspError(md, OnRspError_d);
+	MD_RegOnRspSubMarketData(md, OnRspSubMarketData_d);
+	MD_RegOnRspUnSubMarketData(md, OnRspSubMarketData_d);
+	MD_RegOnRspSubForQuoteRsp(md, OnRspSubForQuoteRsp_d);
+	MD_RegOnRspUnSubForQuoteRsp(md, OnRspUnSubForQuoteRsp_d);
+	MD_RegOnRtnDepthMarketData(md, OnRtnDepthMarketData_d);
+	MD_RegOnRtnForQuoteRsp(md, OnRtnForQuoteRsp_d);
 
 	mongoc_init ();
 	mongoc_client_t *client = mongoc_client_new ("mongodb://ctp_md:ctp_md@localhost:27017/?authSource=ctp");
