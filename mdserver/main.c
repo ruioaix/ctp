@@ -147,11 +147,20 @@ void readinfo(char *filename, char **logfilepath, char **server, char **BrokerID
 
 
 int main(int argc, char **argv) {
-	//void *md = MD_create("/tmp/md", "tcp://222.66.97.241:41213", "9016766", "9016766", "1111111");
+	char *file;
+	if (argc == 1) {
+		file = "others/xxx_2";
+	}
+	else if (argc == 2) {
+		file = argv[1];
+	}
+	else {
+		isError("wrong args");
+	}
 	char *InstrumentIDs[10]={NULL};
 	int InstrumentNum = 1;
 	char *logfilepath, *server, *BrokerID, *UserID, *pd;
-	readinfo("others/xxx_real", &logfilepath, &server, &BrokerID, &UserID, &pd, &InstrumentIDs, &InstrumentNum);
+	readinfo(file, &logfilepath, &server, &BrokerID, &UserID, &pd, &InstrumentIDs, &InstrumentNum);
 	void *md = MD_create(logfilepath, server, BrokerID, UserID, pd, InstrumentIDs, InstrumentNum);
 
 	mongoc_init ();

@@ -272,7 +272,10 @@ void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 		(*m_fnOnRspUserLogin)(this, pRspUserLogin, pRspInfo, nRequestID, bIsLast);
 	}
 	if ((pRspInfo==NULL || pRspInfo->ErrorID == 0) && pRspUserLogin) {
+		printlb("SubscribeMarketData from here");
 		api->SubscribeMarketData(m_InstrumentIDs, m_InstrumentNum);
+		printlb("SubscribeForQuoteRsp from here");
+		api->SubscribeForQuoteRsp(m_InstrumentIDs, m_InstrumentNum);
 	}
 }
 
@@ -301,7 +304,7 @@ void CMdUserApi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bo
 	printlb("OnRspError called.");
 	printlc("nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
 	if (pRspInfo != NULL) {
-		printlc("pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+		printlc("pRspInfo->ErrorID: %d, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
 	}
 	else {
 		printlc("pRspInfo is NULL");
