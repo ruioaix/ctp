@@ -1,3 +1,80 @@
+#include "traderapi.h"
+
+using namespace std;
+
+CTraderApi::CTraderApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *password, char ** InstrumentIDs, int InstrumentNum)
+{
+	/*
+	printlb("create both spi and api object - td.");
+	m_nRequestID = 0;
+	printlc("save m_nRequestID: %d", m_nRequestID);
+	m_logFilePath = flowpath;
+	printlc("save m_logFilePath: %s", m_logFilePath);
+	m_server = servername;
+	printlc("save m_server: %s", m_server);
+	m_BrokerId = brokerid;
+	printlc("save m_BrokerId: %s", m_BrokerId);
+	m_InvestorId = inverstorid;
+	printlc("save m_InvestorId: %s", m_InvestorId);
+	m_Password = password;
+	printlc("save m_Password: %s", m_Password);
+
+	m_InstrumentIDs = InstrumentIDs;
+	m_InstrumentNum = InstrumentNum;
+	int i;
+	for (i = 0; i < m_InstrumentNum; ++i) {
+		printlc("save Instrument %d: %s", i, m_InstrumentIDs[i]);
+	}
+
+	mkdir(m_logFilePath, 0777);
+	api = CThostFtdcMdApi::CreateFtdcMdApi(m_logFilePath);
+	if (api == NULL) {
+		isError("mdapi created failed");
+	}
+	api->RegisterSpi(this);
+	api->RegisterFront(m_server);
+
+	//init 12 callback point.
+	m_fnOnFrontConnected = NULL;
+	m_fnOnFrontDisconnected = NULL;
+	m_fnOnHeartBeatWarning = NULL;
+	m_fnOnRspUserLogin = NULL;
+	m_fnOnRspUserLogout = NULL;
+	m_fnOnRspError = NULL;
+	m_fnOnRspSubMarketData = NULL;
+	m_fnOnRspUnSubMarketData = NULL;
+	m_fnOnRspSubForQuoteRsp = NULL;
+	m_fnOnRspUnSubForQuoteRsp = NULL;
+	m_fnOnRtnDepthMarketData = NULL;
+	m_fnOnRtnForQuoteRsp = NULL;
+
+	m_queue_size = 8192;
+	printlc("prepare msg queue, size: %d", m_queue_size);
+	m_queue = (CThostFtdcDepthMarketDataField *)smalloc(m_queue_size * sizeof(CThostFtdcDepthMarketDataField));
+	if (m_queue == NULL) {
+		exit(-1);
+	}
+	m_intime_second = (long *)smalloc(m_queue_size * sizeof(long));
+	if (m_intime_second == NULL) {
+		exit(-1);
+	}
+	m_intime_usecond = (long *)smalloc(m_queue_size * sizeof(long));
+	if (m_intime_usecond == NULL) {
+		exit(-1);
+	}
+	m_current_size = (int *)smalloc(m_queue_size * sizeof(int));
+	if (m_current_size == NULL) {
+		exit(-1);
+	}
+	for (i = 0; i < m_queue_size; ++i) {
+		m_intime_second[i] = -1;
+		m_intime_usecond[i] = -1;
+	}
+	m_header_index = 0;
+	m_tail_index = 0;
+	m_validmsg_size = 0;
+	*/
+}
 /*
 #include "StdAfx.h"
 #include "TraderApi.h"

@@ -1,18 +1,17 @@
 #include "ctpcapi.h"
 #include <stdio.h>
-#include <unistd.h>
-#include <math.h>
-#include <inttypes.h>
-#include <time.h>
-#include <pthread.h>
+#include <string.h>
+//#include <unistd.h>
+//#include <math.h>
+//#include <inttypes.h>
+//#include <time.h>
+//#include <pthread.h>
 
-#include <bson.h>
-#include <mongoc.h>
+//#include <bson.h>
+//#include <mongoc.h>
 
-#include "mdcallback.h"
 #include "vbmal.h"
 
-/*
 void readinfo(char *filename, char **logfilepath, char **server, char **BrokerID, char **UserID, char **pd, char *(*InstrumentIDs)[], int *InstrumentNum) {
 	FILE *fp = sfopen(filename, "r");
 	char line[1000];
@@ -56,6 +55,7 @@ void readinfo(char *filename, char **logfilepath, char **server, char **BrokerID
 	*InstrumentNum = j;
 	fclose(fp);
 }
+/*
 
 struct MongoIM {
 	void *md;
@@ -151,7 +151,6 @@ void *ProcessDMD(void *mim_p) {
 
 */
 int main(int argc, char **argv) {
-	/*
 	char *file;
 	if (argc == 1) {
 		file = "others/xxx_2";
@@ -166,6 +165,7 @@ int main(int argc, char **argv) {
 	int InstrumentNum = 1;
 	char *logfilepath, *server, *BrokerID, *UserID, *pd;
 	readinfo(file, &logfilepath, &server, &BrokerID, &UserID, &pd, &InstrumentIDs, &InstrumentNum);
+	/*
 	void *md = MD_create(logfilepath, server, BrokerID, UserID, pd, InstrumentIDs, InstrumentNum);
 
 	mongoc_init ();

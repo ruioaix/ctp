@@ -295,9 +295,25 @@ typedef struct CThostFtdcTradingAccountReserveField			CThostFtdcTradingAccountRe
 /********************For Market Data (related to ThostFtdcMdApi.h)***************************************/
 /********************************************************************************************************/
 /*2 functions, MD object, create & free.*/
-//void *MD_create(char *flowpath,char *servername, char *brokerid, char *inverstorid, char *password);
 void* MD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd, char **InstrumentIDs, int InstrumentNum);
 void MD_free(void* md);
+/*In class CThostFtdcMdApi, there are 13 api functions.*/
+void MD_init(void *md);
+void MD_join(void *md);
+void MD_getTradingDay(void *md);
+void MD_registerFront(void *md, char *pszFrontAddress);
+void MD_registerNameServer(void *md, char *pszNsAddress);
+void MD_registerFensUserInfo(void *md, CThostFtdcFensUserInfoField * pFensUserInfo);
+void MD_registerSpi(void *md);
+int MD_subscribeMarketData(void *md, char *ppInstrumentID[], int nCount);
+int MD_unSubscribeMarketData(void *md, char *ppInstrumentID[], int nCount);
+int MD_subscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount);
+int MD_unSubscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount);
+int MD_reqUserLogin(void *md);
+int MD_reqUserLogout(void *md);
+
+//get one DMDmsg
+CThostFtdcDepthMarketDataField *MD_getOneDMDmsg(void *md, long *ts, long *tus, int *size);
 
 /*In class CThostFtdcMdSpi, there are 12 callback functions.*/
 // related to "virtual void OnFrontConnected(){};"
@@ -337,22 +353,15 @@ void MD_RegOnRtnDepthMarketData(void* md, fnOnRtnDepthMarketData pCallback);
 typedef void(* fnOnRtnForQuoteRsp)(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp);
 void MD_RegOnRtnForQuoteRsp(void* md, fnOnRtnForQuoteRsp pCallback);
 
-/*In class CThostFtdcMdApi, there are 13 api functions.*/
-void MD_init(void *md);
-void MD_join(void *md);
-void MD_getTradingDay(void *md);
-void MD_registerFront(void *md, char *pszFrontAddress);
-void MD_registerNameServer(void *md, char *pszNsAddress);
-void MD_registerFensUserInfo(void *md, CThostFtdcFensUserInfoField * pFensUserInfo);
-void MD_registerSpi(void *md);
-int MD_subscribeMarketData(void *md, char *ppInstrumentID[], int nCount);
-int MD_unSubscribeMarketData(void *md, char *ppInstrumentID[], int nCount);
-int MD_subscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount);
-int MD_unSubscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount);
-int MD_reqUserLogin(void *md);
-int MD_reqUserLogout(void *md);
 
-CThostFtdcDepthMarketDataField *MD_getOneDMDmsg(void *md, long *ts, long *tus, int *size);
+
+/********************************************************************************************************/
+/********************For Trader (related to ThostFtdcTraderApi.h)***************************************/
+/********************************************************************************************************/
+/*2 functions, TD object, create & free.*/
+void* TD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd, char **InstrumentIDs, int InstrumentNum);
+void TD_free(void* md);
+
 
 #ifdef __cplusplus
 }

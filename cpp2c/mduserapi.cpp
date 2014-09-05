@@ -2,8 +2,6 @@
 
 #include <string.h>
 #include <iostream>
-#include <vector>
-#include <mutex>
 #include <sys/stat.h>
 #include <sys/syscall.h>
 #include <sys/types.h>

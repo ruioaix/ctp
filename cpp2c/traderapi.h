@@ -12,7 +12,8 @@ class CTraderApi : public CThostFtdcTraderSpi
 public:
 	//there are 70 functions in CThostFtdcTraderApi (ignore deconstruct function)
 	//traderapi object. 2 api functions: CreateFtdcTraderApi & Release are included in the following two.
-	CTraderApi(void);
+	CTraderApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *password, char ** InstrumentIDs, int InstrumentNum);
+	/*
 	virtual ~CTraderApi(void);
 	//68 api functions, from traderapi.
 	void Init();
@@ -183,6 +184,7 @@ private:
 	virtual void OnRtnOpenAccountByBank(CThostFtdcOpenAccountField *pOpenAccount);
 	virtual void OnRtnCancelAccountByBank(CThostFtdcCancelAccountField *pCancelAccount);
 	virtual void OnRtnChangeAccountByBank(CThostFtdcChangeAccountField *pChangeAccount);
+	*/
 
 private:
 	/*
@@ -216,3 +218,5 @@ private:
 	map<int,SRequest*>			m_reqMap;				//已发送请求池
 	*/
 };
+
+#endif

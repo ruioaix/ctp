@@ -1,5 +1,7 @@
 .PHONY : all install clean $(dirsname)  test mdserver tdserver vbmal
 
+tdserver :
+
 mdserver :  buildcapi vbmal
 	gcc -Wall -Wunused -c server/mds.c -I. -I/usr/include/libmongoc-1.0 -I/usr/include/libbson-1.0  -o bin/mds.o
 	gcc -Wall -Wunused -c server/mdcallback.c -I. -o bin/mdcallback.o
