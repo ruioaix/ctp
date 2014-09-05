@@ -226,7 +226,7 @@ void CMdUserApi::OnFrontConnected()
 //callback when connect unsuccessful.
 void CMdUserApi::OnFrontDisconnected(int nReason)
 {
-	printlb("connected failed.");
+	printlb("connected failed, nReason: %d", nReason);
 	if (m_fnOnFrontDisconnected != NULL) {
 		(*m_fnOnFrontDisconnected)(this, nReason);
 	}

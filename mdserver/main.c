@@ -140,7 +140,7 @@ void *ProcessDMD(void *mim_p) {
 			//printf("arrived time: %ld.%06d, EasyRead: %s", ts, tus, ctime(&ts));
 			//printf("process time: %ld.%06d, EasyRead: %s", tv.tv_sec, (int)tv.tv_usec, ctime(&(tv.tv_sec)));
 			printf("updated time: %s, update mill time : %4d, arrive: %ld.%06ld, delay: %f, valid size: %3d\n", pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, ts, tus, tv.tv_sec-ts+(tv.tv_usec-tus)*1E-6, size);
-			insert_mongodb(client, collection, pDepthMarketData, 0.1, 0.1);
+			insert_mongodb(client, collection, pDepthMarketData, ts+tus*1E-6, tv.tv_sec+(tv.tv_usec)*1E-6);
 		}
 	}
 }
