@@ -354,12 +354,11 @@ typedef void(* fnOnRtnForQuoteRsp)(void* md, CThostFtdcForQuoteRspField *pForQuo
 void MD_RegOnRtnForQuoteRsp(void* md, fnOnRtnForQuoteRsp pCallback);
 
 
-
 /********************************************************************************************************/
 /********************For Trader (related to ThostFtdcTraderApi.h)***************************************/
 /********************************************************************************************************/
 /*2 functions, TD object, create & free.*/
-void* TD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd, char **InstrumentIDs, int InstrumentNum);
+void* TD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd);
 void TD_free(void* md);
 
 

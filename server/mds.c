@@ -203,5 +203,5 @@ int main(int argc, char **argv) {
 	}
 
 	MD_free(md);
-	return 0;
+	_exit(0);
 }

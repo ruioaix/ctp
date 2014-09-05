@@ -12,9 +12,9 @@ class CTraderApi : public CThostFtdcTraderSpi
 public:
 	//there are 70 functions in CThostFtdcTraderApi (ignore deconstruct function)
 	//traderapi object. 2 api functions: CreateFtdcTraderApi & Release are included in the following two.
-	CTraderApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *password, char ** InstrumentIDs, int InstrumentNum);
-	/*
+	CTraderApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *password);
 	virtual ~CTraderApi(void);
+	/*
 	//68 api functions, from traderapi.
 	void Init();
 	int Join();
@@ -187,36 +187,16 @@ private:
 	*/
 
 private:
-	/*
-	ConnectionStatus			m_status;				//连接状态
-	atomic<int>					m_lRequestID;			//请求ID,得保持自增
-	
-	CThostFtdcRspUserLoginField m_RspUserLogin;			//返回的登录成功响应，目前利用此内成员进行报单所属区分
+	CThostFtdcTraderApi*		api;
 
-	mutex						m_csOrderRef;
-	int							m_nMaxOrderRef;			//报单引用，用于区分报单，保持自增
-
-	CThostFtdcTraderApi*		m_pApi;					//交易API
-	CCTPMsgQueue*				m_msgQueue;				//消息队列指针
-
-	string						m_szPath;				//生成配置文件的路径
-	set<string>					m_arrAddresses;			//服务器地址
-	string						m_szBrokerId;			//期商ID
-	string						m_szInvestorId;			//投资者ID
-	string						m_szPassword;			//密码
-	string						m_szUserProductInfo;	//产品信息
-	string						m_szAuthCode;			//认证码
-
-	int							m_nSleep;
-	volatile bool				m_bRunning;
-	HANDLE						m_hThread;
-
-	mutex						m_csList;
-	list<SRequest*>				m_reqList;				//将发送请求队列
-
-	mutex						m_csMap;
-	map<int,SRequest*>			m_reqMap;				//已发送请求池
-	*/
+	int					m_nRequestID;
+	char *m_logFilePath;
+	char *m_server;
+	char *m_BrokerId;
+	char *m_InvestorId;
+	char *m_Password;
+	char *m_UserProductInfo;
+	char *m_AuthCode;
 };
 
 #endif

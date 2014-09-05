@@ -49,6 +49,7 @@
 
 /*******use everywhere.**********************************************************************************/
 #include <stdio.h> //for FILE, perror, fprintf, stderr
+#include <stdlib.h>
 #define isError(format, ...) do {\
 		fflush(stdout);\
 		fprintf(stderr, "[ERROR]:\n\tfile: \"%s\", line: %d.\n\t%s =>> ", \

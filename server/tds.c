@@ -1,7 +1,7 @@
 #include "ctpcapi.h"
 #include <stdio.h>
 #include <string.h>
-//#include <unistd.h>
+#include <unistd.h>
 //#include <math.h>
 //#include <inttypes.h>
 //#include <time.h>
@@ -206,5 +206,5 @@ int main(int argc, char **argv) {
 
 	MD_free(md);
 	*/
-	return 0;
+	_exit(0);
 }
