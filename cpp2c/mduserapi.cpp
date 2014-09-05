@@ -274,8 +274,8 @@ void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 	if ((pRspInfo==NULL || pRspInfo->ErrorID == 0) && pRspUserLogin) {
 		printlb("SubscribeMarketData from here");
 		api->SubscribeMarketData(m_InstrumentIDs, m_InstrumentNum);
-		printlb("SubscribeForQuoteRsp from here");
-		api->SubscribeForQuoteRsp(m_InstrumentIDs, m_InstrumentNum);
+		//printlb("SubscribeForQuoteRsp from here");
+		//api->SubscribeForQuoteRsp(m_InstrumentIDs, m_InstrumentNum);
 	}
 }
 

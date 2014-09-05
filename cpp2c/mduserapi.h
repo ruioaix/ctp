@@ -3,7 +3,6 @@
 
 #include "ctpcapi.h"
 #include "cpp_api/ThostFtdcMdApi.h"
-#include <pthread.h>
 
 using namespace std;
 
@@ -26,6 +25,7 @@ public:
 	void RegisterSpi();
 	int SubscribeMarketData(char *ppInstrumentID[], int nCount);
 	int UnSubscribeMarketData(char *ppInstrumentID[], int nCount);
+	//subforquote&unsubforquote is not supported by shanghaiCTP today-20140905.
 	int SubscribeForQuoteRsp(char *ppInstrumentID[], int nCount);
 	int UnSubscribeForQuoteRsp(char *ppInstrumentID[], int nCount);
 	int ReqUserLogin(void);
