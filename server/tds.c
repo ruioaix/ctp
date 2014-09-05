@@ -1,15 +1,15 @@
 #include "ctpcapi.h"
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
-#include <math.h>
-#include <inttypes.h>
-#include <time.h>
-#include <pthread.h>
+//#include <math.h>
+//#include <inttypes.h>
+//#include <time.h>
+//#include <pthread.h>
 
-#include <bson.h>
-#include <mongoc.h>
+//#include <bson.h>
+//#include <mongoc.h>
 
-#include "mdcallback.h"
 #include "vbmal.h"
 
 void readinfo(char *filename, char **logfilepath, char **server, char **BrokerID, char **UserID, char **pd, char *(*InstrumentIDs)[], int *InstrumentNum) {
@@ -55,6 +55,7 @@ void readinfo(char *filename, char **logfilepath, char **server, char **BrokerID
 	*InstrumentNum = j;
 	fclose(fp);
 }
+/*
 
 struct MongoIM {
 	void *md;
@@ -142,13 +143,13 @@ void *ProcessDMD(void *mim_p) {
 			//printf("arrived time: %ld.%06d, EasyRead: %s", ts, tus, ctime(&ts));
 			//printf("process time: %ld.%06d, EasyRead: %s", tv.tv_sec, (int)tv.tv_usec, ctime(&(tv.tv_sec)));
 			printf("updated time: %s, update mill time : %4d, arrive: %ld.%06ld, delay: %f, valid size: %3d\n", pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, ts, tus, tv.tv_sec-ts+(tv.tv_usec-tus)*1E-6, size);
-			insert_mongodb(client, collection, pDepthMarketData, ts+tus*1E-6, tv.tv_sec+(tv.tv_usec)*1E-6);
+			insert_mongodb(client, collection, pDepthMarketData, 0.1, 0.1);
 		}
 	}
 	return NULL;
 }
 
-
+*/
 int main(int argc, char **argv) {
 	char *file;
 	if (argc == 1) {
@@ -164,6 +165,7 @@ int main(int argc, char **argv) {
 	int InstrumentNum = 1;
 	char *logfilepath, *server, *BrokerID, *UserID, *pd;
 	readinfo(file, &logfilepath, &server, &BrokerID, &UserID, &pd, &InstrumentIDs, &InstrumentNum);
+	/*
 	void *md = MD_create(logfilepath, server, BrokerID, UserID, pd, InstrumentIDs, InstrumentNum);
 
 	mongoc_init ();
@@ -203,5 +205,6 @@ int main(int argc, char **argv) {
 	}
 
 	MD_free(md);
-	return 0;
+	*/
+	_exit(0);
 }
