@@ -31,4 +31,4 @@ test :
 all : mdserver tdserver
 
 clean :
-	@$(RM) a.out bin/* run *.log *.o ./*.so *.con 1 test
+	@$(RM) a.out bin/* run *.log *.o ./*.so *.con 1 test mds tds
