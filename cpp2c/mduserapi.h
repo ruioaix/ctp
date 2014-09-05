@@ -11,8 +11,8 @@ class CMdUserApi : public CThostFtdcMdSpi
 {
 
 public:
-	//there are 15 functions in CThostFtdcMdApi.
-	//create api object. 2 api functions: CreateFtdcMdApi & Release are included in the following two.
+	//there are 15 functions in CThostFtdcMdApi. (ignore deconstruct function)
+	//md object. 2 api functions: CreateFtdcMdApi & Release are included in the following two.
 	CMdUserApi(char *flowpath, char *servername, char *bid, char *iid, char *pd, char **InstrumentIDs, int InstrumentNum);
 	virtual ~CMdUserApi(void);
 	//13 api functions, come from MdApi
@@ -47,12 +47,6 @@ private:
 	virtual void OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData);
 	virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp);
-
-	//检查是否出错
-	bool IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);//将出错消息送到消息队列
-	bool IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo);//不送出错消息
-	//根据OnFrontDisconnected(int nReason)的值填上错误消息
-	void GetOnFrontDisconnectedMsg(CThostFtdcRspInfoField* pRspInfo);
 
 public:
 	//12 callback register functions 
