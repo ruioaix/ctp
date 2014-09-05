@@ -1,10 +1,11 @@
 #include "traderapi.h"
 #include "base.h"
+#include <string.h>
 #include <sys/stat.h>
 
 using namespace std;
 
-CTraderApi::CTraderApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *password)
+CTraderApi::CTraderApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *password, THOST_TE_RESUME_TYPE nResumeType)
 {
 	printlb("create both spi and api object - td.");
 	m_nRequestID = 0;
@@ -27,10 +28,99 @@ CTraderApi::CTraderApi(char *flowpath, char *servername, char *brokerid, char *i
 	}
 	api->RegisterSpi(this);
 	api->RegisterFront(m_server);
+	api->SubscribePublicTopic(nResumeType);
+	api->SubscribePrivateTopic(nResumeType);
 }
 
 CTraderApi::~CTraderApi(void) {
+	if (api) {
+		api->RegisterSpi(NULL);
+		api->Release();
+		api=NULL;
+	}
+	printlb("delete md");
 }
+
+void CTraderApi::Init(void) {
+	printlb("api init");
+	api->Init();
+}
+
+void CTraderApi::SubscribePublicTopic(THOST_TE_RESUME_TYPE nResumeType) {
+	printlb("api sub public topic, TYPE: %d", nResumeType);
+	api->SubscribePublicTopic(nResumeType);
+}
+
+void CTraderApi::SubscribePrivateTopic(THOST_TE_RESUME_TYPE nResumeType) {
+	printlb("api sub private topic, TYPE: %d", nResumeType);
+	api->SubscribePrivateTopic(nResumeType);
+}
+
+int CTraderApi::ReqUserLogin() {
+	printlb("api req user login");
+
+	CThostFtdcReqUserLoginField request = {0};
+	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
+	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
+	strncpy(request.Password, m_Password, sizeof(TThostFtdcPasswordType));
+	printlc("request.BrokerID: %s", request.BrokerID);
+	printlc("request.UserID: %s", request.UserID);
+	printlc("request.Password: %s", request.Password);
+
+	return api->ReqUserLogin(&request,++m_nRequestID);
+}
+
+int CTraderApi::ReqSettlementInfoConfirm()
+{
+	CThostFtdcSettlementInfoConfirmField body = {0};
+
+	strncpy(body.BrokerID, m_BrokerId,sizeof(TThostFtdcBrokerIDType));
+	strncpy(body.InvestorID, m_InvestorId,sizeof(TThostFtdcInvestorIDType));
+	return api->ReqSettlementInfoConfirm(&body, ++m_nRequestID);
+}
+
+
+void CTraderApi::OnFrontConnected() {
+	printlb("connected successfully.");
+	printlb("request user login from here.");
+	ReqUserLogin();
+}
+
+void CTraderApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	printlb("OnRspUserLogin called.");
+	printlc("nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
+	if (pRspInfo != NULL) {
+		printlc("pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+	}
+	else {
+		printlc("pRspInfo is NULL");
+	}
+	if (pRspUserLogin != NULL) {
+		printlc("pRspUserLogin->TradingDay: %s", pRspUserLogin->TradingDay);
+		printlc("pRspUserLogin->LoginTime: %s", pRspUserLogin->LoginTime);
+		printlc("pRspUserLogin->BrokerID: %s", pRspUserLogin->BrokerID);
+		printlc("pRspUserLogin->UserID: %s", pRspUserLogin->UserID); 
+		printlc("pRspUserLogin->SystemName: %s", pRspUserLogin->SystemName);
+		printlc("pRspUserLogin->FrontID: %d", pRspUserLogin->FrontID);
+		printlc("pRspUserLogin->SessionID: %d", pRspUserLogin->SessionID);
+		printlc("pRspUserLogin->MaxOrderRef: %s", pRspUserLogin->MaxOrderRef);
+		printlc("pRspUserLogin->SHFETime: %s", pRspUserLogin->SHFETime); 
+		printlc("pRspUserLogin->DCETime: %s", pRspUserLogin->DCETime);
+		printlc("pRspUserLogin->CZCETime: %s", pRspUserLogin->CZCETime);
+		printlc("pRspUserLogin->FFEXTime: %s", pRspUserLogin->FFEXTime);
+		printlc("pRspUserLogin->INETime: %s", pRspUserLogin->INETime);
+	}
+	else {
+		printlc("pRspUserLogin is NULL");
+	}
+	if ((pRspInfo==NULL || pRspInfo->ErrorID == 0) && pRspUserLogin) {
+		printlb("req settlement info confirm from here");
+		ReqSettlementInfoConfirm();
+	}
+}
+
+
 /*
 #include "StdAfx.h"
 #include "TraderApi.h"
@@ -336,25 +426,6 @@ void CTraderApi::RunInThread()
 	m_bRunning = false;
 }
 
-void CTraderApi::OnFrontConnected()
-{
-	m_status =  E_connected;
-	if(m_msgQueue)
-		m_msgQueue->Input_OnConnect(this,NULL,m_status);
-
-	//连接成功后自动请求认证或登录
-	if(m_szAuthCode.length()>0
-		&&m_szUserProductInfo.length()>0)
-	{
-		//填了认证码就先认证
-		ReqAuthenticate();
-	}
-	else
-	{
-		ReqUserLogin();
-	}
-}
-
 void CTraderApi::OnFrontDisconnected(int nReason)
 {
 	m_status = E_unconnected;
@@ -410,74 +481,6 @@ void CTraderApi::OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAuthentic
 
 	if (bIsLast)
 		ReleaseRequestMapBuf(nRequestID);
-}
-
-void CTraderApi::ReqUserLogin()
-{
-	if (NULL == m_pApi)
-		return;
-
-	SRequest* pRequest = MakeRequestBuf(E_ReqUserLoginField);
-	if (pRequest)
-	{
-		m_status = E_logining;
-		if(m_msgQueue)
-			m_msgQueue->Input_OnConnect(this,NULL,m_status);
-
-		CThostFtdcReqUserLoginField& body = pRequest->ReqUserLoginField;
-
-		strncpy(body.BrokerID, m_szBrokerId.c_str(),sizeof(TThostFtdcBrokerIDType));
-		strncpy(body.UserID, m_szInvestorId.c_str(),sizeof(TThostFtdcInvestorIDType));
-		strncpy(body.Password, m_szPassword.c_str(),sizeof(TThostFtdcPasswordType));
-		strncpy(body.UserProductInfo,m_szUserProductInfo.c_str(),sizeof(TThostFtdcProductInfoType));
-
-		AddToSendQueue(pRequest);
-	}
-}
-
-void CTraderApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
-{
-	if (!IsErrorRspInfo(pRspInfo)
-		&&pRspUserLogin)
-	{
-		m_status = E_logined;
-		if(m_msgQueue)
-			m_msgQueue->Input_OnConnect(this,pRspUserLogin,m_status);
-		
-		memcpy(&m_RspUserLogin,pRspUserLogin,sizeof(CThostFtdcRspUserLoginField));
-		m_nMaxOrderRef = atol(pRspUserLogin->MaxOrderRef);
-		ReqSettlementInfoConfirm();
-	}
-	else
-	{
-		m_status = E_authed;
-		if(m_msgQueue)
-			m_msgQueue->Input_OnDisconnect(this,pRspInfo,E_logining);
-	}
-
-	if (bIsLast)
-		ReleaseRequestMapBuf(nRequestID);
-}
-
-void CTraderApi::ReqSettlementInfoConfirm()
-{
-	if (NULL == m_pApi)
-		return;
-
-	SRequest* pRequest = MakeRequestBuf(E_SettlementInfoConfirmField);
-	if (pRequest)
-	{
-		m_status = E_confirming;
-		if(m_msgQueue)
-			m_msgQueue->Input_OnConnect(this,NULL,m_status);
-
-		CThostFtdcSettlementInfoConfirmField& body = pRequest->SettlementInfoConfirmField;
-
-		strncpy(body.BrokerID, m_szBrokerId.c_str(),sizeof(TThostFtdcBrokerIDType));
-		strncpy(body.InvestorID, m_szInvestorId.c_str(),sizeof(TThostFtdcInvestorIDType));
-
-		AddToSendQueue(pRequest);
-	}
 }
 
 void CTraderApi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)

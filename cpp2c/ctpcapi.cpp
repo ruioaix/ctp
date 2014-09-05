@@ -179,12 +179,30 @@ static inline CTraderApi* TD_GetApi(void* td) {
 	return static_cast<CTraderApi*>(td);
 }
 
-void* TD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd) {
-	return new CTraderApi(flowpath, servername, bid, iid, pd);
+void* TD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd, THOST_TE_RESUME_TYPE nResumeType) {
+	return new CTraderApi(flowpath, servername, bid, iid, pd, nResumeType);
 }
 
 void TD_free(void* td) {
 	if (td) {
 		delete MD_GetApi(td);
+	}
+}
+
+void TD_init(void *td) {
+	if (td) {
+		TD_GetApi(td)->Init();
+	}
+}
+
+void TD_SubscribePublicTopic(void *td, THOST_TE_RESUME_TYPE nResumeType) {
+	if (td) {
+		TD_GetApi(td)->SubscribePublicTopic(nResumeType);
+	}
+}
+
+void TD_SubscribePrivateTopic(void *td, THOST_TE_RESUME_TYPE nResumeType) {
+	if (td) {
+		TD_GetApi(td)->SubscribePrivateTopic(nResumeType);
 	}
 }

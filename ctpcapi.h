@@ -290,6 +290,7 @@ typedef struct CThostFtdcLoginForbiddenUserField			CThostFtdcLoginForbiddenUserF
 typedef struct CThostFtdcQryLoginForbiddenUserField			CThostFtdcQryLoginForbiddenUserField;
 typedef struct CThostFtdcMulticastGroupInfoField			CThostFtdcMulticastGroupInfoField;
 typedef struct CThostFtdcTradingAccountReserveField			CThostFtdcTradingAccountReserveField;
+typedef enum THOST_TE_RESUME_TYPE THOST_TE_RESUME_TYPE;
 
 /********************************************************************************************************/
 /********************For Market Data (related to ThostFtdcMdApi.h)***************************************/
@@ -358,8 +359,12 @@ void MD_RegOnRtnForQuoteRsp(void* md, fnOnRtnForQuoteRsp pCallback);
 /********************For Trader (related to ThostFtdcTraderApi.h)***************************************/
 /********************************************************************************************************/
 /*2 functions, TD object, create & free.*/
-void* TD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd);
-void TD_free(void* md);
+void* TD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd, THOST_TE_RESUME_TYPE nResumeType);
+void TD_free(void *td);
+/*In class CThostFtdcTraderApi, there are 68 api functions.*/
+void TD_init(void *td);
+void TD_SubscribePublicTopic(void *td, THOST_TE_RESUME_TYPE nResumeType);
+void TD_SubscribePrivateTopic(void *td, THOST_TE_RESUME_TYPE nResumeType);
 
 
 #ifdef __cplusplus
