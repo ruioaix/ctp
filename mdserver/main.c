@@ -53,12 +53,14 @@ void readinfo(char *filename, char **logfilepath, char **server, char **BrokerID
 		}
 	}
 	*InstrumentNum = j;
+	fclose(fp);
 }
 
 struct MongoIM {
 	void *md;
 	mongoc_client_t *client;
 	mongoc_collection_t *collection;
+	int *running;
 };
 
 void insert_mongodb(mongoc_client_t *client, mongoc_collection_t *collection, CThostFtdcDepthMarketDataField *pd, double arrivedtime, double processtime) {
@@ -129,7 +131,7 @@ void *ProcessDMD(void *mim_p) {
 	void *md = mim->md;
 	mongoc_client_t *client = mim->client;
 	mongoc_collection_t *collection = mim->collection;
-	while (1) {
+	while (*(mim->running)) {
 		long ts;
 		long tus;
 		int size;
@@ -143,6 +145,7 @@ void *ProcessDMD(void *mim_p) {
 			insert_mongodb(client, collection, pDepthMarketData, 0.1, 0.1);
 		}
 	}
+	return NULL;
 }
 
 
@@ -167,10 +170,12 @@ int main(int argc, char **argv) {
 	mongoc_client_t *client = mongoc_client_new ("mongodb://ctp_md:ctp_md@localhost:27017/?authSource=ctp");
 	mongoc_collection_t *collection = mongoc_client_get_collection (client, "ctp", "ctp");
 
+	int running = 1;
 	struct MongoIM mim;
 	mim.client = client;
 	mim.collection = collection;
 	mim.md = md;
+	mim.running = &running;
 
 	pthread_t p;
 	pthread_create(&p, NULL, ProcessDMD, &mim);
@@ -178,8 +183,11 @@ int main(int argc, char **argv) {
 
 	MD_init(md);
 
+	sleep(10);
+	running = 0;
 
-	pthread_join(p, NULL);
+
+	//pthread_join(p, NULL);
 
 	mongoc_collection_destroy (collection);
 	mongoc_client_destroy (client);
