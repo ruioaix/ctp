@@ -239,14 +239,14 @@ int main(int argc, char **argv) {
 
 	pthread_t p;
 	pthread_create(&p, NULL, ProcessDMD, &mim);
-	pthread_t instrment;
-	pthread_create(&instrment, NULL, ProcessINS, &mim);
+	//pthread_t instrment;
+	//pthread_create(&instrment, NULL, ProcessINS, &mim);
 
 
 	MD_init(md);
 
-	//sleep(10);
-	//running = 0;
+	sleep(10);
+	running = 0;
 
 
 	pthread_join(p, NULL);
@@ -261,8 +261,9 @@ int main(int argc, char **argv) {
 		free(InstrumentIDs[i]);
 		mongoc_collection_destroy (mcollections[i]);
 	}
-	mongoc_client_destroy (client);
+	mongoc_collection_destroy (mcollections[i]);
 	free(mcollections);
+	mongoc_client_destroy (client);
 
 	MD_free(md);
 	_exit(0);
