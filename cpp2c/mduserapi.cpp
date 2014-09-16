@@ -184,7 +184,7 @@ int CMdUserApi::ReqUserLogin()
 {
 	printlb("api req user login");
 
-	CThostFtdcReqUserLoginField request = {0};
+	CThostFtdcReqUserLoginField request;
 	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
 	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
 	strncpy(request.Password, m_Password, sizeof(TThostFtdcPasswordType));
@@ -198,7 +198,7 @@ int CMdUserApi::ReqUserLogin()
 int CMdUserApi::ReqUserLogout() {
 	printlb("api req user logout");
 
-	CThostFtdcUserLogoutField request = {0};
+	CThostFtdcUserLogoutField request;
 	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
 	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
 	printlc("request.BrokerID: %s", request.BrokerID);

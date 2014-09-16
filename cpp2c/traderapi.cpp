@@ -59,7 +59,7 @@ void CTraderApi::SubscribePrivateTopic(THOST_TE_RESUME_TYPE nResumeType) {
 int CTraderApi::ReqUserLogin() {
 	printlb("api req user login");
 
-	CThostFtdcReqUserLoginField request = {0};
+	CThostFtdcReqUserLoginField request;
 	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
 	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
 	strncpy(request.Password, m_Password, sizeof(TThostFtdcPasswordType));
@@ -72,7 +72,7 @@ int CTraderApi::ReqUserLogin() {
 
 int CTraderApi::ReqSettlementInfoConfirm()
 {
-	CThostFtdcSettlementInfoConfirmField body = {0};
+	CThostFtdcSettlementInfoConfirmField body;
 
 	strncpy(body.BrokerID, m_BrokerId,sizeof(TThostFtdcBrokerIDType));
 	strncpy(body.InvestorID, m_InvestorId,sizeof(TThostFtdcInvestorIDType));

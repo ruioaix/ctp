@@ -216,7 +216,7 @@ int main(int argc, char **argv) {
 	void *md = MD_create(logfilepath, server, BrokerID, UserID, pd, InstrumentIDs, InstrumentNum);
 
 	mongoc_init ();
-	mongoc_client_t *client = mongoc_client_new ("mongodb://ctp_md:ctp_md@localhost:27017/?authSource=ctp");
+	mongoc_client_t *client = mongoc_client_new ("mongodb://localhost:27017");
 	mongoc_collection_t **mcollections = smalloc((InstrumentNum+1) * sizeof(mongoc_collection_t *));
 
 	char mongo_collection_name[1000];
