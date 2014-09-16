@@ -1,13 +1,13 @@
-.PHONY : all install clean $(dirsname)  test mdserver tdserver vbmal
+.PHONY : all install clean $(dirsname)  test mdserver tdserver server_basic
 
-tdserver :
+#tdserver :
 
-mdserver :  buildcapi vbmal
+mdserver :  buildcapi server_basic 
 	gcc -g -Wall -Wunused -c server/mds.c -I. -I/usr/include/libmongoc-1.0 -I/usr/include/libbson-1.0  -o bin/mds.o
 	gcc -g -Wall -Wunused -c server/mdcallback.c -I. -o bin/mdcallback.o
 	g++ -g -Wall -Wunused -lpthread -lthostmduserapi -lthosttraderapi -lrt -lmongoc-1.0 -lbson-1.0 -L. -lctpcapi -lm bin/vbmal.o bin/mdcallback.o bin/mds.o -o mds
 	
-tdserver :  buildcapi vbmal
+tdserver :  buildcapi server_basic
 	gcc -g -Wall -Wunused -c server/tds.c -I. -I/usr/include/libmongoc-1.0 -I/usr/include/libbson-1.0  -o bin/tds.o
 	g++ -g -Wall -Wunused -lpthread  -lthostmduserapi -lthosttraderapi -lrt -lmongoc-1.0 -lbson-1.0 -L. -lm -lctpcapi bin/vbmal.o bin/tds.o -o tds
 
@@ -19,7 +19,7 @@ buildcapi :
 	g++ -g -shared -o cpp2c/slib/libctpcapi.so bin/base.o bin/traderapi.o bin/mduserapi.o bin/ctpcapi.o 
 	cp cpp2c/slib/libctpcapi.so libctpcapi.so
 
-vbmal :
+server_basic :
 	gcc -g -Wall -Wunused -c server/vbmal.c   -o bin/vbmal.o
 	
 test :  
