@@ -169,8 +169,8 @@ void *ProcessINS(void *mim_p) {
 	time_t t = time(NULL);
 	struct tm *tm = gmtime(&t);
 	int year_month = (tm->tm_year-100)*100 + tm->tm_mon + 2;
-	while (1) {
-		sleep(2000);
+	while (*(mim->running)) {
+		sleep(2);
 		time_t t = time(NULL);
 		struct tm *tm = gmtime(&t);
 		if (tm->tm_hour == 23) {
@@ -240,8 +240,8 @@ int main(int argc, char **argv) {
 
 	pthread_t p;
 	pthread_create(&p, NULL, ProcessDMD, &mim);
-	//pthread_t instrment;
-	//pthread_create(&instrment, NULL, ProcessINS, &mim);
+	pthread_t instrment;
+	pthread_create(&instrment, NULL, ProcessINS, &mim);
 
 
 	MD_init(md);
@@ -251,6 +251,7 @@ int main(int argc, char **argv) {
 
 
 	pthread_join(p, NULL);
+	pthread_join(instrment, NULL);
 
 
 	free(logfilepath);
