@@ -154,6 +154,7 @@ void *ProcessDMD(void *mim_p) {
 			}
 			insert_mongodb(client, mcollections[i], pDepthMarketData, ts+tus*1E-6, tv.tv_sec+(tv.tv_usec)*1E-6);
 		}
+		usleep(2000);
 	}
 	return NULL;
 }
@@ -245,8 +246,8 @@ int main(int argc, char **argv) {
 
 	MD_init(md);
 
-	sleep(10);
-	running = 0;
+	//sleep(10);
+	//running = 0;
 
 
 	pthread_join(p, NULL);
