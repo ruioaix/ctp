@@ -1,16 +1,8 @@
 #include "mduserapi.h"
-
-#include <string.h>
-#include <iostream>
-#include <sys/stat.h>
-#include <sys/syscall.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <sys/time.h>
-
 #include "base.h"
 
-#define delimiter ",;"
+#include <cstring>
+#include <ctime>
 
 using namespace std;
 
@@ -39,7 +31,6 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 		printlc("save Instrument %d: %s", i, m_InstrumentIDs[i]);
 	}
 
-	mkdir(m_logFilePath, 0777);
 	api = CThostFtdcMdApi::CreateFtdcMdApi(m_logFilePath);
 	if (api == NULL) {
 		isError("mdapi created failed");
@@ -387,22 +378,22 @@ void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMark
 
 /***help functions**********************************************************************************/
 void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData) {
-	struct timeval tv;
-	gettimeofday (&tv, NULL);
+	struct timespec tv;
+	clock_gettime(CLOCK_REALTIME, &tv);
 	long ts = tv.tv_sec;
-    long tus = tv.tv_usec;
+	long tns = tv.tv_nsec;
 	m_queue[m_tail_index]=*pDepthMarketData;
 	m_intime_second[m_tail_index] = ts;
-	m_intime_usecond[m_tail_index] = tus;
+	m_intime_usecond[m_tail_index] = tns;
 	m_tail_index = (m_tail_index+1)&(m_queue_size-1);
 	m_current_size[m_tail_index] = __sync_add_and_fetch(&m_validmsg_size, 1);
 }
 
-CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ(long *ts, long *tus, int *size) {
+CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ(long *ts, long *tns, int *size) {
 	if (m_validmsg_size> 0) {
 		__sync_fetch_and_sub(&m_validmsg_size, 1);
 		*ts = m_intime_second[m_header_index];
-		*tus = m_intime_usecond[m_header_index];
+		*tns = m_intime_usecond[m_header_index];
 		*size = m_current_size[m_header_index];
 		CThostFtdcDepthMarketDataField *h = m_queue + m_header_index;
 		m_header_index = (m_header_index + 1)&(m_queue_size-1);

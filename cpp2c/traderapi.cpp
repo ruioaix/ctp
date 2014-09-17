@@ -1,7 +1,7 @@
 #include "traderapi.h"
 #include "base.h"
-#include <string.h>
-#include <sys/stat.h>
+
+#include <cstring>
 
 using namespace std;
 
@@ -21,7 +21,6 @@ CTraderApi::CTraderApi(char *flowpath, char *servername, char *brokerid, char *i
 	m_Password = password;
 	printlc("save m_Password: %s", m_Password);
 
-	mkdir(m_logFilePath, 0777);
 	api = CThostFtdcTraderApi::CreateFtdcTraderApi(m_logFilePath);
 	if (api == NULL) {
 		isError("tdapi created failed");

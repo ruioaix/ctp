@@ -1,5 +1,5 @@
-#ifndef CTP_C_API_TRADERAPI_H
-#define CTP_C_API_TRADERAPI_H
+#ifndef CTP_C_API_CPP2C_TRADERAPI_H
+#define CTP_C_API_CPP2C_TRADERAPI_H
 
 #include "ctpcapi.h"
 #include "cpp_api/ThostFtdcTraderApi.h"
@@ -37,4 +37,4 @@ private:
 	char *m_AuthCode;
 };
 
-#endif
+#endif //end of CTP_C_API_CPP2C_TRADERAPI_H

@@ -1,11 +1,10 @@
-#ifndef CTP_C_API_MDUSERAPI_H
-#define CTP_C_API_MDUSERAPI_H
+#ifndef CTP_C_API_CPP2C_MDUSERAPI_H
+#define CTP_C_API_CPP2C_MDUSERAPI_H
 
 #include "ctpcapi.h"
 #include "cpp_api/ThostFtdcMdApi.h"
 
 using namespace std;
-
 
 class CMdUserApi : public CThostFtdcMdSpi
 {
@@ -90,4 +89,4 @@ private:
 	int m_queue_size;
 };
 
-#endif //end of CTP_C_API_MDUSERAPI_H
+#endif //end of CTP_C_API_CPP2C_MDUSERAPI_H
