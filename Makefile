@@ -4,7 +4,7 @@
 #but in the last step, because of libctpcapi.so, the program has to be linked in c++ way.
 run :  buildcapi server_basic 
 	gcc -g -Wall -Wunused -c server/main.c -I. -I/usr/include/libmongoc-1.0 -I/usr/include/libbson-1.0  -o bin/main.o
-	g++ -g -Wall -Wunused bin/main.o bin/vbmal.o bin/mongoapi.o -L. -lctpcapi -lthostmduserapi -lthosttraderapi -lrt -lmongoc-1.0 -lbson-1.0 -pthread -lm  -o run
+	g++ -g -Wall -Wunused bin/main.o bin/threadfunc.o bin/mongoapi.o bin/io.o bin/vbmal.o -L. -lctpcapi -lthostmduserapi -lthosttraderapi -lrt -lmongoc-1.0 -lbson-1.0 -pthread -lm  -o run
 	
 #compile in c++ way, generate a .so libraries.
 buildcapi :
@@ -18,6 +18,8 @@ buildcapi :
 #compile in c way.
 server_basic :
 	gcc -g -Wall -Wunused -c server/vbmal.c -o bin/vbmal.o
+	gcc -g -Wall -Wunused -c server/io.c -o bin/io.o
+	gcc -g -Wall -Wunused -c server/threadfunc.c -I. -I/usr/include/libmongoc-1.0 -I/usr/include/libbson-1.0 -o bin/threadfunc.o
 	gcc -g -Wall -Wunused -c server/mongoapi.c -I. -I/usr/include/libmongoc-1.0 -I/usr/include/libbson-1.0  -o bin/mongoapi.o
 	
 all : run

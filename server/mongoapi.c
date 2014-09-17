@@ -1,12 +1,16 @@
 #include "mongoapi.h"
 #include "vbmal.h"
 
-mongoc_client_t *MangoAPI_init(char *url_port) {
+mongoc_client_t *MongoAPI_create_client(char *url_port) {
 	mongoc_init ();
 	return mongoc_client_new(url_port);
 }
 
-mongoc_collection_t ** MangoAPI_glue_collections(mongoc_client_t *client, char **InstrumentIDs, int InstrumentNum, char *BrokerID, char *UserID) {
+void MongoAPI_destory_client(mongoc_client_t *client) {
+	mongoc_client_destroy(client);
+}
+
+mongoc_collection_t ** MongoAPI_glue_collections(mongoc_client_t *client, char **InstrumentIDs, int InstrumentNum, char *BrokerID, char *UserID) {
 	mongoc_collection_t **mcollections = smalloc((InstrumentNum+1) * sizeof(mongoc_collection_t *));
 
 	char mongo_collection_name[1000];
@@ -18,6 +22,15 @@ mongoc_collection_t ** MangoAPI_glue_collections(mongoc_client_t *client, char *
 	sprintf(mongo_collection_name, "%s_%s_%s", BrokerID, UserID, "other");
 	mcollections[i] = mongoc_client_get_collection(client, "ctp", mongo_collection_name);
 	return mcollections;
+}
+
+void MongoAPI_unglue_collections(mongoc_collection_t **mcollections, int InstrumentNum) {
+	int i;
+	for (i = 0; i < InstrumentNum; ++i) {
+		mongoc_collection_destroy (mcollections[i]);
+	}
+	mongoc_collection_destroy(mcollections[i]);
+	free(mcollections);
 }
 
 void insert_mongodb(mongoc_client_t *client, mongoc_collection_t *collection, CThostFtdcDepthMarketDataField *pd, double arrivedtime, double processtime) {
