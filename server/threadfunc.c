@@ -98,7 +98,7 @@ void *ProcessINS(void *mim_p) {
 	int _year, _month, _day, _hour, _minute, _second;
 	getcurrentdate(&_year, &_month, &_day, &_hour, &_minute, &_second);
 	while (*(mim->running)) {
-		sleep(2000);
+		sleep(20);
 		int year, month, day, hour, minute, second;
 		getcurrentdate(&year, &month, &day, &hour, &minute, &second);
 		if (day == 1 && hour == 12) {

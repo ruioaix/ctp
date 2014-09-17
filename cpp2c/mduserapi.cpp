@@ -67,6 +67,7 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 	if (m_current_size == NULL) {
 		exit(-1);
 	}
+	m_current_size[0]=0;
 	for (i = 0; i < m_queue_size; ++i) {
 		m_intime_second[i] = -1;
 		m_intime_usecond[i] = -1;

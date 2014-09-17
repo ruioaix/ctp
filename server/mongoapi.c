@@ -39,6 +39,7 @@ void MongoAPI_insert_DMD(mongoc_client_t *client, mongoc_collection_t *collectio
 			"TradingDay", BCON_UTF8 (pd->TradingDay),
 			"InstrumentID", BCON_UTF8 (pd->InstrumentID),
 			"ExchangeID", BCON_UTF8 (pd->ExchangeID),
+			"ExchangeInstID", BCON_UTF8 (pd->ExchangeInstID),
 			"LastPrice", BCON_DOUBLE (pd->LastPrice),
 			"PreSettlementPrice", BCON_DOUBLE (pd->PreSettlementPrice),
 			"PreClosePrice", BCON_DOUBLE (pd->PreClosePrice),
@@ -81,7 +82,8 @@ void MongoAPI_insert_DMD(mongoc_client_t *client, mongoc_collection_t *collectio
 			"ActionDay", BCON_UTF8 (pd->ActionDay),
 			"DMDMsgArrivedTime", BCON_DOUBLE (arrivedtime),
 			"DMDMsgProcessTime", BCON_DOUBLE (processtime),
-			"DMDMsgDelayedTime", BCON_DOUBLE (processtime - arrivedtime)
+			"DMDMsgDelayedTime", BCON_DOUBLE (processtime - arrivedtime),
+			"DMDQueueSize", BCON_INT32 (size)
 				);
 
 	int mci = mongoc_collection_insert (collection, MONGOC_INSERT_NONE, doc, NULL, NULL);

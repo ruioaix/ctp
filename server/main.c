@@ -46,8 +46,8 @@ int main(int argc, char **argv) {
 
 	MD_init(md);
 
-	//sleep(10);
-	//running = 0;
+	sleep(100);
+	running = 0;
 
 	pthread_join(insert_dmdmsg, NULL);
 	pthread_join(revise_instrment, NULL);
@@ -57,6 +57,7 @@ int main(int argc, char **argv) {
 	free(BrokerID);
 	free(UserID);
 	free(pd);
+	free(mongodb_url_port);
 	int i;
 	for (i = 0; i < InstrumentNum; ++i) {
 		free(InstrumentIDs[i]);
@@ -66,5 +67,6 @@ int main(int argc, char **argv) {
 	MongoAPI_destory_client(client);
 
 	MD_free(md);
+	sleep(2);
 	_exit(0);
 }
