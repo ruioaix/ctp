@@ -1,10 +1,6 @@
 #include "ctpcapi.h"
 #include "vbmal.h"
 #include <stdio.h>
-#include <unistd.h>
-#include <math.h>
-#include <inttypes.h>
-#include <time.h>
 #include <pthread.h>
 
 #include <bson.h>
