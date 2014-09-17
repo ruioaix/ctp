@@ -162,10 +162,10 @@ void *ProcessDMD(void *mim_p) {
 			printf("updated time: %s, update mill time : %4d, arrive: %ld.%06ld, delay: %f, valid size: %3d\n", pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, ts, tus, tv.tv_sec-ts+(tv.tv_usec-tus)*1E-6, size);
 			int hour, minute, second;
 			getupdatetime(pDepthMarketData->UpdateTime, &hour, &minute, &second);
-			if ( (hour >  9 || (hour== 9 && minute>=14)) &&
-				 (hour < 11 || (hour==11 && minute<30) || (hour==11 && minute==30 && second==0)) &&
-				 (hour >= 13 ) &&
-				 (hour < 15 || (hour==15 && minute<15) || (hour==15 && minute==15 && second==0)) 
+			if ( ((hour >  9 || (hour== 9 && minute>=14)) &&
+				  (hour < 11 || (hour==11 && minute<30) || (hour==11 && minute==30 && second==0))) ||
+				 ((hour >= 13 ) &&
+				  (hour < 15 || (hour==15 && minute<15) || (hour==15 && minute==15 && second==0)))
 			   ){
 				int i;
 				for (i = 0; i < mcollectionsNum; ++i) {
