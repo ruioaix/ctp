@@ -10,3 +10,15 @@
    ...
    obj:/usr/lib64/libthostmduserapi.so
 }
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Free
+   ...
+   obj:/usr/lib64/libthosttraderapi.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   obj:/usr/lib64/libthosttraderapi.so
+}

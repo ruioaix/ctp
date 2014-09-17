@@ -75,20 +75,6 @@ int MD_unSubscribeMarketData(void *md, char *ppInstrumentID[], int nCount) {
 	return -1;
 }
 
-int MD_subscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount) {
-	if(md) {
-		return MD_GetApi(md)->SubscribeForQuoteRsp(ppInstrumentID, nCount);
-	}
-	return -1;
-}
-
-int MD_unSubscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount) {
-	if(md) {
-		return MD_GetApi(md)->UnSubscribeForQuoteRsp(ppInstrumentID, nCount);
-	}
-	return -1;
-}
-
 int MD_reqUserLogin(void *md) {
 	if(md) {
 		return MD_GetApi(md)->ReqUserLogin();
@@ -150,24 +136,9 @@ void MD_RegOnRspUnSubMarketData(void *md, fnOnRspUnSubMarketData pCallback) {
 		MD_GetApi(md)->RegisterCallback_orusmd(pCallback);
 	}
 }
-void MD_RegOnRspSubForQuoteRsp(void *md, fnOnRspSubForQuoteRsp pCallback) {
-	if(md) {
-		MD_GetApi(md)->RegisterCallback_orsfqr(pCallback);
-	}
-}
-void MD_RegOnRspUnSubForQuoteRsp(void *md, fnOnRspUnSubForQuoteRsp pCallback) {
-	if(md) {
-		MD_GetApi(md)->RegisterCallback_orusfqr(pCallback);
-	}
-}
 void MD_RegOnRtnDepthMarketData(void* md, fnOnRtnDepthMarketData pCallback) {
 	if(md) {
 		MD_GetApi(md)->RegisterCallback_ordmd(pCallback);
-	}
-}
-void MD_RegOnRtnForQuoteRsp(void* md, fnOnRtnForQuoteRsp pCallback) {
-	if(md) {
-		MD_GetApi(md)->RegisterCallback_orfqr(pCallback);
 	}
 }
 

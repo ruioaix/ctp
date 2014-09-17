@@ -56,10 +56,7 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 	m_fnOnRspError = NULL;
 	m_fnOnRspSubMarketData = NULL;
 	m_fnOnRspUnSubMarketData = NULL;
-	m_fnOnRspSubForQuoteRsp = NULL;
-	m_fnOnRspUnSubForQuoteRsp = NULL;
 	m_fnOnRtnDepthMarketData = NULL;
-	m_fnOnRtnForQuoteRsp = NULL;
 
 	m_queue_size = 8192;
 	printlc("prepare msg queue, size: %d", m_queue_size);
@@ -101,7 +98,7 @@ CMdUserApi::~CMdUserApi(void)
 	printlb("delete md");
 }
 
-/***13 functions, merge api functions in MdApi class to MdSpi class****************************************************/
+/***11 functions, merge api functions in MdApi class to MdSpi class****************************************************/
 //connect: include CreateFtdcMdApi, RegisterSpi, RegisterFront, Init.
 void CMdUserApi::Init()
 {
@@ -162,29 +159,11 @@ int CMdUserApi::UnSubscribeMarketData(char *ppInstrumentID[], int nCount) {
 	return api->UnSubscribeMarketData(ppInstrumentID, nCount);
 }
 
-int CMdUserApi::SubscribeForQuoteRsp(char *ppInstrumentID[], int nCount) {
-	printlb("api sub quota rsp");
-	int i;
-	for (i = 0; i < nCount; ++i) {
-		printlc("ppInstrumentID[%d]: %s", i, ppInstrumentID[i]);
-	}
-	return api->SubscribeForQuoteRsp(ppInstrumentID, nCount);
-}
-
-int CMdUserApi::UnSubscribeForQuoteRsp(char *ppInstrumentID[], int nCount) {
-	printlb("api un sub quota rsp");
-	int i;
-	for (i = 0; i < nCount; ++i) {
-		printlc("ppInstrumentID[%d]: %s", i, ppInstrumentID[i]);
-	}
-	return api->UnSubscribeForQuoteRsp(ppInstrumentID, nCount);
-}
-
 int CMdUserApi::ReqUserLogin()
 {
 	printlb("api req user login");
 
-	CThostFtdcReqUserLoginField request;
+	CThostFtdcReqUserLoginField request = {};
 	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
 	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
 	strncpy(request.Password, m_Password, sizeof(TThostFtdcPasswordType));
@@ -198,7 +177,7 @@ int CMdUserApi::ReqUserLogin()
 int CMdUserApi::ReqUserLogout() {
 	printlb("api req user logout");
 
-	CThostFtdcUserLogoutField request;
+	CThostFtdcUserLogoutField request = {};
 	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
 	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
 	printlc("request.BrokerID: %s", request.BrokerID);
@@ -207,7 +186,7 @@ int CMdUserApi::ReqUserLogout() {
 	return api->ReqUserLogout(&request,++m_nRequestID);
 }
 
-/***12 callback functions********************************************************************************/
+/***9 callback functions********************************************************************************/
 //callback when connect successful.
 //connect successful, and ReqUserLogin.
 void CMdUserApi::OnFrontConnected()
@@ -354,48 +333,6 @@ void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecif
 	}
 }
 
-void CMdUserApi::OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) 
-{
-	printlb("OnRspSubForQuoteRsp called.");
-	printlc("nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
-	if (pRspInfo != NULL) {
-		printlc("pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
-	}
-	else {
-		printlc("pRspInfo is NULL");
-	}
-	if (pSpecificInstrument != NULL) {
-		printlc("pSpecificInstrument->InstrumentID: %s", pSpecificInstrument->InstrumentID);
-	}
-	else {
-		printlc("pSpecificInstrument is NULL");
-	}
-	if (m_fnOnRspSubForQuoteRsp != NULL) {
-		(*m_fnOnRspSubForQuoteRsp)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
-	}
-}
-
-void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
-{
-	printlb("OnRspUnSubMarketData called.");
-	printlc("nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
-	if (pRspInfo != NULL) {
-		printlc("pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
-	}
-	else {
-		printlc("pRspInfo is NULL");
-	}
-	if (pSpecificInstrument != NULL) {
-		printlc("pSpecificInstrument->InstrumentID: %s", pSpecificInstrument->InstrumentID);
-	}
-	else {
-		printlc("pSpecificInstrument is NULL");
-	}
-	if (m_fnOnRspUnSubForQuoteRsp) {
-		(*m_fnOnRspUnSubForQuoteRsp)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
-	}
-}
-
 void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
 	printlb("DepthMarketData comming");
@@ -446,21 +383,6 @@ void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMark
 		(*m_fnOnRtnDepthMarketData)(this, pDepthMarketData);
 	}
 	input_DMDQ(pDepthMarketData);
-}
-
-void CMdUserApi::OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp)
-{
-	printlb("OnRtnForQuoteRsp called.");
-	if (pForQuoteRsp != NULL) {
-		printlc("pForQuoteRsp->TradingDay: %s, pForQuoteRsp->InstrumentID: %s, pForQuoteRsp->ForQuoteSysID: %s, pForQuoteRsp->ForQuoteTime: %s, pForQuoteRsp->ActionDay: %s", \
-				pForQuoteRsp->TradingDay, pForQuoteRsp->InstrumentID, pForQuoteRsp->ForQuoteSysID, pForQuoteRsp->ForQuoteTime, pForQuoteRsp->ActionDay);
-	}
-	else {
-		printlc("pForQuoteRsp is NULL");
-	}
-	if (m_fnOnRtnForQuoteRsp != NULL) {
-		(*m_fnOnRtnForQuoteRsp)(this, pForQuoteRsp);
-	}
 }
 
 /***help functions**********************************************************************************/

@@ -11,11 +11,11 @@ class CMdUserApi : public CThostFtdcMdSpi
 {
 
 public:
-	//there are 15 functions in CThostFtdcMdApi. (ignore deconstruct function)
+	virtual ~CMdUserApi(void);
+	//there are 13 functions in CThostFtdcMdApi. (ignore deconstruct function)
 	//md object. 2 api functions: CreateFtdcMdApi & Release are included in the following two.
 	CMdUserApi(char *flowpath, char *servername, char *bid, char *iid, char *pd, char **InstrumentIDs, int InstrumentNum);
-	virtual ~CMdUserApi(void);
-	//13 api functions, come from MdApi
+	//11 api functions, come from MdApi
 	void Init();
 	void Join();
 	const char *GetTradingDay();
@@ -25,14 +25,11 @@ public:
 	void RegisterSpi();
 	int SubscribeMarketData(char *ppInstrumentID[], int nCount);
 	int UnSubscribeMarketData(char *ppInstrumentID[], int nCount);
-	//subforquote&unsubforquote is not supported by shanghaiCTP today-20140905.
-	int SubscribeForQuoteRsp(char *ppInstrumentID[], int nCount);
-	int UnSubscribeForQuoteRsp(char *ppInstrumentID[], int nCount);
 	int ReqUserLogin(void);
 	int ReqUserLogout(void);
 
 private:
-	//12 callback functions in CThostFtdcMdSpi
+	//9 callback functions in CThostFtdcMdSpi
 	//these functions will only be called by the CTP server.
 	//the user defined callback function will be called in the following functions.
 	virtual void OnFrontConnected();
@@ -43,13 +40,10 @@ private:
 	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-	virtual void OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-	virtual void OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData);
-	virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp);
 
 public:
-	//12 callback register functions 
+	//9 callback register functions 
 	void RegisterCallback_ofc(fnOnFrontConnected pCallback) { m_fnOnFrontConnected = pCallback; }
 	void RegisterCallback_ofd(fnOnFrontDisconnected pCallback) { m_fnOnFrontDisconnected = pCallback; }
 	void RegisterCallback_ohb(fnOnHeartBeatWarning pCallback) { m_fnOnHeartBeatWarning = pCallback; }
@@ -58,10 +52,7 @@ public:
 	void RegisterCallback_ore(fnOnRspError pCallback) { m_fnOnRspError = pCallback; }
 	void RegisterCallback_orsmd(fnOnRspSubMarketData pCallback) { m_fnOnRspSubMarketData = pCallback; }
 	void RegisterCallback_orusmd(fnOnRspUnSubMarketData pCallback) { m_fnOnRspUnSubMarketData = pCallback; }
-	void RegisterCallback_orsfqr(fnOnRspSubForQuoteRsp pCallback) { m_fnOnRspSubForQuoteRsp = pCallback; }
-	void RegisterCallback_orusfqr(fnOnRspUnSubForQuoteRsp pCallback) { m_fnOnRspUnSubForQuoteRsp = pCallback; }
 	void RegisterCallback_ordmd(fnOnRtnDepthMarketData pCallback) { m_fnOnRtnDepthMarketData = pCallback; }
-	void RegisterCallback_orfqr(fnOnRtnForQuoteRsp pCallback) { m_fnOnRtnForQuoteRsp = pCallback; }
 
 	void input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData);
 	CThostFtdcDepthMarketDataField *output_DMDQ(long *ts, long *tus, int *size);
@@ -87,10 +78,7 @@ private:
 	fnOnRspError m_fnOnRspError;
 	fnOnRspSubMarketData m_fnOnRspSubMarketData;
 	fnOnRspUnSubMarketData m_fnOnRspUnSubMarketData;
-	fnOnRspSubForQuoteRsp m_fnOnRspSubForQuoteRsp;
-	fnOnRspUnSubForQuoteRsp m_fnOnRspUnSubForQuoteRsp;
 	fnOnRtnDepthMarketData m_fnOnRtnDepthMarketData;
-	fnOnRtnForQuoteRsp m_fnOnRtnForQuoteRsp;
 	
 	CThostFtdcDepthMarketDataField *m_queue;
 	long *m_intime_second;
@@ -102,4 +90,4 @@ private:
 	int m_queue_size;
 };
 
-#endif
+#endif //end of CTP_C_API_MDUSERAPI_H

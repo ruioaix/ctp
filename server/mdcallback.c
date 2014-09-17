@@ -130,51 +130,7 @@ void OnRspUnSubMarketData_d(void *md, CThostFtdcSpecificInstrumentField *pSpecif
 	}
 }
 
-void OnRspSubForQuoteRsp_d(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast) {
-	printf("OnRspSubForQuoteRsp called.\n");
-	printf("\t nRequestId: %d, bIsLast: %d\n", nRequestID, bIsLast);
-	if (pRspInfo != NULL) {
-		printf("\t pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s\n", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
-	}
-	else {
-		printf("\t pRspInfo is NULL\n");
-	}
-	if (pSpecificInstrument != NULL) {
-		printf("\t pSpecificInstrument->InstrumentID: %s\n", pSpecificInstrument->InstrumentID);
-	}
-	else {
-		printf("\t pSpecificInstrument is NULL\n");
-	}
-}
-
-void OnRspUnSubForQuoteRsp_d(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast) {
-	printf("OnRspUnSubMarketData called.\n");
-	printf("\t nRequestId: %d, bIsLast: %d\n", nRequestID, bIsLast);
-	if (pRspInfo != NULL) {
-		printf("\t pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s\n", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
-	}
-	else {
-		printf("\t pRspInfo is NULL\n");
-	}
-	if (pSpecificInstrument != NULL) {
-		printf("\t pSpecificInstrument->InstrumentID: %s\n", pSpecificInstrument->InstrumentID);
-	}
-	else {
-		printf("\t pSpecificInstrument is NULL\n");
-	}
-}
-
 void OnRtnDepthMarketData_d(void* md, CThostFtdcDepthMarketDataField *pDepthMarketData) {
 	//printf("OnRtnDepthMarketData called.\n");
 }
 
-void OnRtnForQuoteRsp_d(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp) {
-	printf("OnRtnForQuoteRsp called.\n");
-	if (pForQuoteRsp != NULL) {
-		printf("\t pForQuoteRsp->TradingDay: %s, pForQuoteRsp->InstrumentID: %s, pForQuoteRsp->ForQuoteSysID: %s, pForQuoteRsp->ForQuoteTime: %s, pForQuoteRsp->ActionDay: %s\n", \
-				pForQuoteRsp->TradingDay, pForQuoteRsp->InstrumentID, pForQuoteRsp->ForQuoteSysID, pForQuoteRsp->ForQuoteTime, pForQuoteRsp->ActionDay);
-	}
-	else {
-		printf("\t pForQuoteRsp is NULL\n");
-	}
-}

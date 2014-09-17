@@ -9,9 +9,6 @@ void OnRspUserLogout_d(void *md, CThostFtdcUserLogoutField *pUserLogout, CThostF
 void OnRspError_d(void* md, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
 void OnRspSubMarketData_d(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
 void OnRspUnSubMarketData_d(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-void OnRspSubForQuoteRsp_d(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-void OnRspUnSubForQuoteRsp_d(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
 void OnRtnDepthMarketData_d(void* md, CThostFtdcDepthMarketDataField *pDepthMarketData);
-void OnRtnForQuoteRsp_d(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp);
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef CTP_C_API_HEADER_H
-#define CTP_C_API_HEADER_H
+#ifndef CTP_C_API_CTPCAPI_H
+#define CTP_C_API_CTPCAPI_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -8,7 +8,7 @@ extern "C" {
 
 //In the following included file,  there are 281 basic structures.
 #include "cpp_api/ThostFtdcUserApiStruct.h"
-//281 typedef
+//241 typedef
 typedef struct CThostFtdcDisseminationField			CThostFtdcDisseminationField;
 typedef struct CThostFtdcReqUserLoginField			CThostFtdcReqUserLoginField;
 typedef struct CThostFtdcRspUserLoginField			CThostFtdcRspUserLoginField;
@@ -118,48 +118,6 @@ typedef struct CThostFtdcQryExchangeMarginRateAdjustField			CThostFtdcQryExchang
 typedef struct CThostFtdcQryExchangeRateField			CThostFtdcQryExchangeRateField;
 typedef struct CThostFtdcQrySyncFundMortgageField			CThostFtdcQrySyncFundMortgageField;
 typedef struct CThostFtdcQryHisOrderField			CThostFtdcQryHisOrderField;
-typedef struct CThostFtdcOptionInstrMiniMarginField			CThostFtdcOptionInstrMiniMarginField;
-typedef struct CThostFtdcOptionInstrMarginAdjustField			CThostFtdcOptionInstrMarginAdjustField;
-typedef struct CThostFtdcOptionInstrCommRateField			CThostFtdcOptionInstrCommRateField;
-typedef struct CThostFtdcOptionInstrTradeCostField			CThostFtdcOptionInstrTradeCostField;
-typedef struct CThostFtdcQryOptionInstrTradeCostField			CThostFtdcQryOptionInstrTradeCostField;
-typedef struct CThostFtdcQryOptionInstrCommRateField			CThostFtdcQryOptionInstrCommRateField;
-typedef struct CThostFtdcIndexPriceField			CThostFtdcIndexPriceField;
-typedef struct CThostFtdcInputExecOrderField			CThostFtdcInputExecOrderField;
-typedef struct CThostFtdcInputExecOrderActionField			CThostFtdcInputExecOrderActionField;
-typedef struct CThostFtdcExecOrderField			CThostFtdcExecOrderField;
-typedef struct CThostFtdcExecOrderActionField			CThostFtdcExecOrderActionField;
-typedef struct CThostFtdcQryExecOrderField			CThostFtdcQryExecOrderField;
-typedef struct CThostFtdcExchangeExecOrderField			CThostFtdcExchangeExecOrderField;
-typedef struct CThostFtdcQryExchangeExecOrderField			CThostFtdcQryExchangeExecOrderField;
-typedef struct CThostFtdcQryExecOrderActionField			CThostFtdcQryExecOrderActionField;
-typedef struct CThostFtdcExchangeExecOrderActionField			CThostFtdcExchangeExecOrderActionField;
-typedef struct CThostFtdcQryExchangeExecOrderActionField			CThostFtdcQryExchangeExecOrderActionField;
-typedef struct CThostFtdcErrExecOrderField			CThostFtdcErrExecOrderField;
-typedef struct CThostFtdcQryErrExecOrderField			CThostFtdcQryErrExecOrderField;
-typedef struct CThostFtdcErrExecOrderActionField			CThostFtdcErrExecOrderActionField;
-typedef struct CThostFtdcQryErrExecOrderActionField			CThostFtdcQryErrExecOrderActionField;
-typedef struct CThostFtdcOptionInstrTradingRightField			CThostFtdcOptionInstrTradingRightField;
-typedef struct CThostFtdcQryOptionInstrTradingRightField			CThostFtdcQryOptionInstrTradingRightField;
-typedef struct CThostFtdcInputForQuoteField			CThostFtdcInputForQuoteField;
-typedef struct CThostFtdcForQuoteField			CThostFtdcForQuoteField;
-typedef struct CThostFtdcQryForQuoteField			CThostFtdcQryForQuoteField;
-typedef struct CThostFtdcExchangeForQuoteField			CThostFtdcExchangeForQuoteField;
-typedef struct CThostFtdcQryExchangeForQuoteField			CThostFtdcQryExchangeForQuoteField;
-typedef struct CThostFtdcInputQuoteField			CThostFtdcInputQuoteField;
-typedef struct CThostFtdcInputQuoteActionField			CThostFtdcInputQuoteActionField;
-typedef struct CThostFtdcQuoteField			CThostFtdcQuoteField;
-typedef struct CThostFtdcQuoteActionField			CThostFtdcQuoteActionField;
-typedef struct CThostFtdcQryQuoteField			CThostFtdcQryQuoteField;
-typedef struct CThostFtdcExchangeQuoteField			CThostFtdcExchangeQuoteField;
-typedef struct CThostFtdcQryExchangeQuoteField			CThostFtdcQryExchangeQuoteField;
-typedef struct CThostFtdcQryQuoteActionField			CThostFtdcQryQuoteActionField;
-typedef struct CThostFtdcExchangeQuoteActionField			CThostFtdcExchangeQuoteActionField;
-typedef struct CThostFtdcQryExchangeQuoteActionField			CThostFtdcQryExchangeQuoteActionField;
-typedef struct CThostFtdcOptionInstrDeltaField			CThostFtdcOptionInstrDeltaField;
-typedef struct CThostFtdcForQuoteRspField			CThostFtdcForQuoteRspField;
-typedef struct CThostFtdcStrikeOffsetField			CThostFtdcStrikeOffsetField;
-typedef struct CThostFtdcQryStrikeOffsetField			CThostFtdcQryStrikeOffsetField;
 typedef struct CThostFtdcMarketDataField			CThostFtdcMarketDataField;
 typedef struct CThostFtdcMarketDataBaseField			CThostFtdcMarketDataBaseField;
 typedef struct CThostFtdcMarketDataStaticField			CThostFtdcMarketDataStaticField;
@@ -245,6 +203,8 @@ typedef struct CThostFtdcEWarrantOffsetField			CThostFtdcEWarrantOffsetField;
 typedef struct CThostFtdcQryEWarrantOffsetField			CThostFtdcQryEWarrantOffsetField;
 typedef struct CThostFtdcQryInvestorProductGroupMarginField			CThostFtdcQryInvestorProductGroupMarginField;
 typedef struct CThostFtdcInvestorProductGroupMarginField			CThostFtdcInvestorProductGroupMarginField;
+typedef struct CThostFtdcQueryCFMMCTradingAccountTokenField   	CThostFtdcQueryCFMMCTradingAccountTokenField;
+typedef struct CThostFtdcCFMMCTradingAccountTokenField     CThostFtdcCFMMCTradingAccountTokenField;
 typedef struct CThostFtdcReqOpenAccountField			CThostFtdcReqOpenAccountField;
 typedef struct CThostFtdcReqCancelAccountField			CThostFtdcReqCancelAccountField;
 typedef struct CThostFtdcReqChangeAccountField			CThostFtdcReqChangeAccountField;
@@ -298,7 +258,7 @@ typedef enum THOST_TE_RESUME_TYPE THOST_TE_RESUME_TYPE;
 /*2 functions, MD object, create & free.*/
 void* MD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd, char **InstrumentIDs, int InstrumentNum);
 void MD_free(void* md);
-/*In class CThostFtdcMdApi, there are 13 api functions.*/
+/*In class CThostFtdcMdApi, there are 11 api functions.*/
 void MD_init(void *md);
 void MD_join(void *md);
 void MD_getTradingDay(void *md);
@@ -308,15 +268,13 @@ void MD_registerFensUserInfo(void *md, CThostFtdcFensUserInfoField * pFensUserIn
 void MD_registerSpi(void *md);
 int MD_subscribeMarketData(void *md, char *ppInstrumentID[], int nCount);
 int MD_unSubscribeMarketData(void *md, char *ppInstrumentID[], int nCount);
-int MD_subscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount);
-int MD_unSubscribeForQuoteRsp(void *md, char *ppInstrumentID[], int nCount);
 int MD_reqUserLogin(void *md);
 int MD_reqUserLogout(void *md);
 
 //get one DMDmsg
 CThostFtdcDepthMarketDataField *MD_getOneDMDmsg(void *md, long *ts, long *tus, int *size);
 
-/*In class CThostFtdcMdSpi, there are 12 callback functions.*/
+/*In class CThostFtdcMdSpi, there are 9 callback functions.*/
 // related to "virtual void OnFrontConnected(){};"
 typedef void(* fnOnFrontConnected)(void* md); 
 void MD_RegOnFrontConnected(void* md, fnOnFrontConnected pCallback);
@@ -341,19 +299,9 @@ void MD_RegOnRspSubMarketData(void *md, fnOnRspSubMarketData pCallback);
 // related to "virtual void OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};"
 typedef void(* fnOnRspUnSubMarketData)(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
 void MD_RegOnRspUnSubMarketData(void *md, fnOnRspUnSubMarketData pCallback);
-// related to "virtual void OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};"
-typedef void(* fnOnRspSubForQuoteRsp)(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-void MD_RegOnRspSubForQuoteRsp(void *md, fnOnRspSubForQuoteRsp pCallback);
-// related to "virtual void OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};"
-typedef void(* fnOnRspUnSubForQuoteRsp)(void *md, CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, /*bool*/ int bIsLast);
-void MD_RegOnRspUnSubForQuoteRsp(void *md, fnOnRspUnSubForQuoteRsp pCallback);
 // related to "virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData) {};"
 typedef void(* fnOnRtnDepthMarketData)(void* md, CThostFtdcDepthMarketDataField *pDepthMarketData);
 void MD_RegOnRtnDepthMarketData(void* md, fnOnRtnDepthMarketData pCallback);
-// related to "virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp) {};"
-typedef void(* fnOnRtnForQuoteRsp)(void* md, CThostFtdcForQuoteRspField *pForQuoteRsp);
-void MD_RegOnRtnForQuoteRsp(void* md, fnOnRtnForQuoteRsp pCallback);
-
 
 /********************************************************************************************************/
 /********************For Trader (related to ThostFtdcTraderApi.h)***************************************/
