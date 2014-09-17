@@ -38,20 +38,19 @@ int main(int argc, char **argv) {
 	mim.md = md;
 	mim.running = &running;
 
-	pthread_t p;
-	pthread_create(&p, NULL, ProcessDMD, &mim);
-	//pthread_t instrment;
-	//pthread_create(&instrment, NULL, ProcessINS, &mim);
+	pthread_t insert_dmdmsg;
+	pthread_create(&insert_dmdmsg, NULL, ProcessDMD, &mim);
+	pthread_t revise_instrment;
+	pthread_create(&revise_instrment, NULL, ProcessINS, &mim);
 
 
 	MD_init(md);
 
-	sleep(10);
-	running = 0;
+	//sleep(10);
+	//running = 0;
 
-
-	pthread_join(p, NULL);
-
+	pthread_join(insert_dmdmsg, NULL);
+	pthread_join(revise_instrment, NULL);
 
 	free(logfilepath);
 	free(server);

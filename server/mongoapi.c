@@ -33,7 +33,7 @@ void MongoAPI_unglue_collections(mongoc_collection_t **mcollections, int Instrum
 	free(mcollections);
 }
 
-void insert_mongodb(mongoc_client_t *client, mongoc_collection_t *collection, CThostFtdcDepthMarketDataField *pd, double arrivedtime, double processtime) {
+void MongoAPI_insert_DMD(mongoc_client_t *client, mongoc_collection_t *collection, CThostFtdcDepthMarketDataField *pd, double arrivedtime, double processtime, int size) {
 
 	bson_t *doc = BCON_NEW (
 			"TradingDay", BCON_UTF8 (pd->TradingDay),

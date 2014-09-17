@@ -5,58 +5,110 @@
 #include "vbmal.h"
 #include <string.h>
 
+static void getupdatetime(char *updatetime, int *hour, int *minute, int *second) {
+	char tt[3];
+	tt[2] = '\0';
+	tt[0] = updatetime[0];
+	tt[1] = updatetime[1];
+	*hour = strtol(tt, NULL, 10);
+	tt[0] = updatetime[3];
+	tt[1] = updatetime[4];
+	*minute = strtol(tt, NULL, 10);
+	tt[0] = updatetime[6];
+	tt[1] = updatetime[7];
+	*second = strtol(tt, NULL, 10);
+}
+
 void *ProcessDMD(void *mim_p) {
 	struct MongoIM *mim = mim_p;
+
 	void *md = mim->md;
 	mongoc_client_t *client = mim->client;
 	mongoc_collection_t **mcollections = mim->mcollections;
 	int mcollectionsNum = mim->mcollectionsNum;
 	char **InstrumentIDs = mim->InstrumentIDs;
+
 	while (*(mim->running)) {
 		long ts;
 		long tus;
 		int size;
 		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md, &ts, &tus, &size);
 		if (pDepthMarketData != NULL) {
-
 			struct timespec tv;
 			clock_gettime(CLOCK_REALTIME, &tv);
 
-			printf("updated time: %s, update mill time : %4d, arrive: %ld.%06ld, delay: %f, valid size: %3d\n", pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec, ts, tus, tv.tv_sec-ts+(tv.tv_nsec-tus)*1E-6, size);
-			int i;
-			for (i = 0; i < mcollectionsNum; ++i) {
-				if (strcmp(pDepthMarketData->InstrumentID, InstrumentIDs[i]) == 0) {
-					break;
+			printf("%s: updated time: %s, update mill time : %4d, arrive: %ld.%09ld, delay: %.10f, valid size: %3d\n",\
+				   	pDepthMarketData->InstrumentID, \
+					pDepthMarketData->UpdateTime, \
+					pDepthMarketData->UpdateMillisec, \
+					ts, tus, tv.tv_sec-ts+(tv.tv_nsec-tus)*1E-9, size);
+
+			int hour, minute, second;
+			getupdatetime(pDepthMarketData->UpdateTime, &hour, &minute, &second);
+
+			if ( ((hour >  9 || (hour== 9 && minute>=14)) &&
+				  (hour < 11 || (hour==11 && minute<30) || (hour==11 && minute==30 && second==0))) ||
+				 ((hour >= 13 ) &&
+				  (hour < 15 || (hour==15 && minute<15) || (hour==15 && minute==15 && second==0)))
+			   ){
+				int i;
+				for (i = 0; i < mcollectionsNum; ++i) {
+					if (strcmp(pDepthMarketData->InstrumentID, InstrumentIDs[i]) == 0) {
+						break;
+					}
 				}
+				MongoAPI_insert_DMD(client, mcollections[i], pDepthMarketData, ts+tus*1E-9, tv.tv_sec+(tv.tv_nsec)*1E-9, size);
 			}
-			insert_mongodb(client, mcollections[i], pDepthMarketData, ts+tus*1E-6, tv.tv_sec+(tv.tv_nsec)*1E-6);
+			else {
+				MongoAPI_insert_DMD(client, mcollections[mcollectionsNum], pDepthMarketData, ts+tus*1E-9, tv.tv_sec+(tv.tv_nsec)*1E-9, size);
+			}
 		}
+		usleep(2000);
 	}
 	return NULL;
+}
+
+static void getcurrentdate(int *year, int *month, int *day, int *hour, int *minute, int *second) {
+	time_t t = time(NULL);
+	struct tm *tm = gmtime(&t);
+	*year = tm->tm_year-100;
+	*month = tm->tm_mon+1;
+	*day = tm->tm_mday;
+	*hour = tm->tm_hour;
+	*minute = tm->tm_min;
+	*second = tm->tm_sec;
+}
+
+static void get_next_next_month(int year, int month, int *nnyear, int *nnmonth) {
+	if (month<11) {
+		*nnyear = year;
+		*nnmonth = month+2;
+	}
+	else {
+		*nnyear = year+1;
+		*nnmonth = (month+2)%12;
+	}
 }
 
 void *ProcessINS(void *mim_p) {
 	struct MongoIM *mim = mim_p;
 	void *md = mim->md;
-	//mongoc_client_t *client = mim->client;
-	//mongoc_collection_t **mcollections = mim->mcollections;
 	int mcollectionsNum = mim->mcollectionsNum;
 	char **InstrumentIDs = mim->InstrumentIDs;
-	time_t t = time(NULL);
-	struct tm *tm = gmtime(&t);
-	int year_month = (tm->tm_year-100)*100 + tm->tm_mon + 2;
-	while (1) {
+	int _year, _month, _day, _hour, _minute, _second;
+	getcurrentdate(&_year, &_month, &_day, &_hour, &_minute, &_second);
+	while (*(mim->running)) {
 		sleep(2000);
-		time_t t = time(NULL);
-		struct tm *tm = gmtime(&t);
-		if (tm->tm_hour == 23) {
-			int now_year_month = (tm->tm_year-100)*100 + tm->tm_mon + 2;
-			printf("%d\n", now_year_month);
-			if (now_year_month != year_month) {
+		int year, month, day, hour, minute, second;
+		getcurrentdate(&year, &month, &day, &hour, &minute, &second);
+		if (day == 1 && hour == 12) {
+			if (_month != month) {
+				int nnyear, nnmonth;
+				get_next_next_month(year, month, &nnyear, &nnmonth);
 				char insname_old[10];
 				char insname_new[10];
-				sprintf(insname_old, "IF%d", year_month);
-				sprintf(insname_new, "IF%d", now_year_month+1);
+				sprintf(insname_old, "IF%02d%02d", _year, _month);
+				sprintf(insname_new, "IF%02d%02d", nnyear, nnmonth);
 				int i;
 				for (i = 0; i < mcollectionsNum; ++i) {
 					if (strcmp(insname_old, InstrumentIDs[i]) == 0) {
@@ -66,9 +118,13 @@ void *ProcessINS(void *mim_p) {
 						InstrumentIDs[i][strlen(insname_new)] = '\0';
 					}
 				}
-				//sprintf(insname, "IF%d", now_year_month);
 				MD_subscribeMarketData(md, InstrumentIDs, mcollectionsNum); 
-				year_month = now_year_month;
+				_year=year;
+				_month=month;
+				_day = day;
+				_hour = hour;
+				_minute = minute;
+				_second = second;
 			}
 		}
 	}
