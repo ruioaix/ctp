@@ -35,7 +35,10 @@ void *ProcessDMD(void *mim_p) {
 		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md, &ts, &tus, &size);
 		if (pDepthMarketData != NULL) {
 			struct timespec tv;
-			clock_gettime(CLOCK_REALTIME, &tv);
+			if (clock_gettime(CLOCK_REALTIME, &tv) == -1) {
+				tv.tv_sec = -1;
+				tv.tv_nsec = -1;
+			}
 
 			printf("%s: updated time: %s, update mill time : %4d, arrive: %ld.%09ld, delay: %.10f, valid size: %3d\n",\
 				   	pDepthMarketData->InstrumentID, \
@@ -98,7 +101,7 @@ void *ProcessINS(void *mim_p) {
 	int _year, _month, _day, _hour, _minute, _second;
 	getcurrentdate(&_year, &_month, &_day, &_hour, &_minute, &_second);
 	while (*(mim->running)) {
-		sleep(20);
+		sleep(5);
 		int year, month, day, hour, minute, second;
 		getcurrentdate(&year, &month, &day, &hour, &minute, &second);
 		if (day == 1 && hour == 12) {

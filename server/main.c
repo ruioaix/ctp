@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
 
 	MD_init(md);
 
-	sleep(100);
+	sleep(20);
 	running = 0;
 
 	pthread_join(insert_dmdmsg, NULL);

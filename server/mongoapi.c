@@ -79,7 +79,7 @@ void MongoAPI_insert_DMD(mongoc_client_t *client, mongoc_collection_t *collectio
 			"AskPrice5", BCON_DOUBLE (pd->AskPrice5),
 			"AskVolume5", BCON_INT32 (pd->AskVolume5),
 			"AveragePrice", BCON_DOUBLE (pd->AveragePrice),
-			"ActionDay", BCON_UTF8 (pd->ActionDay),
+			"ActionDay", BCON_UTF8 (pd->ActionDay), //this item make valgrind give a cond sometime.
 			"DMDMsgArrivedTime", BCON_DOUBLE (arrivedtime),
 			"DMDMsgProcessTime", BCON_DOUBLE (processtime),
 			"DMDMsgDelayedTime", BCON_DOUBLE (processtime - arrivedtime),
