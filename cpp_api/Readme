@@ -1,4 +1,4 @@
-This is fetched from http://www.sfit.com.cn/DocumentDown/api/v6.3.0_20140521_traderapi.zip on websit http://www.sfit.com.cn/5_2_DocumentDown.htm
-The website and download link is available on 2014.08.21, not sure for now.
+This is fetched from http://www.sfit.com.cn/DocumentDown/api/6.2.5_20140811_traderapi_linux.tar (this file is a rar file, use `unrar e 6.2.5_20140811_traderapi_linux.tar`) on websit http://www.sfit.com.cn/5_2_DocumentDown.htm
+The website and download link is available on 2014.09.17, not sure for now.
 
-the version of the CTP API is 6.3.0
+the version of the CTP API is 6.2.5
