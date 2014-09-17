@@ -297,8 +297,8 @@ int main(int argc, char **argv) {
 
 	MD_init(md);
 
-	sleep(10);
-	running = 0;
+	//sleep(10);
+	//running = 0;
 
 
 	pthread_join(p, NULL);
