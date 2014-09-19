@@ -66,10 +66,12 @@ int CTraderApi::ReqUserLogin() {
 	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
 	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcUserIDType));
 	strncpy(request.Password, m_Password, sizeof(TThostFtdcPasswordType));
+	strncpy(request.UserProductInfo, m_UserProductInfo, sizeof(TThostFtdcPasswordType));
 
 	printtlb("api req user login");
 	printtlc("request.BrokerID: %s", request.BrokerID);
 	printtlc("request.UserID: %s", request.UserID);
+	printtlc("request.UserProductInfo: %s", request.UserProductInfo);
 
 	return api->ReqUserLogin(&request,++m_nRequestID);
 }
@@ -145,6 +147,7 @@ int CTraderApi::ReqQryInstrument() {
 int CTraderApi::ReqSettlementInfoConfirm() {
 	CThostFtdcSettlementInfoConfirmField request;
 	memset(&request, 0, sizeof(CThostFtdcQrySettlementInfoConfirmField));
+
 	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
 	strncpy(request.InvestorID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
 
@@ -180,8 +183,7 @@ int CTraderApi::ReqAuthenticate() {
 void CTraderApi::OnFrontConnected() {
 	printtlb("connected successfully.");
 
-	ReqAuthenticate();
-	//ReqUserLogin();
+	ReqUserLogin();
 
 	//printtlb("request user login from here.");
 }
@@ -307,6 +309,8 @@ void CTraderApi::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettleme
 	else {
 		printtlc("td pSettlementInfoConfirm is NULL");
 	}
+
+
 }
 
 void CTraderApi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {

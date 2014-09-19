@@ -22,10 +22,11 @@ int main(int argc, char **argv) {
 	}
 	char *InstrumentIDs[10]={NULL};
 	int InstrumentNum = 1;
-	char *mdlogfilepath, *tdlogfilepath, *server, *BrokerID, *UserID, *UserProductInfo, *pd, *mongodb_url_port;
-	readinfo(file, &mdlogfilepath, &tdlogfilepath, &server, &BrokerID, &UserID, &UserProductInfo, &pd, &InstrumentIDs, &InstrumentNum, &mongodb_url_port);
-	void *md = MD_create(mdlogfilepath, server, BrokerID, UserID, pd, InstrumentIDs, InstrumentNum);
-	void *td = TD_create(tdlogfilepath, server, BrokerID, UserID, UserProductInfo, pd, THOST_TERT_RESTART); 
+	char *mdlogfilepath, *tdlogfilepath, *mdserver, *tdserver, *mongodb_url_port, *BrokerID, *UserID, *UserProductInfo, *pd;
+	readinfo(file, &mdlogfilepath, &tdlogfilepath, &mdserver, &tdserver, &mongodb_url_port, &BrokerID, &UserID, &UserProductInfo, &pd, &InstrumentIDs, &InstrumentNum);
+
+	void *md = MD_create(mdlogfilepath, mdserver, BrokerID, UserID, pd, InstrumentIDs, InstrumentNum);
+	void *td = TD_create(tdlogfilepath, tdserver, BrokerID, UserID, UserProductInfo, pd, THOST_TERT_RESTART); 
 
 	mongoc_client_t *client = MongoAPI_create_client(mongodb_url_port);
 	mongoc_collection_t **mcollections = MongoAPI_glue_collections(client, InstrumentIDs, InstrumentNum, BrokerID, UserID);
@@ -44,18 +45,15 @@ int main(int argc, char **argv) {
 	pthread_t revise_instrment;
 	pthread_create(&revise_instrment, NULL, ProcessINS, &mim);
 
-
 	MD_init(md);
-
 	TD_init(td);
-	sleep(5);
-	TD_reqQryInstrumentMarginRate(td, "IF1410");
-	sleep(2);
-	TD_reqQrySettlementInfo(td);
-	sleep(2);
-	TD_reqQryInstrument(td);
-	const char*day = TD_getTradingDay(td);
-	printf("day:%s\n", day);
+
+	//sleep(5);
+	//TD_reqQryInstrumentMarginRate(td, "IF1410");
+	//sleep(2);
+	//TD_reqQrySettlementInfo(td);
+	//sleep(2);
+	//TD_reqQryInstrument(td);
 
 	//sleep(20);
 	//running = 0;
@@ -65,7 +63,8 @@ int main(int argc, char **argv) {
 
 	free(mdlogfilepath);
 	free(tdlogfilepath);
-	free(server);
+	free(mdserver);
+	free(tdserver);
 	free(BrokerID);
 	free(UserID);
 	free(pd);
