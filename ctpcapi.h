@@ -324,6 +324,8 @@ extern "C" {
 			TThostFtdcPriceType StopPrice,\
 			TThostFtdcVolumeConditionType VolumeCondition);
 	int TD_reqQryInstrumentMarginRate(void *td, char *InstrumentID);
+	int TD_reqQrySettlementInfo(void *td);
+	int TD_reqQryInstrument(void *td);
 
 
 #ifdef __cplusplus

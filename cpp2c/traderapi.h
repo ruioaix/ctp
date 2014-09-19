@@ -28,7 +28,9 @@ public:
 		TThostFtdcPriceType StopPrice,\
 		TThostFtdcVolumeConditionType VolumeCondition);
 	int ReqQryInstrumentMarginRate(char *InstrumentID);
-	int ReqQryInstrument(CThostFtdcQryInstrumentField *pQryInstrument, int nRequestID);
+	int ReqQryInstrument();
+	int ReqSettlementInfoConfirm();
+	int ReqQrySettlementInfo();
 
 private:
 	//xx callback functions in CThostFtdcTraderSpi
@@ -39,6 +41,9 @@ private:
 	virtual void OnRtnOrder(CThostFtdcOrderField *pOrder);
 	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
 	virtual void OnRspQryInstrumentCommissionRate(CThostFtdcInstrumentCommissionRateField *pInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	virtual void OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	virtual void OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	virtual void OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 private:
 	CThostFtdcTraderApi *api;

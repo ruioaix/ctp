@@ -50,6 +50,9 @@ int main(int argc, char **argv) {
 	TD_init(td);
 	sleep(2);
 	TD_reqQryInstrumentMarginRate(td, "IF1410");
+	sleep(2);
+	TD_reqQrySettlementInfo(td);
+	TD_reqQryInstrument(td);
 
 	//sleep(20);
 	//running = 0;

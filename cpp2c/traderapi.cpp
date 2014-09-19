@@ -134,8 +134,30 @@ int CTraderApi::ReqQryInstrumentMarginRate(char *InstrumentID) {
 	return api->ReqQryInstrumentMarginRate(&request, ++m_nRequestID);
 }
 
-int CTraderApi::ReqQryInstrument(CThostFtdcQryInstrumentField *pQryInstrument, int nRequestID) {
-	return 0;
+int CTraderApi::ReqQryInstrument() {
+	CThostFtdcQryInstrumentField request;
+	memset(&request, 0 ,sizeof(CThostFtdcQryInstrumentField));
+	return api->ReqQryInstrument(&request, ++m_nRequestID);
+}
+
+int CTraderApi::ReqSettlementInfoConfirm() {
+	printlb("ReqSettlementInfoConfirm called");
+	CThostFtdcSettlementInfoConfirmField request = {};
+
+	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
+	strncpy(request.InvestorID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
+	//TThostFtdcDateType	ConfirmDate;
+	//TThostFtdcTimeType	ConfirmTime;
+	return api->ReqSettlementInfoConfirm(&request, ++m_nRequestID);
+}
+
+int CTraderApi::ReqQrySettlementInfo() {
+	printlb("ReqQrySettlementInfo called");
+	CThostFtdcQrySettlementInfoField request = {};
+
+	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
+	strncpy(request.InvestorID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
+	return api->ReqQrySettlementInfo(&request, ++m_nRequestID);
 }
 /********************************************************************************************************/
 //call back 
@@ -174,6 +196,8 @@ void CTraderApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 		printlc("td pRspUserLogin->CZCETime: %s", pRspUserLogin->CZCETime);
 		printlc("td pRspUserLogin->FFEXTime: %s", pRspUserLogin->FFEXTime);
 		printlc("td pRspUserLogin->INETime: %s", pRspUserLogin->INETime);
+		printlb("td reqsettlement from here");
+		ReqSettlementInfoConfirm();
 	}
 	else {
 		printlc("td pRspUserLogin is NULL");
@@ -228,3 +252,55 @@ void CTraderApi::OnRspQryInstrumentCommissionRate(CThostFtdcInstrumentCommission
 		printlc("td pInstrumentCommissionRate is NULL");
 	}
 }
+
+void CTraderApi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	printlb("td OnRspSettlementInfoConfirm called.");
+	printlc("td nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
+	if (pRspInfo != NULL) {
+		printlc("td pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+	}
+	else {
+		printlc("td pRspInfo is NULL");
+	}
+	if (pSettlementInfoConfirm != NULL) {
+		printlb("td BrokerID: %s, InvestorID: %s", pSettlementInfoConfirm->BrokerID, pSettlementInfoConfirm->InvestorID);
+	}
+	else {
+		printlc("td pSettlementInfoConfirm is NULL");
+	}
+}
+
+void CTraderApi::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	printlb("td OnRspQrySettlementInfo called.");
+	printlc("td nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
+	if (pRspInfo != NULL) {
+		printlc("td pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+	}
+	else {
+		printlc("td pRspInfo is NULL");
+	}
+	if (pSettlementInfo != NULL) {
+		printlb("td BrokerID: %s, InvestorID: %s", pSettlementInfo->BrokerID, pSettlementInfo->InvestorID);
+	}
+	else {
+		printlc("td pSettlementInfoConfirm is NULL");
+	}
+}
+
+void CTraderApi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	printlb("td OnRspQryInstrument called.");
+	printlc("td nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
+	if (pRspInfo != NULL) {
+		printlc("td pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+	}
+	else {
+		printlc("td pRspInfo is NULL");
+	}
+	if (pInstrument != NULL) {
+		printlb("td InstrumentID: %s, InstrumentName: %s", pInstrument->InstrumentID, pInstrument->InstrumentName);
+	}
+	else {
+		printlc("td pSettlementInfoConfirm is NULL");
+	}
+}
+

@@ -190,3 +190,15 @@ int TD_reqQryInstrumentMarginRate(void *td, char *InstrumentID) {
 	return -1;
 }
 
+int TD_reqQrySettlementInfo(void *td) {
+	if (td) {
+		return TD_GetApi(td)->ReqQrySettlementInfo();
+	}
+	return -1;
+}
+int TD_reqQryInstrument(void *td) {
+	if (td) {
+		return TD_GetApi(td)->ReqQryInstrument();
+	}
+	return -1;
+}
