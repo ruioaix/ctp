@@ -2,7 +2,8 @@
 
 #include "ctpcapi.h"
 #include "mongoapi.h"
-#include "vbmal.h"
+#include "verbose.h"
+#include "safe.h"
 #include <string.h>
 
 static void getupdatetime(char *updatetime, int *hour, int *minute, int *second) {

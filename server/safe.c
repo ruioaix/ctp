@@ -1,6 +1,5 @@
-#include "base.h"
+#include "safe.h"
 
-/********************************************************************************************************/
 void *malloc_safe(size_t size, const char *funcname, const char *filename, const int lineNum) {
 	void *tmp = malloc(size);
 	if (tmp == NULL) {
@@ -34,4 +33,3 @@ FILE *fopen_safe(const char *openfilename, const char *mode, const char *funcnam
 	}
 	return fp;
 }
-/********************************************************************************************************/

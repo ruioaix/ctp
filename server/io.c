@@ -1,5 +1,5 @@
 #include "io.h"
-#include "vbmal.h"
+#include "safe.h"
 #include <string.h>
 
 void readinfo(char *filename, char **mdlogfilepath, char **tdlogfilepath, char **server, char **BrokerID, char **UserID, char **pd, char *(*InstrumentIDs)[], int *InstrumentNum, char **mongodb_url_port) {

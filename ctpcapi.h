@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 
+#include "verbose.h"
 
 	//In the following included file,  there are 281 basic structures.
 #include "cpp_api/ThostFtdcUserApiStruct.h"
