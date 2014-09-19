@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
 	readinfo(file, &mdlogfilepath, &tdlogfilepath, &mdserver, &tdserver, &mongodb_url_port, &BrokerID, &InvestorID, &UserID, &pd, &UserProductInfo, &InstrumentIDs, &InstrumentNum);
 
 	void *md = MD_create(mdlogfilepath, mdserver, BrokerID, UserID, pd, InstrumentIDs, InstrumentNum);
-	void *td = TD_create(tdlogfilepath, tdserver, BrokerID, InvestorID, UserID, pd, UserProductInfo, THOST_TERT_RESTART); 
+	void *td = TD_create(tdlogfilepath, tdserver, BrokerID, InvestorID, UserID, pd, UserProductInfo, THOST_TERT_RESUME); 
 
 	mongoc_client_t *client = MongoAPI_create_client(mongodb_url_port);
 	mongoc_collection_t **mcollections = MongoAPI_glue_collections(client, InstrumentIDs, InstrumentNum, BrokerID, UserID);
