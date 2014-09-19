@@ -10,10 +10,11 @@ class CTraderApi : public CThostFtdcTraderSpi
 {
 
 public:
-	CTraderApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *password, THOST_TE_RESUME_TYPE nResumeType);
+	CTraderApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *UserProductInfo, char *password, THOST_TE_RESUME_TYPE nResumeType);
 	virtual ~CTraderApi(void);
 	//xx api functions, from traderapi.
 	void Init();
+	const char *GetTradingDay();
 	int ReqUserLogin();
 	void SubscribePrivateTopic(THOST_TE_RESUME_TYPE nResumeType);
 	void SubscribePublicTopic(THOST_TE_RESUME_TYPE nResumeType);
@@ -31,6 +32,7 @@ public:
 	int ReqQryInstrument();
 	int ReqSettlementInfoConfirm();
 	int ReqQrySettlementInfo();
+	int ReqAuthenticate();
 
 private:
 	//xx callback functions in CThostFtdcTraderSpi
@@ -44,6 +46,8 @@ private:
 	virtual void OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	virtual void OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAuthenticateField, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 private:
 	CThostFtdcTraderApi *api;
@@ -53,6 +57,7 @@ private:
 	char *m_logFilePath;
 	char *m_server;
 	char *m_BrokerId;
+	char *m_UserId;
 	char *m_InvestorId;
 	char *m_Password;
 	char *m_UserProductInfo;

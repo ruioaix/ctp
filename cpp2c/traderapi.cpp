@@ -4,13 +4,15 @@
 
 using namespace std;
 
-CTraderApi::CTraderApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *password, THOST_TE_RESUME_TYPE nResumeType)
+CTraderApi::CTraderApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *UserProductInfo, char *password, THOST_TE_RESUME_TYPE nResumeType)
 {
 	m_nRequestID = 0;
 	m_logFilePath = flowpath;
 	m_server = servername;
 	m_BrokerId = brokerid;
 	m_InvestorId = inverstorid;
+	m_UserId = inverstorid;
+	m_UserProductInfo = UserProductInfo;
 	m_Password = password;
 	api = CThostFtdcTraderApi::CreateFtdcTraderApi(m_logFilePath);
 	if (api == NULL) {
@@ -41,6 +43,11 @@ CTraderApi::~CTraderApi(void) {
 void CTraderApi::Init(void) {
 	api->Init();
 	printtlb("api init");
+}
+
+const char *CTraderApi::GetTradingDay() {
+	printtlb("GetTradingDay");
+	return api->GetTradingDay();
 }
 
 void CTraderApi::SubscribePublicTopic(THOST_TE_RESUME_TYPE nResumeType) {
@@ -155,14 +162,28 @@ int CTraderApi::ReqQrySettlementInfo() {
 	return api->ReqQrySettlementInfo(&request, ++m_nRequestID);
 }
 
+int CTraderApi::ReqAuthenticate() {
+	CThostFtdcReqAuthenticateField request;
+	memset(&request, 0, sizeof(CThostFtdcReqAuthenticateField));
+
+	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
+	strncpy(request.UserID, m_UserId, sizeof(TThostFtdcUserIDType));
+	strncpy(request.UserProductInfo, m_UserProductInfo, sizeof(TThostFtdcProductInfoType));
+
+	printtlb("ReqAuthenticate");
+	return api->ReqAuthenticate(&request, ++m_nRequestID);
+}
+
 /********************************************************************************************************/
 //call back 
 /********************************************************************************************************/
 void CTraderApi::OnFrontConnected() {
-	ReqUserLogin();
-
 	printtlb("connected successfully.");
-	printtlb("request user login from here.");
+
+	ReqAuthenticate();
+	//ReqUserLogin();
+
+	//printtlb("request user login from here.");
 }
 
 void CTraderApi::OnFrontDisconnected(int nReason) {
@@ -304,4 +325,37 @@ void CTraderApi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CTho
 	else {
 		printtlc("td pSettlementInfoConfirm is NULL");
 	}
+}
+
+void CTraderApi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	//verbose
+	printtlb("OnRspError called.");
+	printtlc("nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
+	if (pRspInfo != NULL) {
+		printtlc("td pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+	}
+	else {
+		printtlc("td pRspInfo is NULL");
+	}
+}
+
+void CTraderApi::OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAuthenticateField, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	//verbose
+	printtlb("OnRspAuthenticate called.");
+	printtlc("nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
+	if (pRspInfo != NULL) {
+		printtlc("td pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+	}
+	else {
+		printtlc("td pRspInfo is NULL");
+	}
+	if (pRspAuthenticateField != NULL) {
+		printtlc("BrokerID: %s, UserID: %s", pRspAuthenticateField->BrokerID, pRspAuthenticateField->UserID);
+		printtlc("UserProductInfo: %s", pRspAuthenticateField->UserProductInfo);
+	}
+	else {
+		printtlc("pRspAuthenticateField is NULL");
+	}
+
+	ReqUserLogin();
 }

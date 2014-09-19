@@ -15,7 +15,6 @@
 //LEVEL  2 : complete
 //LEVEL  3 : more and more
 
-#define VERBOSE_LEVEL 2
 #define printmlb(format, ...) ((void)0)
 #define printmlc(format, ...) ((void)0)
 #define printmld(format, ...) ((void)0)
@@ -23,7 +22,10 @@
 #define printtlc(format, ...) ((void)0)
 #define printtld(format, ...) ((void)0)
 
-#if VERBOSE_LEVEL >= 1
+#define MD_VERBOSE_LEVEL 0
+#define TD_VERBOSE_LEVEL 2
+
+#if MD_VERBOSE_LEVEL >= 1
 #undef printmlb
 #define printmlb(format, ...) do {\
 		printf("[MdUser LEVLE 1] ");\
@@ -31,14 +33,7 @@
 		printf(format, ##__VA_ARGS__);\
 		printf("\n");\
 } while(0)
-#undef printtlb
-#define printtlb(format, ...) do {\
-		printf("[Trader LEVLE 1] ");\
-		printf("%s =>> ", __func__);\
-		printf(format, ##__VA_ARGS__);\
-		printf("\n");\
-} while(0)
-#if VERBOSE_LEVEL >= 2
+#if MD_VERBOSE_LEVEL >= 2
 #undef printmlc
 #define printmlc(format, ...) do {\
 		printf("[MdUser LEVLE 2] ");\
@@ -46,14 +41,7 @@
 		printf(format, ##__VA_ARGS__);\
 		printf("\n");\
 } while(0)
-#undef printtlc
-#define printtlc(format, ...) do {\
-		printf("[Trader LEVLE 2] ");\
-		printf("%s ==> ", __func__);\
-		printf(format, ##__VA_ARGS__);\
-		printf("\n");\
-} while(0)
-#if VERBOSE_LEVEL >= 3
+#if MD_VERBOSE_LEVEL >= 3
 #undef printmld
 #define printmld(format, ...) do {\
 		printf("[MdUser LEVLE 3] ");\
@@ -61,6 +49,27 @@
 		printf(format, ##__VA_ARGS__);\
 		printf("\n");\
 } while(0)
+#endif
+#endif
+#endif
+
+#if TD_VERBOSE_LEVEL >= 1
+#undef printtlb
+#define printtlb(format, ...) do {\
+		printf("[Trader LEVLE 1] ");\
+		printf("%s =>> ", __func__);\
+		printf(format, ##__VA_ARGS__);\
+		printf("\n");\
+} while(0)
+#if TD_VERBOSE_LEVEL >= 2
+#undef printtlc
+#define printtlc(format, ...) do {\
+		printf("[Trader LEVLE 2] ");\
+		printf("%s ==> ", __func__);\
+		printf(format, ##__VA_ARGS__);\
+		printf("\n");\
+} while(0)
+#if TD_VERBOSE_LEVEL >= 3
 #undef printtld
 #define printtld(format, ...) do {\
 		printf("[Trader LEVLE 3] ");\

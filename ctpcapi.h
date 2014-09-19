@@ -308,10 +308,11 @@ extern "C" {
 	/********************For Trader (related to ThostFtdcTraderApi.h)***************************************/
 	/********************************************************************************************************/
 	/*2 functions, TD object, create & free.*/
-	void* TD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd, THOST_TE_RESUME_TYPE nResumeType);
+	void* TD_create(char *flowpath, char *servername, char *bid, char *iid, char *UserProductInfo, char *pd, THOST_TE_RESUME_TYPE nResumeType);
 	void TD_free(void *td);
 	/*In class CThostFtdcTraderApi, there are 68 api functions.*/
 	void TD_init(void *td);
+	const char *TD_getTradingDay(void *td);
 	void TD_SubscribePublicTopic(void *td, THOST_TE_RESUME_TYPE nResumeType);
 	void TD_SubscribePrivateTopic(void *td, THOST_TE_RESUME_TYPE nResumeType);
 	int TD_reqOrderInsert(void *td, int OrderRef, char *InstrumentID, TThostFtdcDirectionType Direction,\

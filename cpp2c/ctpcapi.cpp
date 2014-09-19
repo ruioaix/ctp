@@ -150,8 +150,8 @@ static inline CTraderApi* TD_GetApi(void* td) {
 	return static_cast<CTraderApi*>(td);
 }
 
-void* TD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd, THOST_TE_RESUME_TYPE nResumeType) {
-	return new CTraderApi(flowpath, servername, bid, iid, pd, nResumeType);
+void* TD_create(char *flowpath, char *servername, char *bid, char *iid, char *UserProductInfo, char *pd, THOST_TE_RESUME_TYPE nResumeType) {
+	return new CTraderApi(flowpath, servername, bid, iid, UserProductInfo, pd, nResumeType);
 }
 
 void TD_free(void* td) {
@@ -164,6 +164,13 @@ void TD_init(void *td) {
 	if (td) {
 		TD_GetApi(td)->Init();
 	}
+}
+
+const char *TD_getTradingDay(void *td) {
+	if (td) {
+		return TD_GetApi(td)->GetTradingDay();
+	}
+	return NULL;
 }
 
 int TD_reqOrderInsert(void *td, int OrderRef, char *InstrumentID, TThostFtdcDirectionType Direction,\

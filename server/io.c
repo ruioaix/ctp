@@ -2,7 +2,8 @@
 #include "safe.h"
 #include <string.h>
 
-void readinfo(char *filename, char **mdlogfilepath, char **tdlogfilepath, char **server, char **BrokerID, char **UserID, char **pd, char *(*InstrumentIDs)[], int *InstrumentNum, char **mongodb_url_port) {
+
+void readinfo(char *filename, char **mdlogfilepath, char **tdlogfilepath, char **server, char **BrokerID, char **UserID, char **UserProductInfo, char **pd, char *(*InstrumentIDs)[], int *InstrumentNum, char **mongodb_url_port) {
 	FILE *fp = sfopen(filename, "r");
 	char line[1000];
 	int i = 0;
@@ -43,6 +44,11 @@ void readinfo(char *filename, char **mdlogfilepath, char **tdlogfilepath, char *
 				*mongodb_url_port = smalloc(strlen(line));
 				memcpy(*mongodb_url_port, line, strlen(line));
 				(*mongodb_url_port)[strlen(line)-1] = '\0';
+				break;
+			case 7:
+				*UserProductInfo = smalloc(strlen(line));
+				memcpy(*UserProductInfo, line, strlen(line));
+				(*UserProductInfo)[strlen(line)-1] = '\0';
 				break;
 			default:
 				(*InstrumentIDs)[j] = smalloc(strlen(line));
