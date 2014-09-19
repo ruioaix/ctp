@@ -27,6 +27,8 @@ public:
 		TThostFtdcContingentConditionType ContingentCondition,\
 		TThostFtdcPriceType StopPrice,\
 		TThostFtdcVolumeConditionType VolumeCondition);
+	int ReqQryInstrumentMarginRate(char *InstrumentID);
+	int ReqQryInstrument(CThostFtdcQryInstrumentField *pQryInstrument, int nRequestID);
 
 private:
 	//xx callback functions in CThostFtdcTraderSpi
@@ -36,6 +38,7 @@ private:
 	virtual void OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRtnOrder(CThostFtdcOrderField *pOrder);
 	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
+	virtual void OnRspQryInstrumentCommissionRate(CThostFtdcInstrumentCommissionRateField *pInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 private:
 	CThostFtdcTraderApi *api;

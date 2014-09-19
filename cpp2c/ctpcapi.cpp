@@ -182,3 +182,11 @@ int TD_reqOrderInsert(void *td, int OrderRef, char *InstrumentID, TThostFtdcDire
 	}
 	return -1;
 }
+
+int TD_reqQryInstrumentMarginRate(void *td, char *InstrumentID) {
+	if (td) {
+		return TD_GetApi(td)->ReqQryInstrumentMarginRate(InstrumentID);
+	}
+	return -1;
+}
+

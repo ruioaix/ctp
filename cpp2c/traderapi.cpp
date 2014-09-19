@@ -39,30 +39,30 @@ CTraderApi::~CTraderApi(void) {
 }
 
 void CTraderApi::Init(void) {
-	printlb("api init");
+	printlb("td api init");
 	api->Init();
 }
 
 void CTraderApi::SubscribePublicTopic(THOST_TE_RESUME_TYPE nResumeType) {
-	printlb("api sub public topic, TYPE: %d", nResumeType);
+	printlb("td api sub public topic, TYPE: %d", nResumeType);
 	api->SubscribePublicTopic(nResumeType);
 }
 
 void CTraderApi::SubscribePrivateTopic(THOST_TE_RESUME_TYPE nResumeType) {
-	printlb("api sub private topic, TYPE: %d", nResumeType);
+	printlb("td api sub private topic, TYPE: %d", nResumeType);
 	api->SubscribePrivateTopic(nResumeType);
 }
 
 int CTraderApi::ReqUserLogin() {
-	printlb("api req user login");
+	printlb("td api req user login");
 
 	CThostFtdcReqUserLoginField request = {};
 	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
 	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
 	strncpy(request.Password, m_Password, sizeof(TThostFtdcPasswordType));
-	printlc("request.BrokerID: %s", request.BrokerID);
-	printlc("request.UserID: %s", request.UserID);
-	printlc("request.Password: %s", request.Password);
+	printlc("td request.BrokerID: %s", request.BrokerID);
+	printlc("td request.UserID: %s", request.UserID);
+	printlc("td request.Password: %s", request.Password);
 
 	return api->ReqUserLogin(&request,++m_nRequestID);
 }
@@ -78,7 +78,7 @@ int CTraderApi::ReqOrderInsert(int OrderRef, char *InstrumentID, TThostFtdcDirec
 		TThostFtdcPriceType StopPrice,\
 		TThostFtdcVolumeConditionType VolumeCondition) {
 
-	printlb("api req order insert");
+	printlb("td api req order insert");
 
 	CThostFtdcInputOrderField request = {}; 
 
@@ -121,69 +121,110 @@ int CTraderApi::ReqOrderInsert(int OrderRef, char *InstrumentID, TThostFtdcDirec
 	return rt;
 }
 
+int CTraderApi::ReqQryInstrumentMarginRate(char *InstrumentID) {
+
+	CThostFtdcQryInstrumentMarginRateField request = {};
+	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
+	strncpy(request.InvestorID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
+	strncpy(request.InstrumentID, InstrumentID, sizeof(TThostFtdcInstrumentIDType));
+	printlc("td request.BrokerID: %s", request.BrokerID);
+	printlc("td request.InvestorID: %s", request.InvestorID);
+	printlc("td request.InstrumentID: %s", request.InstrumentID);
+	request.HedgeFlag = THOST_FTDC_HF_Speculation;
+	return api->ReqQryInstrumentMarginRate(&request, ++m_nRequestID);
+}
+
+int CTraderApi::ReqQryInstrument(CThostFtdcQryInstrumentField *pQryInstrument, int nRequestID) {
+	return 0;
+}
 /********************************************************************************************************/
 //call back 
 /********************************************************************************************************/
 void CTraderApi::OnFrontConnected() {
-	printlb("connected successfully.");
-	printlb("request user login from here.");
+	printlb("td connected successfully.");
+	printlb("td request user login from here.");
 	ReqUserLogin();
 }
 
 void CTraderApi::OnFrontDisconnected(int nReason) {
-	printlb("connected failed, nReason: %d", nReason);
+	printlb("td connected failed, nReason: %d", nReason);
 }
 
 void CTraderApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	printlb("OnRspUserLogin called.");
-	printlc("nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
+	printlb("td OnRspUserLogin called.");
+	printlc("td nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
 	if (pRspInfo != NULL) {
-		printlc("pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+		printlc("td pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
 	}
 	else {
-		printlc("pRspInfo is NULL");
+		printlc("td pRspInfo is NULL");
 	}
 	if (pRspUserLogin != NULL) {
-		printlc("pRspUserLogin->TradingDay: %s", pRspUserLogin->TradingDay);
-		printlc("pRspUserLogin->LoginTime: %s", pRspUserLogin->LoginTime);
-		printlc("pRspUserLogin->BrokerID: %s", pRspUserLogin->BrokerID);
-		printlc("pRspUserLogin->UserID: %s", pRspUserLogin->UserID); 
-		printlc("pRspUserLogin->SystemName: %s", pRspUserLogin->SystemName);
-		printlc("pRspUserLogin->FrontID: %d", pRspUserLogin->FrontID);
-		printlc("pRspUserLogin->SessionID: %d", pRspUserLogin->SessionID);
-		printlc("pRspUserLogin->MaxOrderRef: %s", pRspUserLogin->MaxOrderRef);
-		printlc("pRspUserLogin->SHFETime: %s", pRspUserLogin->SHFETime); 
-		printlc("pRspUserLogin->DCETime: %s", pRspUserLogin->DCETime);
-		printlc("pRspUserLogin->CZCETime: %s", pRspUserLogin->CZCETime);
-		printlc("pRspUserLogin->FFEXTime: %s", pRspUserLogin->FFEXTime);
-		printlc("pRspUserLogin->INETime: %s", pRspUserLogin->INETime);
+		printlc("td pRspUserLogin->TradingDay: %s", pRspUserLogin->TradingDay);
+		printlc("td pRspUserLogin->LoginTime: %s", pRspUserLogin->LoginTime);
+		printlc("td pRspUserLogin->BrokerID: %s", pRspUserLogin->BrokerID);
+		printlc("td pRspUserLogin->UserID: %s", pRspUserLogin->UserID); 
+		printlc("td pRspUserLogin->SystemName: %s", pRspUserLogin->SystemName);
+		printlc("td pRspUserLogin->FrontID: %d", pRspUserLogin->FrontID);
+		printlc("td pRspUserLogin->SessionID: %d", pRspUserLogin->SessionID);
+		printlc("td pRspUserLogin->MaxOrderRef: %s", pRspUserLogin->MaxOrderRef);
+		printlc("td pRspUserLogin->SHFETime: %s", pRspUserLogin->SHFETime); 
+		printlc("td pRspUserLogin->DCETime: %s", pRspUserLogin->DCETime);
+		printlc("td pRspUserLogin->CZCETime: %s", pRspUserLogin->CZCETime);
+		printlc("td pRspUserLogin->FFEXTime: %s", pRspUserLogin->FFEXTime);
+		printlc("td pRspUserLogin->INETime: %s", pRspUserLogin->INETime);
 	}
 	else {
-		printlc("pRspUserLogin is NULL");
+		printlc("td pRspUserLogin is NULL");
 	}
 }
 
 void CTraderApi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
-	printlb("OnRspOrderInsert called.");
-	printlc("nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
+	printlb("td OnRspOrderInsert called.");
+	printlc("td nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
 	if (pRspInfo != NULL) {
-		printlc("pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+		printlc("td pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
 	}
 	else {
-		printlc("pRspInfo is NULL");
+		printlc("td pRspInfo is NULL");
 	}
 	if (pInputOrder != NULL) {
 	}
 	else {
-		printlc("pInputOrder is NULL");
+		printlc("td pInputOrder is NULL");
 	}
 }
 
 void CTraderApi::OnRtnOrder(CThostFtdcOrderField *pOrder) {
-	printlb("OnRtnOrder called");
+	printlb("td OnRtnOrder called");
 }
 
 void CTraderApi::OnRtnTrade(CThostFtdcTradeField *pTrade) {
-	printlb("OnRtnTrade called");
+	printlb("td OnRtnTrade called");
+}
+
+void CTraderApi::OnRspQryInstrumentCommissionRate(CThostFtdcInstrumentCommissionRateField *pInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	printlb("td OnRspQryInstrumentCommissionRate called.");
+	printlc("td nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
+	if (pRspInfo != NULL) {
+		printlc("td pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+	}
+	else {
+		printlc("td pRspInfo is NULL");
+	}
+	if (pInstrumentCommissionRate != NULL) {
+		printlb("InstrumentID: %s", pInstrumentCommissionRate->InstrumentID);
+		printlb("InvestorRange: %d", pInstrumentCommissionRate->InvestorRange);
+		printlb("BrokerID: %s, InvestorID: %s", pInstrumentCommissionRate->BrokerID, pInstrumentCommissionRate->InvestorID);
+		printlb("OpenRatioByMoney: %f", pInstrumentCommissionRate->OpenRatioByMoney);
+		printlb("OpenRatioByVolume: %f", pInstrumentCommissionRate->OpenRatioByVolume);
+		printlb("CloseRatioByMoney: %f", pInstrumentCommissionRate->CloseRatioByMoney);
+		printlb("CloseRatioByVolume: %f", pInstrumentCommissionRate->CloseRatioByVolume);
+		printlb("CloseTodayRatioByMoney: %f", pInstrumentCommissionRate->CloseTodayRatioByMoney);
+		printlb("CloseTodayRatioByVolume: %f", pInstrumentCommissionRate->CloseTodayRatioByVolume);
+	}
+	else {
+		printlc("td pInstrumentCommissionRate is NULL");
+	}
 }

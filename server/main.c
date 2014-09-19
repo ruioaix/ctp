@@ -46,7 +46,10 @@ int main(int argc, char **argv) {
 
 
 	MD_init(md);
+
 	TD_init(td);
+	sleep(2);
+	TD_reqQryInstrumentMarginRate(td, "IF1410");
 
 	//sleep(20);
 	//running = 0;
@@ -69,7 +72,7 @@ int main(int argc, char **argv) {
 	MongoAPI_unglue_collections(mcollections, InstrumentNum);
 	MongoAPI_destory_client(client);
 
-	MD_free(md);
+	//MD_free(md);
 	sleep(2);
 	_exit(0);
 }
