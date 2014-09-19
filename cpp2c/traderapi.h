@@ -32,7 +32,6 @@ public:
 	int ReqQryInstrument();
 	int ReqSettlementInfoConfirm();
 	int ReqQrySettlementInfo();
-	int ReqAuthenticate();
 
 private:
 	//xx callback functions in CThostFtdcTraderSpi
@@ -47,7 +46,6 @@ private:
 	virtual void OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-	virtual void OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAuthenticateField, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 private:
 	CThostFtdcTraderApi *api;
