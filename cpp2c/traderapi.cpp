@@ -117,6 +117,7 @@ void CTraderApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 		printtlc("td pRspUserLogin->FFEXTime: %s", pRspUserLogin->FFEXTime);
 		printtlc("td pRspUserLogin->INETime: %s", pRspUserLogin->INETime);
 		printtlb("td reqsettlement from here");
+		m_MaxOrderRef = strtol(pRspUserLogin->MaxOrderRef, NULL, 10);
 		ReqSettlementInfoConfirm();
 	}
 	else {
@@ -184,7 +185,9 @@ void CTraderApi::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettleme
 }
 
 /********************************************************************************************************/
-int CTraderApi::ReqOrderInsert(int OrderRef, char *InstrumentID, TThostFtdcDirectionType Direction,\
+int CTraderApi::ReqOrderInsert(int OrderRef,\
+	   	char *InstrumentID,\
+		TThostFtdcDirectionType Direction,\
 		const TThostFtdcCombOffsetFlagType CombOffsetFlag,\
 		const TThostFtdcCombHedgeFlagType CombHedgeFlag,\
 		TThostFtdcVolumeType VolumeTotalOriginal,\
@@ -195,28 +198,59 @@ int CTraderApi::ReqOrderInsert(int OrderRef, char *InstrumentID, TThostFtdcDirec
 		TThostFtdcPriceType StopPrice,\
 		TThostFtdcVolumeConditionType VolumeCondition) {
 
-
 	CThostFtdcInputOrderField request; 
 	memset(&request, 0, sizeof(CThostFtdcInputOrderField));
+/*
+	///报单引用
+	TThostFtdcOrderRefType	OrderRef;
+	///组合开平标志
+	TThostFtdcCombOffsetFlagType	CombOffsetFlag;
+	///组合投机套保标志
+	TThostFtdcCombHedgeFlagType	CombHedgeFlag;
+	///GTD日期
+	TThostFtdcDateType	GTDDate;
+	///业务单元
+	TThostFtdcBusinessUnitType	BusinessUnit;
+	///请求编号
+	TThostFtdcRequestIDType	RequestID;
+	*/
 
+	
+	/**set automatically**************************************************************************************/
 	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
 	strncpy(request.InvestorID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
-	request.MinVolume = 1;
-	request.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
-	request.IsAutoSuspend = 0;
-	request.UserForceClose = 0;
-	request.IsSwapOrder = 0;
+	strncpy(request.UserID, m_UserId, sizeof(TThostFtdcUserIDType));
 	strncpy(request.InstrumentID, InstrumentID, sizeof(TThostFtdcInstrumentIDType));
+	//min volume: 1
+	request.MinVolume = 1;
+	//Force Close can only be done by CTPServerSide, here we can only set NotForceClose.
+	request.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
+	//TODO we don't have Auto Suspend on clientside.
+	request.IsAutoSuspend = 0;
+	//TODO we don't have User Force Close on clientside.
+	request.UserForceClose = 0;
+	//TODO we don't use swap oder.
+	request.IsSwapOrder = 0;
+
+	/**set mannully******************************************************************************************/
+	//buy or sell
 	request.Direction = Direction;
+
 	strncpy(request.CombOffsetFlag, CombOffsetFlag, sizeof(TThostFtdcCombOffsetFlagType));
+	memcpy(request.CombHedgeFlag, CombHedgeFlag,sizeof(TThostFtdcCombHedgeFlagType));
+
+	//volume type: 1=THOST_FTDC_VC_AV=any, 2=THOST_FTDC_VC_MV=min, 3=THOST_FTDC_VC_CV=all
+	//order price type: 16kinds
+	//time condition: 6kinds
+	//volume total original: 
+	//these five work together.
+	request.VolumeCondition = VolumeCondition;
 	request.OrderPriceType = OrderPriceType;
 	request.LimitPrice = LimitPrice;
-	request.VolumeTotalOriginal = VolumeTotalOriginal;
-	memcpy(request.CombHedgeFlag, CombHedgeFlag,sizeof(TThostFtdcCombHedgeFlagType));
-	request.VolumeCondition = VolumeCondition;
 	request.TimeCondition = TimeCondition;
 	request.ContingentCondition = ContingentCondition;
 	request.StopPrice = StopPrice;
+	request.VolumeTotalOriginal = VolumeTotalOriginal;
 
 	if (OrderRef < 0) {
 		int nRet = m_MaxOrderRef;

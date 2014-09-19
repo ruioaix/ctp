@@ -18,16 +18,19 @@ public:
 	int ReqUserLogin();
 	void SubscribePrivateTopic(THOST_TE_RESUME_TYPE nResumeType);
 	void SubscribePublicTopic(THOST_TE_RESUME_TYPE nResumeType);
-	int ReqOrderInsert(int OrderRef, char *InstrumentID, TThostFtdcDirectionType Direction,\
-		const TThostFtdcCombOffsetFlagType CombOffsetFlag,\
-		const TThostFtdcCombHedgeFlagType CombHedgeFlag,\
-		TThostFtdcVolumeType VolumeTotalOriginal,\
-		TThostFtdcPriceType LimitPrice,\
-		TThostFtdcOrderPriceTypeType OrderPriceType,\
-		TThostFtdcTimeConditionType TimeCondition,\
-		TThostFtdcContingentConditionType ContingentCondition,\
-		TThostFtdcPriceType StopPrice,\
-		TThostFtdcVolumeConditionType VolumeCondition);
+	int ReqOrderInsert(\
+			int OrderRef,\
+		   	char *InstrumentID,\
+			TThostFtdcDirectionType Direction,\
+			const TThostFtdcCombOffsetFlagType CombOffsetFlag,\
+			const TThostFtdcCombHedgeFlagType CombHedgeFlag,\
+			TThostFtdcVolumeType VolumeTotalOriginal,\
+			TThostFtdcPriceType LimitPrice,\
+			TThostFtdcOrderPriceTypeType OrderPriceType,\
+			TThostFtdcTimeConditionType TimeCondition,\
+			TThostFtdcContingentConditionType ContingentCondition,\
+			TThostFtdcPriceType StopPrice,\
+			TThostFtdcVolumeConditionType VolumeCondition);
 	int ReqQryInstrumentMarginRate(char *InstrumentID);
 	int ReqQryInstrument();
 	int ReqSettlementInfoConfirm();
