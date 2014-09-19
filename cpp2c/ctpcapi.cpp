@@ -49,9 +49,9 @@ void MD_registerNameServer(void *md, char *pszNsAddress) {
 	}
 }
 
-void MD_registerFensUserInfo(void *md, CThostFtdcFensUserInfoField * pFensUserInfo) {
+void MD_registerFensUserInfo(void *md) {
 	if(md) {
-		MD_GetApi(md)->RegisterFensUserInfo(pFensUserInfo);
+		MD_GetApi(md)->RegisterFensUserInfo();
 	}
 }
 

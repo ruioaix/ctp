@@ -265,7 +265,7 @@ extern "C" {
 	void MD_getTradingDay(void *md);
 	void MD_registerFront(void *md, char *pszFrontAddress);
 	void MD_registerNameServer(void *md, char *pszNsAddress);
-	void MD_registerFensUserInfo(void *md, CThostFtdcFensUserInfoField * pFensUserInfo);
+	void MD_registerFensUserInfo(void *md);
 	void MD_registerSpi(void *md);
 	int MD_subscribeMarketData(void *md, char *ppInstrumentID[], int nCount);
 	int MD_unSubscribeMarketData(void *md, char *ppInstrumentID[], int nCount);

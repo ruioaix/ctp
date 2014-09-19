@@ -9,27 +9,14 @@ using namespace std;
 //create
 CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *password, char ** InstrumentIDs, int InstrumentNum)
 {
-	printmlb("create both spi and api object - md.");
 	m_nRequestID = 0;
-	printmlc("save m_nRequestID: %d", m_nRequestID);
 	m_logFilePath = flowpath;
-	printmlc("save m_logFilePath: %s", m_logFilePath);
 	m_server = servername;
-	printmlc("save m_server: %s", m_server);
 	m_BrokerId = brokerid;
-	printmlc("save m_BrokerId: %s", m_BrokerId);
 	m_InvestorId = inverstorid;
-	printmlc("save m_InvestorId: %s", m_InvestorId);
 	m_Password = password;
-	printmlc("save m_Password: %s", m_Password);
-
 	m_InstrumentIDs = InstrumentIDs;
 	m_InstrumentNum = InstrumentNum;
-	int i;
-	for (i = 0; i < m_InstrumentNum; ++i) {
-		printmlc("save Instrument %d: %s", i, m_InstrumentIDs[i]);
-	}
-
 	api = CThostFtdcMdApi::CreateFtdcMdApi(m_logFilePath);
 	if (api == NULL) {
 		isError("mdapi created failed");
@@ -49,24 +36,24 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 	m_fnOnRtnDepthMarketData = NULL;
 
 	m_queue_size = 8192;
-	printmlc("prepare msg queue, size: %d", m_queue_size);
 	m_queue = (CThostFtdcDepthMarketDataField *)malloc(m_queue_size * sizeof(CThostFtdcDepthMarketDataField));
 	if (m_queue == NULL) {
-		exit(-1);
+		isError("mdapi m_queue malloc failed");
 	}
 	m_intime_second = (long *)malloc(m_queue_size * sizeof(long));
 	if (m_intime_second == NULL) {
-		exit(-1);
+		isError("mdapi m_intime_second malloc failed");
 	}
 	m_intime_usecond = (long *)malloc(m_queue_size * sizeof(long));
 	if (m_intime_usecond == NULL) {
-		exit(-1);
+		isError("mdapi m_intime_usecond malloc failed");
 	}
 	m_current_size = (int *)malloc(m_queue_size * sizeof(int));
 	if (m_current_size == NULL) {
-		exit(-1);
+		isError("mdapi m_current_size malloc failed");
 	}
 	m_current_size[0]=0;
+	int i;
 	for (i = 0; i < m_queue_size; ++i) {
 		m_intime_second[i] = -1;
 		m_intime_usecond[i] = -1;
@@ -74,6 +61,18 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 	m_header_index = 0;
 	m_tail_index = 0;
 	m_validmsg_size = 0;
+
+	//verbose
+	printmlb("create both spi and api object - md.");
+	printmlc("save m_nRequestID: %d", m_nRequestID);
+	printmlc("save m_logFilePath: %s", m_logFilePath);
+	printmlc("save m_server: %s", m_server);
+	printmlc("save m_BrokerId: %s", m_BrokerId);
+	printmlc("save m_InvestorId: %s", m_InvestorId);
+	for (i = 0; i < m_InstrumentNum; ++i) {
+		printmlc("save Instrument %d: %s", i, m_InstrumentIDs[i]);
+	}
+	printmlc("prepare msg queue, size: %d", m_queue_size);
 }
 
 //delete
@@ -86,21 +85,21 @@ CMdUserApi::~CMdUserApi(void)
 	free(m_intime_second);
 	free(m_intime_usecond);
 	free(m_current_size);
-	printmlb("delete md");
+	printmlb("free md");
 }
 
 /***11 functions, merge api functions in MdApi class to MdSpi class****************************************************/
 //connect: include CreateFtdcMdApi, RegisterSpi, RegisterFront, Init.
 void CMdUserApi::Init()
 {
-	printmlb("api init");
 	api->Init();
+	printmlb("api init");
 }
 
 void CMdUserApi::Join()
 {
-	printmlb("api join");
 	api->Join();
+	printmlb("api join");
 }
 
 const char *CMdUserApi::GetTradingDay()
@@ -110,26 +109,26 @@ const char *CMdUserApi::GetTradingDay()
 }
 
 void CMdUserApi::RegisterFront(char *pszFrontAddress) {
-	printmlb("api register front: %s", pszFrontAddress);
 	api->RegisterFront(pszFrontAddress);
+	printmlb("api register front: %s", pszFrontAddress);
 }
 
 void CMdUserApi::RegisterNameServer(char *pszNsAddress) {
-	printmlb("api register name server: %s", pszNsAddress);
 	api->RegisterNameServer(pszNsAddress);
+	printmlb("api register name server: %s", pszNsAddress);
 }
 
-void CMdUserApi::RegisterFensUserInfo(CThostFtdcFensUserInfoField *pFensUserInfo) {
+void CMdUserApi::RegisterFensUserInfo() {
+	CThostFtdcFensUserInfoField pFensUserInfo;
+	//TODO prepare pFensUserInfo;
+	api->RegisterFensUserInfo(&pFensUserInfo);
+
 	printmlb("api register fens user info");
-	printmlc("pFensUserInfo->BrokerID: %s", pFensUserInfo->BrokerID);
-	printmlc("pFensUserInfo->UserID: %s", pFensUserInfo->UserID);
-	printmlc("pFensUserInfo->LoginMode: %d", pFensUserInfo->LoginMode);
-	api->RegisterFensUserInfo(pFensUserInfo);
 }
 
 void CMdUserApi::RegisterSpi() {
-	printmlb("api register spi");
 	api->RegisterSpi(this);
+	printmlb("api register spi");
 }
 
 int CMdUserApi::SubscribeMarketData(char *ppInstrumentID[], int nCount) {
@@ -152,12 +151,15 @@ int CMdUserApi::UnSubscribeMarketData(char *ppInstrumentID[], int nCount) {
 
 int CMdUserApi::ReqUserLogin()
 {
-	printmlb("api req user login");
 
-	CThostFtdcReqUserLoginField request = {};
+	CThostFtdcReqUserLoginField request;
+	memset(&request, 0, sizeof(CThostFtdcRspUserLoginField));
 	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
+	//TThostFtdcInvestorIDType is 13bytes, TThostFtdcUserIDType is 16bytes.
 	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
 	strncpy(request.Password, m_Password, sizeof(TThostFtdcPasswordType));
+
+	printmlb("api req user login");
 	printmlc("request.BrokerID: %s", request.BrokerID);
 	printmlc("request.UserID: %s", request.UserID);
 	printmlc("request.Password: %s", request.Password);
@@ -166,11 +168,13 @@ int CMdUserApi::ReqUserLogin()
 }
 
 int CMdUserApi::ReqUserLogout() {
-	printmlb("api req user logout");
 
 	CThostFtdcUserLogoutField request = {};
 	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
+	//TThostFtdcInvestorIDType is 13bytes, TThostFtdcUserIDType is 16bytes.
 	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
+
+	printmlb("api req user logout");
 	printmlc("request.BrokerID: %s", request.BrokerID);
 	printmlc("request.UserID: %s", request.UserID);
 
@@ -182,34 +186,46 @@ int CMdUserApi::ReqUserLogout() {
 //connect successful, and ReqUserLogin.
 void CMdUserApi::OnFrontConnected()
 {
-	printmlb("connected successfully.");
 	if (m_fnOnFrontConnected != NULL) {
 		(*m_fnOnFrontConnected)(this);
 	}
 	//login automatically after connected.
-	printmlb("request user login directly from here");
 	ReqUserLogin();
+
+	printmlb("connected successfully.");
+	printmlb("request user login directly from here");
 }
 
 //callback when connect unsuccessful.
 void CMdUserApi::OnFrontDisconnected(int nReason)
 {
-	printmlb("connected failed, nReason: %d", nReason);
 	if (m_fnOnFrontDisconnected != NULL) {
 		(*m_fnOnFrontDisconnected)(this, nReason);
 	}
+
+	printmlb("connected failed, nReason: %d", nReason);
 }
 
 void CMdUserApi::OnHeartBeatWarning(int nTimeLapse) {
-	printmlb("OnHeartBeatWarning called, nTimeLapse: %d", nTimeLapse);
 	if (m_fnOnHeartBeatWarning != NULL) {
 		(*m_fnOnHeartBeatWarning)(this, nTimeLapse);
 	}
+
+	printmlb("OnHeartBeatWarning called, nTimeLapse: %d", nTimeLapse);
 }
 
 //callback for ReqUserLogin.
 void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
+	if (m_fnOnRspUserLogin != NULL) {
+		(*m_fnOnRspUserLogin)(this, pRspUserLogin, pRspInfo, nRequestID, bIsLast);
+	}
+	if ((pRspInfo==NULL || pRspInfo->ErrorID == 0) && pRspUserLogin) {
+		printmlb("SubscribeMarketData from here");
+		api->SubscribeMarketData(m_InstrumentIDs, m_InstrumentNum);
+	}
+
+	//verbose
 	printmlb("OnRspUserLogin called.");
 	printmlc("nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
 	if (pRspInfo != NULL) {
@@ -236,18 +252,14 @@ void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 	else {
 		printmlc("pRspUserLogin is NULL");
 	}
-	if (m_fnOnRspUserLogin != NULL) {
-		(*m_fnOnRspUserLogin)(this, pRspUserLogin, pRspInfo, nRequestID, bIsLast);
-	}
-	if ((pRspInfo==NULL || pRspInfo->ErrorID == 0) && pRspUserLogin) {
-		printmlb("SubscribeMarketData from here");
-		api->SubscribeMarketData(m_InstrumentIDs, m_InstrumentNum);
-		//printmlb("SubscribeForQuoteRsp from here");
-		//api->SubscribeForQuoteRsp(m_InstrumentIDs, m_InstrumentNum);
-	}
 }
 
 void CMdUserApi::OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	if (m_fnOnRspUserLogout != NULL) {
+		(*m_fnOnRspUserLogout)(this, pUserLogout, pRspInfo, nRequestID, bIsLast);
+	}
+
+	//verbose;
 	printmlb("OnRspUserLogout called.");
 	printmlc("nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
 	if (pRspInfo != NULL) {
@@ -262,13 +274,15 @@ void CMdUserApi::OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout, CThostF
 	else {
 		printmlc("pUserLogout is NULL");
 	}
-	if (m_fnOnRspUserLogout != NULL) {
-		(*m_fnOnRspUserLogout)(this, pUserLogout, pRspInfo, nRequestID, bIsLast);
-	}
 }
 
 void CMdUserApi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
+	if (m_fnOnRspError != NULL) {
+		(*m_fnOnRspError)(this, pRspInfo, nRequestID, bIsLast);
+	}
+
+	//verbose
 	printmlb("OnRspError called.");
 	printmlc("nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
 	if (pRspInfo != NULL) {
@@ -277,13 +291,15 @@ void CMdUserApi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bo
 	else {
 		printmlc("pRspInfo is NULL");
 	}
-	if (m_fnOnRspError != NULL) {
-		(*m_fnOnRspError)(this, pRspInfo, nRequestID, bIsLast);
-	}
 }
 
 void CMdUserApi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
+	if (m_fnOnRspSubMarketData != NULL) {
+		(*m_fnOnRspSubMarketData)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
+	}
+
+	//verbose
 	printmlb("OnRspSubMarketData called.");
 	printmlc("nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
 	if (pRspInfo != NULL) {
@@ -298,13 +314,15 @@ void CMdUserApi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecific
 	else {
 		printmlc("pSpecificInstrument is NULL");
 	}
-	if (m_fnOnRspSubMarketData != NULL) {
-		(*m_fnOnRspSubMarketData)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
-	}
 }
 
 void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
+	if (m_fnOnRspUnSubMarketData != NULL) {
+		(*m_fnOnRspUnSubMarketData)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
+	}
+
+	//verbose
 	printmlb("OnRspUnSubMarketData called.");
 	printmlc("nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
 	if (pRspInfo != NULL) {
@@ -319,13 +337,16 @@ void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecif
 	else {
 		printmlc("pSpecificInstrument is NULL");
 	}
-	if (m_fnOnRspUnSubMarketData != NULL) {
-		(*m_fnOnRspUnSubMarketData)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
-	}
 }
 
 void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
+	if (m_fnOnRtnDepthMarketData != NULL) {
+		(*m_fnOnRtnDepthMarketData)(this, pDepthMarketData);
+	}
+	input_DMDQ(pDepthMarketData);
+
+	//verbose
 	printmlb("DepthMarketData comming");
 	printmld("pDepthMarketData->TradingDay: %s", pDepthMarketData->TradingDay);
 	printmld("pDepthMarketData->InstrumentID: %s", pDepthMarketData->InstrumentID);
@@ -370,10 +391,6 @@ void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMark
 	printmld("pDepthMarketData->AskVolume5: %d", pDepthMarketData->AskVolume5);
 	printmld("pDepthMarketData->AveragePrice: %f", pDepthMarketData->AveragePrice);
 	printmld("pDepthMarketData->ActionDay: %s", pDepthMarketData->ActionDay);
-	if (m_fnOnRtnDepthMarketData != NULL) {
-		(*m_fnOnRtnDepthMarketData)(this, pDepthMarketData);
-	}
-	input_DMDQ(pDepthMarketData);
 }
 
 /***help functions**********************************************************************************/

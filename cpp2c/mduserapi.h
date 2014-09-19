@@ -20,7 +20,7 @@ public:
 	const char *GetTradingDay();
 	void RegisterFront(char *pszFrontAddress);
 	void RegisterNameServer(char *pszNsAddress);
-	void RegisterFensUserInfo(CThostFtdcFensUserInfoField *pFensUserInfo);
+	void RegisterFensUserInfo();
 	void RegisterSpi();
 	int SubscribeMarketData(char *ppInstrumentID[], int nCount);
 	int UnSubscribeMarketData(char *ppInstrumentID[], int nCount);
