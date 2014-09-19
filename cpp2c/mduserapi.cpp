@@ -155,14 +155,12 @@ int CMdUserApi::ReqUserLogin()
 	CThostFtdcReqUserLoginField request;
 	memset(&request, 0, sizeof(CThostFtdcRspUserLoginField));
 	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
-	//TThostFtdcInvestorIDType is 13bytes, TThostFtdcUserIDType is 16bytes.
-	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
+	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcUserIDType));
 	strncpy(request.Password, m_Password, sizeof(TThostFtdcPasswordType));
 
 	printmlb("api req user login");
 	printmlc("request.BrokerID: %s", request.BrokerID);
 	printmlc("request.UserID: %s", request.UserID);
-	printmlc("request.Password: %s", request.Password);
 
 	return api->ReqUserLogin(&request,++m_nRequestID);
 }
@@ -171,8 +169,7 @@ int CMdUserApi::ReqUserLogout() {
 
 	CThostFtdcUserLogoutField request = {};
 	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
-	//TThostFtdcInvestorIDType is 13bytes, TThostFtdcUserIDType is 16bytes.
-	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
+	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcUserIDType));
 
 	printmlb("api req user logout");
 	printmlc("request.BrokerID: %s", request.BrokerID);
