@@ -166,14 +166,19 @@ void TD_init(void *td) {
 	}
 }
 
-void TD_SubscribePublicTopic(void *td, THOST_TE_RESUME_TYPE nResumeType) {
-	if (td) {
-		TD_GetApi(td)->SubscribePublicTopic(nResumeType);
-	}
-}
+int TD_reqOrderInsert(void *td, int OrderRef, char *InstrumentID, TThostFtdcDirectionType Direction,\
+		const TThostFtdcCombOffsetFlagType CombOffsetFlag,\
+		const TThostFtdcCombHedgeFlagType CombHedgeFlag,\
+		TThostFtdcVolumeType VolumeTotalOriginal,\
+		TThostFtdcPriceType LimitPrice,\
+		TThostFtdcOrderPriceTypeType OrderPriceType,\
+		TThostFtdcTimeConditionType TimeCondition,\
+		TThostFtdcContingentConditionType ContingentCondition,\
+		TThostFtdcPriceType StopPrice,\
+		TThostFtdcVolumeConditionType VolumeCondition) {
 
-void TD_SubscribePrivateTopic(void *td, THOST_TE_RESUME_TYPE nResumeType) {
 	if (td) {
-		TD_GetApi(td)->SubscribePrivateTopic(nResumeType);
+		return TD_GetApi(td)->ReqOrderInsert(OrderRef, InstrumentID, Direction, CombOffsetFlag, CombHedgeFlag, VolumeTotalOriginal, LimitPrice, OrderPriceType, TimeCondition, ContingentCondition, StopPrice, VolumeCondition);
 	}
+	return -1;
 }

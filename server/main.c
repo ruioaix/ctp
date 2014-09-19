@@ -22,9 +22,10 @@ int main(int argc, char **argv) {
 	}
 	char *InstrumentIDs[10]={NULL};
 	int InstrumentNum = 1;
-	char *logfilepath, *server, *BrokerID, *UserID, *pd, *mongodb_url_port;
-	readinfo(file, &logfilepath, &server, &BrokerID, &UserID, &pd, &InstrumentIDs, &InstrumentNum, &mongodb_url_port);
-	void *md = MD_create(logfilepath, server, BrokerID, UserID, pd, InstrumentIDs, InstrumentNum);
+	char *mdlogfilepath, *tdlogfilepath, *server, *BrokerID, *UserID, *pd, *mongodb_url_port;
+	readinfo(file, &mdlogfilepath, &tdlogfilepath, &server, &BrokerID, &UserID, &pd, &InstrumentIDs, &InstrumentNum, &mongodb_url_port);
+	void *md = MD_create(mdlogfilepath, server, BrokerID, UserID, pd, InstrumentIDs, InstrumentNum);
+	void *td = TD_create(tdlogfilepath, server, BrokerID, UserID, pd, THOST_TERT_RESTART); 
 
 	mongoc_client_t *client = MongoAPI_create_client(mongodb_url_port);
 	mongoc_collection_t **mcollections = MongoAPI_glue_collections(client, InstrumentIDs, InstrumentNum, BrokerID, UserID);
@@ -45,14 +46,16 @@ int main(int argc, char **argv) {
 
 
 	MD_init(md);
+	TD_init(td);
 
-	sleep(20);
-	running = 0;
+	//sleep(20);
+	//running = 0;
 
 	pthread_join(insert_dmdmsg, NULL);
 	pthread_join(revise_instrment, NULL);
 
-	free(logfilepath);
+	free(mdlogfilepath);
+	free(tdlogfilepath);
 	free(server);
 	free(BrokerID);
 	free(UserID);

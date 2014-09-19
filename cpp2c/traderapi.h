@@ -14,20 +14,34 @@ public:
 	virtual ~CTraderApi(void);
 	//xx api functions, from traderapi.
 	void Init();
+	int ReqUserLogin();
 	void SubscribePrivateTopic(THOST_TE_RESUME_TYPE nResumeType);
 	void SubscribePublicTopic(THOST_TE_RESUME_TYPE nResumeType);
-	int ReqUserLogin();
-	int ReqSettlementInfoConfirm();
+	int ReqOrderInsert(int OrderRef, char *InstrumentID, TThostFtdcDirectionType Direction,\
+		const TThostFtdcCombOffsetFlagType CombOffsetFlag,\
+		const TThostFtdcCombHedgeFlagType CombHedgeFlag,\
+		TThostFtdcVolumeType VolumeTotalOriginal,\
+		TThostFtdcPriceType LimitPrice,\
+		TThostFtdcOrderPriceTypeType OrderPriceType,\
+		TThostFtdcTimeConditionType TimeCondition,\
+		TThostFtdcContingentConditionType ContingentCondition,\
+		TThostFtdcPriceType StopPrice,\
+		TThostFtdcVolumeConditionType VolumeCondition);
 
 private:
 	//xx callback functions in CThostFtdcTraderSpi
 	virtual void OnFrontConnected();
+	virtual void OnFrontDisconnected(int nReason);
 	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	virtual void OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	virtual void OnRtnOrder(CThostFtdcOrderField *pOrder);
+	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
 
 private:
 	CThostFtdcTraderApi *api;
 
 	int	m_nRequestID;
+	int m_MaxOrderRef;
 	char *m_logFilePath;
 	char *m_server;
 	char *m_BrokerId;

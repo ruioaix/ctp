@@ -32,11 +32,9 @@ CTraderApi::CTraderApi(char *flowpath, char *servername, char *brokerid, char *i
 }
 
 CTraderApi::~CTraderApi(void) {
-	if (api) {
-		api->RegisterSpi(NULL);
-		api->Release();
-		api=NULL;
-	}
+	api->RegisterSpi(NULL);
+	api->Release();
+	api=NULL;
 	printlb("delete md");
 }
 
@@ -58,7 +56,7 @@ void CTraderApi::SubscribePrivateTopic(THOST_TE_RESUME_TYPE nResumeType) {
 int CTraderApi::ReqUserLogin() {
 	printlb("api req user login");
 
-	CThostFtdcReqUserLoginField request;
+	CThostFtdcReqUserLoginField request = {};
 	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
 	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
 	strncpy(request.Password, m_Password, sizeof(TThostFtdcPasswordType));
@@ -69,20 +67,71 @@ int CTraderApi::ReqUserLogin() {
 	return api->ReqUserLogin(&request,++m_nRequestID);
 }
 
-int CTraderApi::ReqSettlementInfoConfirm()
-{
-	CThostFtdcSettlementInfoConfirmField body;
+int CTraderApi::ReqOrderInsert(int OrderRef, char *InstrumentID, TThostFtdcDirectionType Direction,\
+		const TThostFtdcCombOffsetFlagType CombOffsetFlag,\
+		const TThostFtdcCombHedgeFlagType CombHedgeFlag,\
+		TThostFtdcVolumeType VolumeTotalOriginal,\
+		TThostFtdcPriceType LimitPrice,\
+		TThostFtdcOrderPriceTypeType OrderPriceType,\
+		TThostFtdcTimeConditionType TimeCondition,\
+		TThostFtdcContingentConditionType ContingentCondition,\
+		TThostFtdcPriceType StopPrice,\
+		TThostFtdcVolumeConditionType VolumeCondition) {
 
-	strncpy(body.BrokerID, m_BrokerId,sizeof(TThostFtdcBrokerIDType));
-	strncpy(body.InvestorID, m_InvestorId,sizeof(TThostFtdcInvestorIDType));
-	return api->ReqSettlementInfoConfirm(&body, ++m_nRequestID);
+	printlb("api req order insert");
+
+	CThostFtdcInputOrderField request = {}; 
+
+	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
+	strncpy(request.InvestorID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
+
+	request.MinVolume = 1;
+	request.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
+	request.IsAutoSuspend = 0;
+	request.UserForceClose = 0;
+	request.IsSwapOrder = 0;
+
+	strncpy(request.InstrumentID, InstrumentID, sizeof(TThostFtdcInstrumentIDType));
+
+	request.Direction = Direction;
+
+	strncpy(request.CombOffsetFlag, CombOffsetFlag, sizeof(TThostFtdcCombOffsetFlagType));
+
+	request.OrderPriceType = OrderPriceType;
+	request.LimitPrice = LimitPrice;
+
+	request.VolumeTotalOriginal = VolumeTotalOriginal;
+
+	memcpy(request.CombHedgeFlag, CombHedgeFlag,sizeof(TThostFtdcCombHedgeFlagType));
+
+	request.VolumeCondition = VolumeCondition;
+	request.TimeCondition = TimeCondition;
+	request.ContingentCondition = ContingentCondition;
+	request.StopPrice = StopPrice;
+	if (OrderRef < 0) {
+		int nRet = m_MaxOrderRef;
+		sprintf(request.OrderRef, "%d", nRet);
+		++m_MaxOrderRef;
+	}
+	else {
+		sprintf(request.OrderRef, "%d", OrderRef);
+	}
+
+	int rt = api->ReqOrderInsert(&request, ++m_nRequestID);
+	return rt;
 }
 
-
+/********************************************************************************************************/
+//call back 
+/********************************************************************************************************/
 void CTraderApi::OnFrontConnected() {
 	printlb("connected successfully.");
 	printlb("request user login from here.");
 	ReqUserLogin();
+}
+
+void CTraderApi::OnFrontDisconnected(int nReason) {
+	printlb("connected failed, nReason: %d", nReason);
 }
 
 void CTraderApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -113,9 +162,28 @@ void CTraderApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 	else {
 		printlc("pRspUserLogin is NULL");
 	}
-	if ((pRspInfo==NULL || pRspInfo->ErrorID == 0) && pRspUserLogin) {
-		printlb("req settlement info confirm from here");
-		ReqSettlementInfoConfirm();
+}
+
+void CTraderApi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	printlb("OnRspOrderInsert called.");
+	printlc("nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
+	if (pRspInfo != NULL) {
+		printlc("pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+	}
+	else {
+		printlc("pRspInfo is NULL");
+	}
+	if (pInputOrder != NULL) {
+	}
+	else {
+		printlc("pInputOrder is NULL");
 	}
 }
 
+void CTraderApi::OnRtnOrder(CThostFtdcOrderField *pOrder) {
+	printlb("OnRtnOrder called");
+}
+
+void CTraderApi::OnRtnTrade(CThostFtdcTradeField *pTrade) {
+	printlb("OnRtnTrade called");
+}

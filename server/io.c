@@ -2,7 +2,7 @@
 #include "vbmal.h"
 #include <string.h>
 
-void readinfo(char *filename, char **logfilepath, char **server, char **BrokerID, char **UserID, char **pd, char *(*InstrumentIDs)[], int *InstrumentNum, char **mongodb_url_port) {
+void readinfo(char *filename, char **mdlogfilepath, char **tdlogfilepath, char **server, char **BrokerID, char **UserID, char **pd, char *(*InstrumentIDs)[], int *InstrumentNum, char **mongodb_url_port) {
 	FILE *fp = sfopen(filename, "r");
 	char line[1000];
 	int i = 0;
@@ -10,31 +10,36 @@ void readinfo(char *filename, char **logfilepath, char **server, char **BrokerID
 	while(fgets(line, 1000, fp)) {
 		switch(i++) {
 			case 0:
-				*logfilepath = smalloc(strlen(line));
-				memcpy(*logfilepath, line, strlen(line));
-				(*logfilepath)[strlen(line)-1] = '\0';
+				*mdlogfilepath = smalloc(strlen(line));
+				memcpy(*mdlogfilepath, line, strlen(line));
+				(*mdlogfilepath)[strlen(line)-1] = '\0';
 				break;
 			case 1:
+				*tdlogfilepath = smalloc(strlen(line));
+				memcpy(*tdlogfilepath, line, strlen(line));
+				(*tdlogfilepath)[strlen(line)-1] = '\0';
+				break;
+			case 2:
 				*server = smalloc(strlen(line));
 				memcpy(*server, line, strlen(line));
 				(*server)[strlen(line)-1] = '\0';
 				break;
-			case 2:
+			case 3:
 				*BrokerID= smalloc(strlen(line));
 				memcpy(*BrokerID, line, strlen(line));
 				(*BrokerID)[strlen(line)-1] = '\0';
 				break;
-			case 3:
+			case 4:
 				*UserID= smalloc(strlen(line));
 				memcpy(*UserID, line, strlen(line));
 				(*UserID)[strlen(line)-1] = '\0';
 				break;
-			case 4:
+			case 5:
 				*pd = smalloc(strlen(line));
 				memcpy(*pd, line, strlen(line));
 				(*pd)[strlen(line)-1] = '\0';
 				break;
-			case 5:
+			case 6:
 				*mongodb_url_port = smalloc(strlen(line));
 				memcpy(*mongodb_url_port, line, strlen(line));
 				(*mongodb_url_port)[strlen(line)-1] = '\0';
