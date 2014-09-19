@@ -5,16 +5,18 @@
 using namespace std;
 
 /********************************************************************************************************/
-CTraderApi::CTraderApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *UserProductInfo, char *password, THOST_TE_RESUME_TYPE nResumeType)
-{
+CTraderApi::CTraderApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *userid, char *password, char *UserProductInfo, THOST_TE_RESUME_TYPE nResumeType) {
+
 	m_nRequestID = 0;
-	m_logFilePath = flowpath;
-	m_server = servername;
-	m_BrokerId = brokerid;
-	m_InvestorId = inverstorid;
-	m_UserId = inverstorid;
-	m_UserProductInfo = UserProductInfo;
-	m_Password = password;
+
+	strncpy(m_logFilePath, flowpath, sizeof(m_logFilePath));
+	strncpy(m_server, servername, sizeof(m_server));
+	strncpy(m_BrokerId, brokerid, sizeof(TThostFtdcBrokerIDType));
+	strncpy(m_InvestorId, inverstorid, sizeof(TThostFtdcInvestorIDType));
+	strncpy(m_UserId, userid, sizeof(TThostFtdcUserIDType));
+	strncpy(m_Password, password, sizeof(TThostFtdcPasswordType));
+	strncpy(m_UserProductInfo, UserProductInfo, sizeof(TThostFtdcProductInfoType));
+
 	api = CThostFtdcTraderApi::CreateFtdcTraderApi(m_logFilePath);
 	if (api == NULL) {
 		isError("tdapi created failed");
@@ -27,15 +29,15 @@ CTraderApi::CTraderApi(char *flowpath, char *servername, char *brokerid, char *i
 	printtlc("save m_server: %s", m_server);
 	printtlc("save m_BrokerId: %s", m_BrokerId);
 	printtlc("save m_InvestorId: %s", m_InvestorId);
+	printtlc("save m_UserId: %s", m_UserId);
 	//printtlc("save m_Password: %s", m_Password);
-
+	printtlc("save m_UserProductInfo: %s", m_UserProductInfo);
 
 	api->RegisterSpi(this);
 	api->RegisterFront(m_server);
 	api->SubscribePublicTopic(nResumeType);
 	api->SubscribePrivateTopic(nResumeType);
 }
-
 CTraderApi::~CTraderApi(void) {
 	printtlb("free md");
 	api->RegisterSpi(NULL);
@@ -73,7 +75,7 @@ void CTraderApi::SubscribePrivateTopic(THOST_TE_RESUME_TYPE nResumeType) {
 	api->SubscribePrivateTopic(nResumeType);
 }
 
-/********************************************************************************************************/
+/**Request User Login************************************************************************************/
 int CTraderApi::ReqUserLogin() {
 	CThostFtdcReqUserLoginField request;
 	memset(&request, 0, sizeof(CThostFtdcReqUserLoginField));
@@ -81,7 +83,7 @@ int CTraderApi::ReqUserLogin() {
 	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
 	strncpy(request.UserID, m_InvestorId, sizeof(TThostFtdcUserIDType));
 	strncpy(request.Password, m_Password, sizeof(TThostFtdcPasswordType));
-	strncpy(request.UserProductInfo, m_UserProductInfo, sizeof(TThostFtdcPasswordType));
+	strncpy(request.UserProductInfo, m_UserProductInfo, sizeof(TThostFtdcProductInfoType));
 
 	printtlb("api req user login");
 	printtlc("request.BrokerID: %s", request.BrokerID);

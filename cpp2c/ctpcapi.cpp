@@ -150,8 +150,8 @@ static inline CTraderApi* TD_GetApi(void* td) {
 	return static_cast<CTraderApi*>(td);
 }
 
-void* TD_create(char *flowpath, char *servername, char *bid, char *iid, char *UserProductInfo, char *pd, THOST_TE_RESUME_TYPE nResumeType) {
-	return new CTraderApi(flowpath, servername, bid, iid, UserProductInfo, pd, nResumeType);
+void* TD_create(char *flowpath, char *servername, char *bid, char *iid, char *uid, char *pd, char *UserProductInfo, THOST_TE_RESUME_TYPE nResumeType) {
+	return new CTraderApi(flowpath, servername, bid, iid, uid, pd, UserProductInfo, nResumeType);
 }
 
 void TD_free(void* td) {

@@ -10,7 +10,7 @@ class CTraderApi : public CThostFtdcTraderSpi
 {
 
 public:
-	CTraderApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *UserProductInfo, char *password, THOST_TE_RESUME_TYPE nResumeType);
+	CTraderApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *userid, char *password, char *UserProductInfo, THOST_TE_RESUME_TYPE nResumeType);
 	virtual ~CTraderApi(void);
 	//xx api functions, from traderapi.
 	void Init();
@@ -52,14 +52,13 @@ private:
 
 	int	m_nRequestID;
 	int m_MaxOrderRef;
-	char *m_logFilePath;
-	char *m_server;
-	char *m_BrokerId;
-	char *m_UserId;
-	char *m_InvestorId;
-	char *m_Password;
-	char *m_UserProductInfo;
-	char *m_AuthCode;
+	char m_logFilePath[1000];
+	char m_server[1000];
+	TThostFtdcBrokerIDType m_BrokerId;
+	TThostFtdcUserIDType m_UserId;
+	TThostFtdcInvestorIDType m_InvestorId;
+	TThostFtdcPasswordType m_Password;
+	TThostFtdcProductInfoType m_UserProductInfo;
 };
 
 #endif //end of CTP_C_API_CPP2C_TRADERAPI_H
