@@ -379,8 +379,29 @@ int CTraderApi::ReqOrderAction(CThostFtdcOrderField *pOrder, TThostFtdcActionFla
 	return api->ReqOrderAction(&request, ++m_nRequestID);
 }
 void CTraderApi::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	//TODO
 }
 void CTraderApi::OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo) {
+	//TODO
+}
+
+/********************************************************************************************************/
+int CTraderApi::ReqQueryMaxOrderVolume(char *InstrumentID, TThostFtdcDirectionType Direction, TThostFtdcOffsetFlagType OffsetFlag, TThostFtdcHedgeFlagType HedgeFlag) {
+	CThostFtdcQueryMaxOrderVolumeField request;
+	memset(&request, 0, sizeof(CThostFtdcQueryMaxOrderVolumeField));
+
+	memcpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
+	memcpy(request.InvestorID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
+	memcpy(request.InstrumentID, InstrumentID, sizeof(TThostFtdcInstrumentIDType));
+	request.Direction = Direction;
+	request.OffsetFlag = OffsetFlag;
+	request.HedgeFlag = HedgeFlag;
+	//TODO
+	//TThostFtdcVolumeType	MaxVolume;
+	return api->ReqQueryMaxOrderVolume(&request, ++m_nRequestID);
+}
+void CTraderApi::OnRspQueryMaxOrderVolume(CThostFtdcQueryMaxOrderVolumeField *pQueryMaxOrderVolume, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	//TODO
 }
 
 /**Qry Settlement info***********************************************************************************/
