@@ -22,8 +22,6 @@ public:
 			int OrderRef,\
 		   	char *InstrumentID,\
 			TThostFtdcDirectionType Direction,\
-			const TThostFtdcCombOffsetFlagType CombOffsetFlag,\
-			const TThostFtdcCombHedgeFlagType CombHedgeFlag,\
 			TThostFtdcVolumeType VolumeTotalOriginal,\
 			TThostFtdcPriceType LimitPrice,\
 			TThostFtdcOrderPriceTypeType OrderPriceType,\

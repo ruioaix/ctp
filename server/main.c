@@ -38,6 +38,7 @@ int main(int argc, char **argv) {
 	mim.mcollectionsNum = InstrumentNum;
 	mim.InstrumentIDs = InstrumentIDs;
 	mim.md = md;
+	mim.td = td;
 	mim.running = &running;
 
 	pthread_t insert_dmdmsg;
@@ -45,10 +46,13 @@ int main(int argc, char **argv) {
 	pthread_t revise_instrment;
 	pthread_create(&revise_instrment, NULL, ProcessINS, &mim);
 
-	MD_init(md);
 	TD_init(td);
+	sleep(2);
+	MD_init(md);
 
-	//sleep(5);
+	sleep(5);
+	fflush(stdout);
+	_exit(0);
 	//TD_reqQryInstrumentMarginRate(td, "IF1410");
 	//sleep(2);
 	//TD_reqQrySettlementInfo(td);

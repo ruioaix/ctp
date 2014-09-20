@@ -154,6 +154,205 @@ void CTraderApi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField
 	}
 }
 
+/********************************************************************************************************/
+int CTraderApi::ReqOrderInsert(int OrderRef,\
+	   	char *InstrumentID,\
+		TThostFtdcDirectionType Direction,\
+		TThostFtdcVolumeType VolumeTotalOriginal,\
+		TThostFtdcPriceType LimitPrice,\
+		TThostFtdcOrderPriceTypeType OrderPriceType,\
+		TThostFtdcTimeConditionType TimeCondition,\
+		TThostFtdcContingentConditionType ContingentCondition,\
+		TThostFtdcPriceType StopPrice,\
+		TThostFtdcVolumeConditionType VolumeCondition) {
+
+	CThostFtdcInputOrderField request; 
+	memset(&request, 0, sizeof(CThostFtdcInputOrderField));
+	
+	/**set automatically**************************************************************************************/
+	memcpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
+	memcpy(request.InvestorID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
+	memcpy(request.UserID, m_UserId, sizeof(TThostFtdcUserIDType));
+	memcpy(request.InstrumentID, InstrumentID, sizeof(TThostFtdcInstrumentIDType));
+	//min volume: 1
+	request.MinVolume = 1;
+	//Force Close can only be done by CTPServerSide, here we can only set NotForceClose.
+	request.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
+	//TODO we don't have Auto Suspend on clientside.
+	request.IsAutoSuspend = 0;
+	//TODO we don't have User Force Close on clientside.
+	request.UserForceClose = 0;
+	//TODO we don't use swap oder.
+	request.IsSwapOrder = 0;
+	//TODO we don't use CombOffsetFlag & CombHedgeFlag & GTDDate & BusinessUnit & RequestID.
+	//request.GTDDate, request.BusinessUnit, request.RequestID is initial with zero.
+	strcpy(request.CombOffsetFlag, "0");
+	strcpy(request.CombHedgeFlag, "1");
+
+	/**set mannully******************************************************************************************/
+	//buy or sell
+	request.Direction = Direction;
+
+	//volume type: 1=THOST_FTDC_VC_AV=any, 2=THOST_FTDC_VC_MV=min, 3=THOST_FTDC_VC_CV=all
+	//order price type: 16kinds
+	//time condition: 6kinds
+	//volume total original: 
+	//these five work together.
+	request.VolumeCondition = VolumeCondition;
+	request.OrderPriceType = OrderPriceType;
+	request.LimitPrice = LimitPrice;
+	request.TimeCondition = TimeCondition;
+	request.ContingentCondition = ContingentCondition;
+	request.StopPrice = StopPrice;
+	request.VolumeTotalOriginal = VolumeTotalOriginal;
+
+	//TODO OrderRef need syn
+	if (OrderRef < 0) {
+		int nRet = m_MaxOrderRef;
+		sprintf(request.OrderRef, "%d", nRet);
+		++m_MaxOrderRef;
+	}
+	else {
+		sprintf(request.OrderRef, "%d", OrderRef);
+	}
+
+	printtlb("td api req order insert");
+	return api->ReqOrderInsert(&request, ++m_nRequestID);
+}
+void CTraderApi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	//verbose
+	printtlb("td OnRspOrderInsert called.");
+	printtlc("td nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
+	if (pRspInfo != NULL) {
+		printtlc("td pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+	}
+	else {
+		printtlc("td pRspInfo is NULL");
+	}
+	if (pInputOrder != NULL) {
+		printtlc("BrokerID: %s", pInputOrder->BrokerID);
+		printtlc("InvestorID: %s", pInputOrder->InvestorID);
+		printtlc("InstrumentID: %s", pInputOrder->InstrumentID);
+		printtlc("OrderRef: %s", pInputOrder->OrderRef);
+		printtlc("UserID: %s", pInputOrder->UserID);
+		printtlc("OrderPriceType: %c", pInputOrder->OrderPriceType);
+		printtlc("Direction: %c", pInputOrder->Direction);
+		printtlc("CombOffsetFlag: %s", pInputOrder->CombOffsetFlag);
+		printtlc("CombHedgeFlag: %s", pInputOrder->CombHedgeFlag);
+		printtlc("LimitPrice: %f", pInputOrder->LimitPrice);
+		printtlc("VolumeTotalOriginal: %d", pInputOrder->VolumeTotalOriginal);
+		printtlc("TimeCondition: %c", pInputOrder->TimeCondition);
+		printtlc("GTDDate: %s", pInputOrder->GTDDate);
+		printtlc("VolumeCondition: %c", pInputOrder->VolumeCondition);
+		printtlc("MinVolume: %d", pInputOrder->MinVolume);
+		printtlc("ContingentCondition: %c", pInputOrder->ContingentCondition);
+		printtlc("StopPrice: %f", pInputOrder->StopPrice);
+		printtlc("ForceCloseReason: %c", pInputOrder->ForceCloseReason);
+		printtlc("IsAutoSuspend: %d", pInputOrder->IsAutoSuspend);
+		printtlc("BusinessUnit: %s", pInputOrder->BusinessUnit);
+		printtlc("RequestID: %d", pInputOrder->RequestID);
+		printtlc("UserForceClose: %d", pInputOrder->UserForceClose);
+		printtlc("IsSwapOrder: %d", pInputOrder->IsSwapOrder);
+	}
+	else {
+		printtlc("td pInputOrder is NULL");
+	}
+}
+//when order is accepted by ctp server
+void CTraderApi::OnRtnOrder(CThostFtdcOrderField *pOrder) {
+	printtlb("td OnRtnOrder called");
+	printtlc("BrokerID: %s", pOrder->BrokerID);
+	printtlc("InvestorID: %s", pOrder->InvestorID);
+	printtlc("InstrumentID: %s", pOrder->InstrumentID);
+	printtlc("OrderRef: %s", pOrder->OrderRef);
+	printtlc("UserID: %s", pOrder->UserID);
+	printtlc("OrderPriceType: %c", pOrder->OrderPriceType);
+	printtlc("Direction: %c", pOrder->Direction);
+	printtlc("CombOffsetFlag: %s", pOrder->CombOffsetFlag);
+	printtlc("CombHedgeFlag: %s", pOrder->CombHedgeFlag);
+	printtlc("LimitPrice: %f", pOrder->LimitPrice);
+	printtlc("VolumeTotalOriginal: %d", pOrder->VolumeTotalOriginal);
+	printtlc("TimeCondition: %c", pOrder->TimeCondition);
+	printtlc("GTDDate: %s", pOrder->GTDDate);
+	printtlc("VolumeCondition: %c", pOrder->VolumeCondition);
+	printtlc("MinVolume: %d", pOrder->MinVolume);
+	printtlc("ContingentCondition: %c", pOrder->ContingentCondition);
+	printtlc("StopPrice: %f", pOrder->StopPrice);
+	printtlc("ForceCloseReason: %c", pOrder->ForceCloseReason);
+	printtlc("IsAutoSuspend: %d", pOrder->IsAutoSuspend);
+	printtlc("BusinessUnit: %s", pOrder->BusinessUnit);
+	printtlc("RequestID: %d", pOrder->RequestID);
+	printtlc("OrderLocalID: %s", pOrder->OrderLocalID);
+	printtlc("ExchangeID: %s", pOrder->ExchangeID);
+	printtlc("ParticipantID: %s", pOrder->ParticipantID);
+	printtlc("ClientID: %s", pOrder->ClientID);
+	printtlc("ExchangeInstID: %s", pOrder->ExchangeInstID);
+	printtlc("TraderID: %s", pOrder->TraderID);
+	printtlc("InstallID: %d", pOrder->InstallID);
+	printtlc("OrderSubmitStatus: %d", pOrder->OrderSubmitStatus);
+	printtlc("NotifySequence: %d", pOrder->NotifySequence);
+	printtlc("TradingDay: %s", pOrder->TradingDay);
+	printtlc("SettlementID: %d", pOrder->SettlementID);
+	printtlc("OrderSysID: %s", pOrder->OrderSysID);
+	printtlc("OrderSource: %c", pOrder->OrderSource);
+	printtlc("OrderStatus: %c", pOrder->OrderStatus);
+	printtlc("OrderType: %c", pOrder->OrderType);
+	printtlc("VolumeTraded: %d", pOrder->VolumeTraded);
+	printtlc("VolumeTotal: %d", pOrder->VolumeTotal);
+	printtlc("InsertDate: %s", pOrder->InsertDate);
+	printtlc("InsertTime: %s", pOrder->InsertTime);
+	printtlc("ActiveTime: %s", pOrder->ActiveTime);
+	printtlc("SuspendTime: %s", pOrder->SuspendTime);
+	printtlc("UpdateTime: %s", pOrder->UpdateTime);
+	printtlc("CancelTime: %s", pOrder->CancelTime);
+	printtlc("ActiveTraderID: %s", pOrder->ActiveTraderID);
+	printtlc("ClearingPartID: %s", pOrder->ClearingPartID);
+	printtlc("SequenceNo: %d", pOrder->SequenceNo);
+	printtlc("FrontID: %d", pOrder->FrontID);
+	printtlc("SessionID: %d", pOrder->SessionID);
+	printtlc("UserProductInfo: %s", pOrder->UserProductInfo);
+	printtlc("StatusMsg: %s", pOrder->StatusMsg);
+	printtlc("UserForceClose: %d", pOrder->UserForceClose);
+	printtlc("ActiveUserID: %s", pOrder->ActiveUserID);
+	printtlc("BrokerOrderSeq: %d", pOrder->BrokerOrderSeq);
+	printtlc("RelativeOrderSysID: %s", pOrder->RelativeOrderSysID);
+	printtlc("ZCETotalTradedVolume: %d", pOrder->ZCETotalTradedVolume);
+	printtlc("IsSwapOrder: %d", pOrder->IsSwapOrder);
+}
+void CTraderApi::OnRtnTrade(CThostFtdcTradeField *pTrade) {
+	printtlb("td OnRtnTrade called");
+	printtlc("BrokerID: %s", pTrade->BrokerID);
+	printtlc("InvestorID: %s", pTrade->InvestorID);
+	printtlc("InstrumentID: %s", pTrade->InstrumentID);
+	printtlc("OrderRef: %s", pTrade->OrderRef);
+	printtlc("UserID: %s", pTrade->UserID);
+	printtlc("ExchangeID: %s", pTrade->ExchangeID);
+	printtlc("TradeID: %s", pTrade->TradeID);
+	printtlc("Direction: %c", pTrade->Direction);
+	printtlc("OrderSysID: %s", pTrade->OrderSysID);
+	printtlc("ParticipantID: %s", pTrade->ParticipantID);
+	printtlc("ClientID: %s", pTrade->ClientID);
+	printtlc("TradingRole: %c", pTrade->TradingRole);
+	printtlc("ExchangeInstID: %s", pTrade->ExchangeInstID);
+	printtlc("OffsetFlag: %c", pTrade->OffsetFlag);
+	printtlc("HedgeFlag: %c", pTrade->HedgeFlag);
+	printtlc("Price: %f", pTrade->Price);
+	printtlc("Volume: %d", pTrade->Volume);
+	printtlc("TradeDate: %s", pTrade->TradeDate);
+	printtlc("TradeTime: %s", pTrade->TradeTime);
+	printtlc("TradeType: %c", pTrade->TradeType);
+	printtlc("PriceSource: %c", pTrade->PriceSource);
+	printtlc("TraderID: %s", pTrade->TraderID);
+	printtlc("OrderLocalID: %s", pTrade->OrderLocalID);
+	printtlc("ClearingPartID: %s", pTrade->ClearingPartID);
+	printtlc("BusinessUnit: %s", pTrade->BusinessUnit);
+	printtlc("SequenceNo: %d", pTrade->SequenceNo);
+	printtlc("TradingDay: %s", pTrade->TradingDay);
+	printtlc("SettlementID: %d", pTrade->SettlementID);
+	printtlc("BrokerOrderSeq: %d", pTrade->BrokerOrderSeq);
+	printtlc("TradeSource: %c", pTrade->TradeSource);
+}
+
 /**Qry Settlement info***********************************************************************************/
 int CTraderApi::ReqQrySettlementInfo() {
 	CThostFtdcQrySettlementInfoField request;
@@ -182,103 +381,6 @@ void CTraderApi::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettleme
 	}
 
 
-}
-
-/********************************************************************************************************/
-int CTraderApi::ReqOrderInsert(int OrderRef,\
-	   	char *InstrumentID,\
-		TThostFtdcDirectionType Direction,\
-		const TThostFtdcCombOffsetFlagType CombOffsetFlag,\
-		const TThostFtdcCombHedgeFlagType CombHedgeFlag,\
-		TThostFtdcVolumeType VolumeTotalOriginal,\
-		TThostFtdcPriceType LimitPrice,\
-		TThostFtdcOrderPriceTypeType OrderPriceType,\
-		TThostFtdcTimeConditionType TimeCondition,\
-		TThostFtdcContingentConditionType ContingentCondition,\
-		TThostFtdcPriceType StopPrice,\
-		TThostFtdcVolumeConditionType VolumeCondition) {
-
-	CThostFtdcInputOrderField request; 
-	memset(&request, 0, sizeof(CThostFtdcInputOrderField));
-/*
-	///报单引用
-	TThostFtdcOrderRefType	OrderRef;
-	///组合开平标志
-	TThostFtdcCombOffsetFlagType	CombOffsetFlag;
-	///组合投机套保标志
-	TThostFtdcCombHedgeFlagType	CombHedgeFlag;
-	///GTD日期
-	TThostFtdcDateType	GTDDate;
-	///业务单元
-	TThostFtdcBusinessUnitType	BusinessUnit;
-	///请求编号
-	TThostFtdcRequestIDType	RequestID;
-	*/
-
-	
-	/**set automatically**************************************************************************************/
-	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
-	strncpy(request.InvestorID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
-	strncpy(request.UserID, m_UserId, sizeof(TThostFtdcUserIDType));
-	strncpy(request.InstrumentID, InstrumentID, sizeof(TThostFtdcInstrumentIDType));
-	//min volume: 1
-	request.MinVolume = 1;
-	//Force Close can only be done by CTPServerSide, here we can only set NotForceClose.
-	request.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
-	//TODO we don't have Auto Suspend on clientside.
-	request.IsAutoSuspend = 0;
-	//TODO we don't have User Force Close on clientside.
-	request.UserForceClose = 0;
-	//TODO we don't use swap oder.
-	request.IsSwapOrder = 0;
-
-	/**set mannully******************************************************************************************/
-	//buy or sell
-	request.Direction = Direction;
-
-	strncpy(request.CombOffsetFlag, CombOffsetFlag, sizeof(TThostFtdcCombOffsetFlagType));
-	memcpy(request.CombHedgeFlag, CombHedgeFlag,sizeof(TThostFtdcCombHedgeFlagType));
-
-	//volume type: 1=THOST_FTDC_VC_AV=any, 2=THOST_FTDC_VC_MV=min, 3=THOST_FTDC_VC_CV=all
-	//order price type: 16kinds
-	//time condition: 6kinds
-	//volume total original: 
-	//these five work together.
-	request.VolumeCondition = VolumeCondition;
-	request.OrderPriceType = OrderPriceType;
-	request.LimitPrice = LimitPrice;
-	request.TimeCondition = TimeCondition;
-	request.ContingentCondition = ContingentCondition;
-	request.StopPrice = StopPrice;
-	request.VolumeTotalOriginal = VolumeTotalOriginal;
-
-	if (OrderRef < 0) {
-		int nRet = m_MaxOrderRef;
-		sprintf(request.OrderRef, "%d", nRet);
-		++m_MaxOrderRef;
-	}
-	else {
-		sprintf(request.OrderRef, "%d", OrderRef);
-	}
-
-	printtlb("td api req order insert");
-	return api->ReqOrderInsert(&request, ++m_nRequestID);
-}
-void CTraderApi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
-	//verbose
-	printtlb("td OnRspOrderInsert called.");
-	printtlc("td nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
-	if (pRspInfo != NULL) {
-		printtlc("td pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
-	}
-	else {
-		printtlc("td pRspInfo is NULL");
-	}
-	if (pInputOrder != NULL) {
-	}
-	else {
-		printtlc("td pInputOrder is NULL");
-	}
 }
 
 /********************************************************************************************************/
@@ -362,11 +464,3 @@ void CTraderApi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bo
 }
 
 /********************************************************************************************************/
-void CTraderApi::OnRtnOrder(CThostFtdcOrderField *pOrder) {
-	printtlb("td OnRtnOrder called");
-}
-
-void CTraderApi::OnRtnTrade(CThostFtdcTradeField *pTrade) {
-	printtlb("td OnRtnTrade called");
-}
-

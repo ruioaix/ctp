@@ -6,6 +6,7 @@
 
 struct MongoIM {
 	void *md;
+	void *td;
 	mongoc_client_t *client;
 	mongoc_collection_t **mcollections;
 	int mcollectionsNum;

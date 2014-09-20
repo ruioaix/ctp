@@ -314,8 +314,6 @@ extern "C" {
 	void TD_init(void *td);
 	const char *TD_getTradingDay(void *td);
 	int TD_reqOrderInsert(void *td, int OrderRef, char *InstrumentID, TThostFtdcDirectionType Direction,\
-			const TThostFtdcCombOffsetFlagType CombOffsetFlag,\
-			const TThostFtdcCombHedgeFlagType CombHedgeFlag,\
 			TThostFtdcVolumeType VolumeTotalOriginal,\
 			TThostFtdcPriceType LimitPrice,\
 			TThostFtdcOrderPriceTypeType OrderPriceType,\

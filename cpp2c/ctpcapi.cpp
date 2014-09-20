@@ -174,8 +174,6 @@ const char *TD_getTradingDay(void *td) {
 }
 
 int TD_reqOrderInsert(void *td, int OrderRef, char *InstrumentID, TThostFtdcDirectionType Direction,\
-		const TThostFtdcCombOffsetFlagType CombOffsetFlag,\
-		const TThostFtdcCombHedgeFlagType CombHedgeFlag,\
 		TThostFtdcVolumeType VolumeTotalOriginal,\
 		TThostFtdcPriceType LimitPrice,\
 		TThostFtdcOrderPriceTypeType OrderPriceType,\
@@ -185,7 +183,7 @@ int TD_reqOrderInsert(void *td, int OrderRef, char *InstrumentID, TThostFtdcDire
 		TThostFtdcVolumeConditionType VolumeCondition) {
 
 	if (td) {
-		return TD_GetApi(td)->ReqOrderInsert(OrderRef, InstrumentID, Direction, CombOffsetFlag, CombHedgeFlag, VolumeTotalOriginal, LimitPrice, OrderPriceType, TimeCondition, ContingentCondition, StopPrice, VolumeCondition);
+		return TD_GetApi(td)->ReqOrderInsert(OrderRef, InstrumentID, Direction, VolumeTotalOriginal, LimitPrice, OrderPriceType, TimeCondition, ContingentCondition, StopPrice, VolumeCondition);
 	}
 	return -1;
 }
