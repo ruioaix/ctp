@@ -29,6 +29,7 @@ public:
 			TThostFtdcContingentConditionType ContingentCondition,\
 			TThostFtdcPriceType StopPrice,\
 			TThostFtdcVolumeConditionType VolumeCondition);
+	int ReqOrderAction(CThostFtdcOrderField *pOrder, TThostFtdcActionFlagType ActionFlag);
 	int ReqQryInstrumentMarginRate(char *InstrumentID);
 	int ReqQryInstrument();
 	int ReqSettlementInfoConfirm();
@@ -42,6 +43,8 @@ private:
 	virtual void OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRtnOrder(CThostFtdcOrderField *pOrder);
 	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
+	virtual void OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	virtual void OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo);
 	virtual void OnRspQryInstrumentCommissionRate(CThostFtdcInstrumentCommissionRateField *pInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);

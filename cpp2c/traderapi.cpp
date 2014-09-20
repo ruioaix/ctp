@@ -353,6 +353,36 @@ void CTraderApi::OnRtnTrade(CThostFtdcTradeField *pTrade) {
 	printtlc("TradeSource: %c", pTrade->TradeSource);
 }
 
+/********************************************************************************************************/
+int CTraderApi::ReqOrderAction(CThostFtdcOrderField *pOrder, TThostFtdcActionFlagType ActionFlag) {
+	CThostFtdcInputOrderActionField request;
+	memset(&request, 0, sizeof(CThostFtdcInputOrderActionField));
+
+	/**set automatically**************************************************************************************/
+	memcpy(request.BrokerID, pOrder->BrokerID, sizeof(TThostFtdcBrokerIDType));
+	memcpy(request.InvestorID, pOrder->InvestorID, sizeof(TThostFtdcInvestorIDType));
+	memcpy(request.UserID, pOrder->UserID, sizeof(TThostFtdcUserIDType));
+	memcpy(request.InstrumentID, pOrder->InstrumentID, sizeof(TThostFtdcInstrumentIDType));
+	memcpy(request.OrderRef, pOrder->OrderRef, sizeof(TThostFtdcOrderRefType));
+	memcpy(request.ExchangeID, pOrder->ExchangeID, sizeof(TThostFtdcExchangeIDType));
+	memcpy(request.OrderSysID, pOrder->OrderSysID, sizeof(TThostFtdcOrderSysIDType));
+
+	request.ActionFlag = ActionFlag;
+	request.FrontID = pOrder->FrontID;
+	request.SessionID = pOrder->SessionID;
+
+	//TODO
+	//TThostFtdcOrderActionRefType	OrderActionRef;
+	//TThostFtdcRequestIDType	RequestID;
+	//TThostFtdcPriceType	LimitPrice;
+	//TThostFtdcVolumeType	VolumeChange;
+	return api->ReqOrderAction(&request, ++m_nRequestID);
+}
+void CTraderApi::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+}
+void CTraderApi::OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo) {
+}
+
 /**Qry Settlement info***********************************************************************************/
 int CTraderApi::ReqQrySettlementInfo() {
 	CThostFtdcQrySettlementInfoField request;
