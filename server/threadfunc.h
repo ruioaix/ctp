@@ -14,7 +14,8 @@ struct ThreadIM {
 	int *running;
 };
 
-void *ProcessDMD(void *mim_p);
-void *ProcessINS(void *mim_p);
+void *DMDMSG_insertIntoMongoDB(void *ThreadIM);
+void *INSTRMENT_revise(void *ThreadIM);
+void *EVENT_500ms_dmdmsg(void *ThreadIM);
 
 #endif

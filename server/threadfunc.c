@@ -20,11 +20,10 @@ static void getupdatetime(char *updatetime, int *hour, int *minute, int *second)
 	*second = strtol(tt, NULL, 10);
 }
 
-void *ProcessDMD(void *mim_p) {
+void *DMDMSG_insertIntoMongoDB(void *mim_p) {
 	struct ThreadIM *mim = mim_p;
 
 	void *md = mim->md;
-	void *td = mim->td;
 	mongoc_client_t *client = mim->client;
 	mongoc_collection_t **mcollections = mim->mcollections;
 	int mcollectionsNum = mim->mcollectionsNum;
@@ -62,11 +61,11 @@ void *ProcessDMD(void *mim_p) {
 						break;
 					}
 				}
-				TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 1, 0, THOST_FTDC_OPT_AnyPrice, THOST_FTDC_TC_IOC,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
+				//TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 1, 0, THOST_FTDC_OPT_AnyPrice, THOST_FTDC_TC_IOC,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
 				MongoAPI_insert_DMD(client, mcollections[i], pDepthMarketData, ts+tus*1E-9, tv.tv_sec+(tv.tv_nsec)*1E-9, size);
 			}
 			else {
-				TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 1, 0, THOST_FTDC_OPT_AnyPrice, THOST_FTDC_TC_IOC,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
+				//TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 1, 0, THOST_FTDC_OPT_AnyPrice, THOST_FTDC_TC_IOC,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
 				MongoAPI_insert_DMD(client, mcollections[mcollectionsNum], pDepthMarketData, ts+tus*1E-9, tv.tv_sec+(tv.tv_nsec)*1E-9, size);
 			}
 		}
@@ -97,7 +96,7 @@ static void get_next_next_month(int year, int month, int *nnyear, int *nnmonth) 
 	}
 }
 
-void *ProcessINS(void *mim_p) {
+void *INSTRMENT_revise(void *mim_p) {
 	struct ThreadIM *mim = mim_p;
 	void *md = mim->md;
 	int mcollectionsNum = mim->mcollectionsNum;
@@ -136,4 +135,7 @@ void *ProcessINS(void *mim_p) {
 		}
 	}
 	return NULL;
+}
+
+void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 }

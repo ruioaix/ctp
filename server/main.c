@@ -42,17 +42,17 @@ int main(int argc, char **argv) {
 	mim.running = &running;
 
 	pthread_t insert_dmdmsg;
-	pthread_create(&insert_dmdmsg, NULL, ProcessDMD, &mim);
+	pthread_create(&insert_dmdmsg, NULL, DMDMSG_insertIntoMongoDB, &mim);
 	pthread_t revise_instrment;
-	pthread_create(&revise_instrment, NULL, ProcessINS, &mim);
+	pthread_create(&revise_instrment, NULL, INSTRMENT_revise, &mim);
 
 	TD_init(td);
 	sleep(2);
 	MD_init(md);
 
 	sleep(15);
-	fflush(stdout);
-	_exit(0);
+	//fflush(stdout);
+	//_exit(0);
 	//TD_reqQryInstrumentMarginRate(td, "IF1410");
 	//sleep(2);
 	//TD_reqQrySettlementInfo(td);
