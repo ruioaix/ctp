@@ -58,9 +58,11 @@ CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *i
 		m_intime_second[i] = -1;
 		m_intime_usecond[i] = -1;
 	}
+	m_header_index_slow = 0;
 	m_header_index = 0;
 	m_tail_index = 0;
 	m_validmsg_size = 0;
+	m_validmsg_size_slow = 0;
 
 	//verbose
 	printmlb("create both spi and api object - md.");
@@ -401,6 +403,7 @@ void CMdUserApi::input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData) {
 	m_intime_usecond[m_tail_index] = tns;
 	m_tail_index = (m_tail_index+1)&(m_queue_size-1);
 	m_current_size[m_tail_index] = __sync_add_and_fetch(&m_validmsg_size, 1);
+	__sync_add_and_fetch(&m_validmsg_size_slow, 1);
 }
 
 CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ(long *ts, long *tns, int *size) {
@@ -411,6 +414,16 @@ CThostFtdcDepthMarketDataField *CMdUserApi::output_DMDQ(long *ts, long *tns, int
 		*size = m_current_size[m_header_index];
 		CThostFtdcDepthMarketDataField *h = m_queue + m_header_index;
 		m_header_index = (m_header_index + 1)&(m_queue_size-1);
+		return h;
+	}
+	return NULL;
+}
+
+CThostFtdcDepthMarketDataField *CMdUserApi::output_slow_DMDQ() {
+	if (m_validmsg_size_slow> 0) {
+		__sync_fetch_and_sub(&m_validmsg_size_slow, 1);
+		CThostFtdcDepthMarketDataField *h = m_queue + m_header_index_slow;
+		m_header_index_slow = (m_header_index_slow + 1)&(m_queue_size-1);
 		return h;
 	}
 	return NULL;

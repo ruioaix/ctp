@@ -96,6 +96,13 @@ CThostFtdcDepthMarketDataField *MD_getOneDMDmsg(void *md, long *ts, long *tus, i
 	return NULL;
 }
 
+CThostFtdcDepthMarketDataField *MD_2_getOneDMDmsg(void *md) {
+	if(md) {
+		return MD_GetApi(md)->output_slow_DMDQ();
+	}
+	return NULL;
+}
+
 void MD_RegOnFrontConnected(void* md, fnOnFrontConnected pCallback) {
 	if(md) {
 		MD_GetApi(md)->RegisterCallback_ofc(pCallback);

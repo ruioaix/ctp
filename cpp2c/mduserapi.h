@@ -55,9 +55,10 @@ public:
 
 	void input_DMDQ(CThostFtdcDepthMarketDataField *pDepthMarketData);
 	CThostFtdcDepthMarketDataField *output_DMDQ(long *ts, long *tus, int *size);
+	CThostFtdcDepthMarketDataField *output_slow_DMDQ();
 
 private:
-	CThostFtdcMdApi*			api;
+	CThostFtdcMdApi *api;
 
 	int	m_nRequestID;
 	char *m_logFilePath;
@@ -84,7 +85,9 @@ private:
 	long *m_intime_usecond;
 	int *m_current_size;
 	int m_validmsg_size;
+	int m_validmsg_size_slow;
 	int m_header_index;
+	int m_header_index_slow;
 	int m_tail_index;
 	int m_queue_size;
 };

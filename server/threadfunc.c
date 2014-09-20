@@ -138,4 +138,5 @@ void *INSTRMENT_revise(void *mim_p) {
 }
 
 void *EVENT_500ms_dmdmsg(void *ThreadIM) {
+	return NULL;
 }

@@ -274,6 +274,7 @@ extern "C" {
 
 	//get one DMDmsg
 	CThostFtdcDepthMarketDataField *MD_getOneDMDmsg(void *md, long *ts, long *tus, int *size);
+	CThostFtdcDepthMarketDataField *MD_2_getOneDMDmsg(void *md);
 
 	/*In class CThostFtdcMdSpi, there are 9 callback functions.*/
 	// related to "virtual void OnFrontConnected(){};"
