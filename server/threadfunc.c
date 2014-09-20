@@ -127,10 +127,8 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 
 	void *md = mim->md;
 	void *td = mim->td;
-	int mcollectionsNum = mim->mcollectionsNum;
-	char **InstrumentIDs = mim->InstrumentIDs;
 
-	if (!TD_isready(td)) {
+	while (!TD_isready(td)) {
 		sleep(1);
 	}
 
@@ -157,12 +155,6 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 				 ((hour >= 13 ) &&
 				  (hour < 15 || (hour==15 && minute<15) || (hour==15 && minute==15 && second==0)))
 			   ){
-				int i;
-				for (i = 0; i < mcollectionsNum; ++i) {
-					if (strcmp(pDepthMarketData->InstrumentID, InstrumentIDs[i]) == 0) {
-						break;
-					}
-				}
 				TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 1, 0, THOST_FTDC_OPT_AnyPrice, THOST_FTDC_TC_IOC,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
 			}
 			else {

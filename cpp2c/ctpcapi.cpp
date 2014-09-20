@@ -169,7 +169,7 @@ void TD_free(void* td) {
 
 int TD_isready(void *td) {
 	if (td) {
-		TD_GetApi(td)->IsReady();
+		return TD_GetApi(td)->IsReady();
 	}
 	return 0;
 }
