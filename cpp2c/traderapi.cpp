@@ -404,6 +404,67 @@ void CTraderApi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField
 	}
 }
 
+/********************************************************************************************************/
+int CTraderApi::ReqQryTradingAccount() {
+	CThostFtdcQryTradingAccountField request;
+	memset(&request, 0, sizeof(CThostFtdcQryTradingAccountField));
+
+	memcpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
+	memcpy(request.InvestorID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
+	strncpy(request.CurrencyID, "CNY", sizeof(TThostFtdcCurrencyIDType));
+
+	return api->ReqQryTradingAccount(&request, ++m_nRequestID);
+}
+void CTraderApi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	printtlb("OnRspQryTradingAccount called");
+	printtlc("BrokerID: %s", pTradingAccount->BrokerID);
+	printtlc("AccountID: %s", pTradingAccount->AccountID);
+	printtlc("PreMortgage: %f", pTradingAccount->PreMortgage);
+	printtlc("PreCredit: %f", pTradingAccount->PreCredit);
+	printtlc("PreDeposit: %f", pTradingAccount->PreDeposit);
+	printtlc("PreBalance: %f", pTradingAccount->PreBalance);
+	printtlc("PreMargin: %f", pTradingAccount->PreMargin);
+	printtlc("InterestBase: %f", pTradingAccount->InterestBase);
+	printtlc("Interest: %f", pTradingAccount->Interest);
+	printtlc("Deposit: %f", pTradingAccount->Deposit);
+	printtlc("Withdraw: %f", pTradingAccount->Withdraw);
+	printtlc("FrozenMargin: %f", pTradingAccount->FrozenMargin);
+	printtlc("FrozenCash: %f", pTradingAccount->FrozenCash);
+	printtlc("FrozenCommission: %f", pTradingAccount->FrozenCommission);
+	printtlc("CurrMargin: %f", pTradingAccount->CurrMargin);
+	printtlc("CashIn: %f", pTradingAccount->CashIn);
+	printtlc("Commission: %f", pTradingAccount->Commission);
+	printtlc("CloseProfit: %f", pTradingAccount->CloseProfit);
+	printtlc("PositionProfit: %f", pTradingAccount->PositionProfit);
+	printtlc("Balance: %f", pTradingAccount->Balance);
+	printtlc("Available: %f", pTradingAccount->Available);
+	printtlc("WithdrawQuota: %f", pTradingAccount->WithdrawQuota);
+	printtlc("Reserve: %f", pTradingAccount->Reserve);
+	printtlc("TradingDay: %s", pTradingAccount->TradingDay);
+	printtlc("SettlementID: %d", pTradingAccount->SettlementID);
+	printtlc("Credit: %f", pTradingAccount->Credit);
+	printtlc("Mortgage: %f", pTradingAccount->Mortgage);
+	printtlc("ExchangeMargin: %f", pTradingAccount->ExchangeMargin);
+	printtlc("DeliveryMargin: %f", pTradingAccount->DeliveryMargin);
+	printtlc("ExchangeDeliveryMargin: %f", pTradingAccount->ExchangeDeliveryMargin);
+	printtlc("ReserveBalance: %f", pTradingAccount->ReserveBalance);
+	printtlc("CurrencyID: %s", pTradingAccount->CurrencyID);
+	printtlc("PreFundMortgageIn: %f", pTradingAccount->PreFundMortgageIn);
+	printtlc("PreFundMortgageOut: %f", pTradingAccount->PreFundMortgageOut);
+	printtlc("FundMortgageIn: %f", pTradingAccount->FundMortgageIn);
+	printtlc("FundMortgageOut: %f", pTradingAccount->FundMortgageOut);
+	printtlc("FundMortgageAvailable: %f", pTradingAccount->FundMortgageAvailable);
+	printtlc("MortgageableFund: %f", pTradingAccount->MortgageableFund);
+	printtlc("SpecProductMargin: %f", pTradingAccount->SpecProductMargin);
+	printtlc("SpecProductFrozenMargin: %f", pTradingAccount->SpecProductFrozenMargin);
+	printtlc("SpecProductCommission: %f", pTradingAccount->SpecProductCommission);
+	printtlc("SpecProductFrozenCommission: %f", pTradingAccount->SpecProductFrozenCommission);
+	printtlc("SpecProductPositionProfit: %f", pTradingAccount->SpecProductPositionProfit);
+	printtlc("SpecProductCloseProfit: %f", pTradingAccount->SpecProductCloseProfit);
+	printtlc("SpecProductPositionProfitByAlg: %f", pTradingAccount->SpecProductPositionProfitByAlg);
+	printtlc("SpecProductExchangeMargin: %f", pTradingAccount->SpecProductExchangeMargin);
+}
+
 /**Qry Settlement info***********************************************************************************/
 int CTraderApi::ReqQrySettlementInfo() {
 	CThostFtdcQrySettlementInfoField request;
