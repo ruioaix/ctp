@@ -126,35 +126,6 @@ void CTraderApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 }
 
 /********************************************************************************************************/
-int CTraderApi::ReqSettlementInfoConfirm() {
-	CThostFtdcSettlementInfoConfirmField request;
-	memset(&request, 0, sizeof(CThostFtdcQrySettlementInfoConfirmField));
-
-	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
-	strncpy(request.InvestorID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
-
-	printtlb("ReqSettlementInfoConfirm called");
-	return api->ReqSettlementInfoConfirm(&request, ++m_nRequestID);
-}
-void CTraderApi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
-	//verbose
-	printtlb("td OnRspSettlementInfoConfirm called.");
-	printtlc("td nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
-	if (pRspInfo != NULL) {
-		printtlc("td pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
-	}
-	else {
-		printtlc("td pRspInfo is NULL");
-	}
-	if (pSettlementInfoConfirm != NULL) {
-		printtlb("td BrokerID: %s, InvestorID: %s", pSettlementInfoConfirm->BrokerID, pSettlementInfoConfirm->InvestorID);
-	}
-	else {
-		printtlc("td pSettlementInfoConfirm is NULL");
-	}
-}
-
-/********************************************************************************************************/
 int CTraderApi::ReqOrderInsert(int OrderRef,\
 	   	char *InstrumentID,\
 		TThostFtdcDirectionType Direction,\
@@ -402,6 +373,35 @@ int CTraderApi::ReqQueryMaxOrderVolume(char *InstrumentID, TThostFtdcDirectionTy
 }
 void CTraderApi::OnRspQueryMaxOrderVolume(CThostFtdcQueryMaxOrderVolumeField *pQueryMaxOrderVolume, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
 	//TODO
+}
+
+/********************************************************************************************************/
+int CTraderApi::ReqSettlementInfoConfirm() {
+	CThostFtdcSettlementInfoConfirmField request;
+	memset(&request, 0, sizeof(CThostFtdcQrySettlementInfoConfirmField));
+
+	strncpy(request.BrokerID, m_BrokerId, sizeof(TThostFtdcBrokerIDType));
+	strncpy(request.InvestorID, m_InvestorId, sizeof(TThostFtdcInvestorIDType));
+
+	printtlb("ReqSettlementInfoConfirm called");
+	return api->ReqSettlementInfoConfirm(&request, ++m_nRequestID);
+}
+void CTraderApi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	//verbose
+	printtlb("td OnRspSettlementInfoConfirm called.");
+	printtlc("td nRequestId: %d, bIsLast: %d", nRequestID, bIsLast);
+	if (pRspInfo != NULL) {
+		printtlc("td pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+	}
+	else {
+		printtlc("td pRspInfo is NULL");
+	}
+	if (pSettlementInfoConfirm != NULL) {
+		printtlb("td BrokerID: %s, InvestorID: %s", pSettlementInfoConfirm->BrokerID, pSettlementInfoConfirm->InvestorID);
+	}
+	else {
+		printtlc("td pSettlementInfoConfirm is NULL");
+	}
 }
 
 /**Qry Settlement info***********************************************************************************/
