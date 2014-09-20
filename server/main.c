@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
 	sleep(2);
 	MD_init(md);
 
-	sleep(5);
+	sleep(15);
 	fflush(stdout);
 	_exit(0);
 	//TD_reqQryInstrumentMarginRate(td, "IF1410");
