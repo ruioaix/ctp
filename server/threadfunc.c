@@ -21,7 +21,7 @@ static void getupdatetime(char *updatetime, int *hour, int *minute, int *second)
 }
 
 void *ProcessDMD(void *mim_p) {
-	struct MongoIM *mim = mim_p;
+	struct ThreadIM *mim = mim_p;
 
 	void *md = mim->md;
 	void *td = mim->td;
@@ -98,7 +98,7 @@ static void get_next_next_month(int year, int month, int *nnyear, int *nnmonth) 
 }
 
 void *ProcessINS(void *mim_p) {
-	struct MongoIM *mim = mim_p;
+	struct ThreadIM *mim = mim_p;
 	void *md = mim->md;
 	int mcollectionsNum = mim->mcollectionsNum;
 	char **InstrumentIDs = mim->InstrumentIDs;

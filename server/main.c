@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
 	mongoc_collection_t **mcollections = MongoAPI_glue_collections(client, InstrumentIDs, InstrumentNum, BrokerID, UserID);
 
 	int running = 1;
-	struct MongoIM mim;
+	struct ThreadIM mim;
 	mim.client = client;
 	mim.mcollections = mcollections;
 	mim.mcollectionsNum = InstrumentNum;

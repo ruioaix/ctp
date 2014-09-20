@@ -4,7 +4,7 @@
 
 #include <mongoc.h>
 
-struct MongoIM {
+struct ThreadIM {
 	void *md;
 	void *td;
 	mongoc_client_t *client;
