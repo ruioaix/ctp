@@ -45,12 +45,12 @@ int main(int argc, char **argv) {
 	pthread_create(&insert_dmdmsg, NULL, DMDMSG_insertIntoMongoDB, &mim);
 	pthread_t revise_instrment;
 	pthread_create(&revise_instrment, NULL, INSTRMENT_revise, &mim);
+	pthread_t wait_event;
+	pthread_create(&wait_event, NULL, EVENT_500ms_dmdmsg, &mim);
 
 	TD_init(td);
-	sleep(2);
 	MD_init(md);
 
-	sleep(15);
 	//fflush(stdout);
 	//_exit(0);
 	//TD_reqQryInstrumentMarginRate(td, "IF1410");
@@ -64,6 +64,7 @@ int main(int argc, char **argv) {
 
 	pthread_join(insert_dmdmsg, NULL);
 	pthread_join(revise_instrment, NULL);
+	pthread_join(wait_event, NULL);
 
 	free(mdlogfilepath);
 	free(tdlogfilepath);

@@ -8,6 +8,7 @@ using namespace std;
 CTraderApi::CTraderApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *userid, char *password, char *UserProductInfo, THOST_TE_RESUME_TYPE nResumeType) {
 
 	m_nRequestID = 0;
+	ready = 0;
 
 	strncpy(m_logFilePath, flowpath, sizeof(m_logFilePath));
 	strncpy(m_server, servername, sizeof(m_server));
@@ -43,6 +44,9 @@ CTraderApi::~CTraderApi(void) {
 	api->RegisterSpi(NULL);
 	api->Release();
 	api=NULL;
+}
+int CTraderApi::IsReady() {
+	return ready;
 }
 
 /********************************************************************************************************/
@@ -398,6 +402,7 @@ void CTraderApi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField
 	}
 	if (pSettlementInfoConfirm != NULL) {
 		printtlb("td BrokerID: %s, InvestorID: %s", pSettlementInfoConfirm->BrokerID, pSettlementInfoConfirm->InvestorID);
+		ready=1;
 	}
 	else {
 		printtlc("td pSettlementInfoConfirm is NULL");

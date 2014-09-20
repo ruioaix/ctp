@@ -39,6 +39,8 @@ public:
 	int ReqQryInstrument();
 	int ReqQrySettlementInfo();
 
+	int IsReady();
+
 private:
 	//xx callback functions in CThostFtdcTraderSpi
 	virtual void OnFrontConnected();
@@ -71,6 +73,8 @@ private:
 	TThostFtdcInvestorIDType m_InvestorId;
 	TThostFtdcPasswordType m_Password;
 	TThostFtdcProductInfoType m_UserProductInfo;
+
+	int ready;
 };
 
 #endif //end of CTP_C_API_CPP2C_TRADERAPI_H

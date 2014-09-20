@@ -33,7 +33,7 @@ void MongoAPI_unglue_collections(mongoc_collection_t **mcollections, int Instrum
 	free(mcollections);
 }
 
-void MongoAPI_insert_DMD(mongoc_client_t *client, mongoc_collection_t *collection, CThostFtdcDepthMarketDataField *pd, double arrivedtime, double processtime, int size) {
+void MongoAPI_insert_DMD(mongoc_client_t *client, mongoc_collection_t *collection, CThostFtdcDepthMarketDataField *pd) {
 
 	bson_t *doc = BCON_NEW (
 			"TradingDay", BCON_UTF8 (pd->TradingDay),
@@ -79,11 +79,7 @@ void MongoAPI_insert_DMD(mongoc_client_t *client, mongoc_collection_t *collectio
 			"AskPrice5", BCON_DOUBLE (pd->AskPrice5),
 			"AskVolume5", BCON_INT32 (pd->AskVolume5),
 			"AveragePrice", BCON_DOUBLE (pd->AveragePrice),
-			"ActionDay", BCON_UTF8 (pd->ActionDay), //this item make valgrind give a cond sometime.
-			"DMDMsgArrivedTime", BCON_DOUBLE (arrivedtime),
-			"DMDMsgProcessTime", BCON_DOUBLE (processtime),
-			"DMDMsgDelayedTime", BCON_DOUBLE (processtime - arrivedtime),
-			"DMDQueueSize", BCON_INT32 (size)
+			"ActionDay", BCON_UTF8 (pd->ActionDay) //this item make valgrind give a cond sometime.
 				);
 
 	int mci = mongoc_collection_insert (collection, MONGOC_INSERT_NONE, doc, NULL, NULL);

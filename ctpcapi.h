@@ -311,6 +311,7 @@ extern "C" {
 	/*2 functions, TD object, create & free.*/
 	void* TD_create(char *flowpath, char *servername, char *bid, char *iid, char *uid, char *pd, char *UserProductInfo, THOST_TE_RESUME_TYPE nResumeType);
 	void TD_free(void *td);
+	int TD_isready(void *td);
 	/*In class CThostFtdcTraderApi, there are 68 api functions.*/
 	void TD_init(void *td);
 	const char *TD_getTradingDay(void *td);

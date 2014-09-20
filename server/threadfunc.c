@@ -20,8 +20,8 @@ static void getupdatetime(char *updatetime, int *hour, int *minute, int *second)
 	*second = strtol(tt, NULL, 10);
 }
 
-void *DMDMSG_insertIntoMongoDB(void *mim_p) {
-	struct ThreadIM *mim = mim_p;
+void *DMDMSG_insertIntoMongoDB(void *ThreadIM) {
+	struct ThreadIM *mim = ThreadIM;
 
 	void *md = mim->md;
 	mongoc_client_t *client = mim->client;
@@ -30,26 +30,11 @@ void *DMDMSG_insertIntoMongoDB(void *mim_p) {
 	char **InstrumentIDs = mim->InstrumentIDs;
 
 	while (*(mim->running)) {
-		long ts;
-		long tus;
-		int size;
-		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md, &ts, &tus, &size);
+		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_2_getOneDMDmsg(md);
 		if (pDepthMarketData != NULL) {
-			struct timespec tv;
-			if (clock_gettime(CLOCK_REALTIME, &tv) == -1) {
-				tv.tv_sec = -1;
-				tv.tv_nsec = -1;
-			}
-
-			printf("%s: updated time: %s, update mill time : %4d, arrive: %ld.%09ld, delay: %.10f, valid size: %3d\n",\
-				   	pDepthMarketData->InstrumentID, \
-					pDepthMarketData->UpdateTime, \
-					pDepthMarketData->UpdateMillisec, \
-					ts, tus, tv.tv_sec-ts+(tv.tv_nsec-tus)*1E-9, size);
-
+			printtlb("%s: updated time: %s, update mill time : %4d", pDepthMarketData->InstrumentID, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec);
 			int hour, minute, second;
 			getupdatetime(pDepthMarketData->UpdateTime, &hour, &minute, &second);
-
 			if ( ((hour >  9 || (hour== 9 && minute>=14)) &&
 				  (hour < 11 || (hour==11 && minute<30) || (hour==11 && minute==30 && second==0))) ||
 				 ((hour >= 13 ) &&
@@ -61,15 +46,15 @@ void *DMDMSG_insertIntoMongoDB(void *mim_p) {
 						break;
 					}
 				}
-				//TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 1, 0, THOST_FTDC_OPT_AnyPrice, THOST_FTDC_TC_IOC,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
-				MongoAPI_insert_DMD(client, mcollections[i], pDepthMarketData, ts+tus*1E-9, tv.tv_sec+(tv.tv_nsec)*1E-9, size);
+				MongoAPI_insert_DMD(client, mcollections[i], pDepthMarketData);
 			}
 			else {
-				//TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 1, 0, THOST_FTDC_OPT_AnyPrice, THOST_FTDC_TC_IOC,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
-				MongoAPI_insert_DMD(client, mcollections[mcollectionsNum], pDepthMarketData, ts+tus*1E-9, tv.tv_sec+(tv.tv_nsec)*1E-9, size);
+				MongoAPI_insert_DMD(client, mcollections[mcollectionsNum], pDepthMarketData);
 			}
 		}
-		usleep(2000);
+		else {
+			usleep(200000);
+		}
 	}
 	return NULL;
 }
@@ -96,8 +81,8 @@ static void get_next_next_month(int year, int month, int *nnyear, int *nnmonth) 
 	}
 }
 
-void *INSTRMENT_revise(void *mim_p) {
-	struct ThreadIM *mim = mim_p;
+void *INSTRMENT_revise(void *ThreadIM) {
+	struct ThreadIM *mim = ThreadIM;
 	void *md = mim->md;
 	int mcollectionsNum = mim->mcollectionsNum;
 	char **InstrumentIDs = mim->InstrumentIDs;
@@ -138,5 +123,53 @@ void *INSTRMENT_revise(void *mim_p) {
 }
 
 void *EVENT_500ms_dmdmsg(void *ThreadIM) {
+	struct ThreadIM *mim = ThreadIM;
+
+	void *md = mim->md;
+	void *td = mim->td;
+	int mcollectionsNum = mim->mcollectionsNum;
+	char **InstrumentIDs = mim->InstrumentIDs;
+
+	if (!TD_isready(td)) {
+		sleep(1);
+	}
+
+	while (*(mim->running)) {
+		long ts;
+		long tus;
+		int size;
+		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md, &ts, &tus, &size);
+		if (pDepthMarketData != NULL) {
+			struct timespec tv;
+			clock_gettime(CLOCK_REALTIME, &tv);
+
+			printtlc("%s: updated time: %s, update mill time : %4d, arrive: %ld.%09ld, delay: %.10f, valid size: %3d",\
+				   	pDepthMarketData->InstrumentID, \
+					pDepthMarketData->UpdateTime, \
+					pDepthMarketData->UpdateMillisec, \
+					ts, tus, tv.tv_sec-ts+(tv.tv_nsec-tus)*1E-9, size);
+
+			int hour, minute, second;
+			getupdatetime(pDepthMarketData->UpdateTime, &hour, &minute, &second);
+
+			if ( ((hour >  9 || (hour== 9 && minute>=14)) &&
+				  (hour < 11 || (hour==11 && minute<30) || (hour==11 && minute==30 && second==0))) ||
+				 ((hour >= 13 ) &&
+				  (hour < 15 || (hour==15 && minute<15) || (hour==15 && minute==15 && second==0)))
+			   ){
+				int i;
+				for (i = 0; i < mcollectionsNum; ++i) {
+					if (strcmp(pDepthMarketData->InstrumentID, InstrumentIDs[i]) == 0) {
+						break;
+					}
+				}
+				TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 1, 0, THOST_FTDC_OPT_AnyPrice, THOST_FTDC_TC_IOC,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
+			}
+			else {
+				TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 1, 0, THOST_FTDC_OPT_AnyPrice, THOST_FTDC_TC_IOC,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
+			}
+		}
+		usleep(2000);
+	}
 	return NULL;
 }
