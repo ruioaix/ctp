@@ -1,0 +1,1 @@
+vim -p ctpcapi.h cpp2c/ctpcapi.cpp cpp2c/traderapi.h cpp2c/traderapi.cpp cpp_api/ThostFtdcTraderApi.h

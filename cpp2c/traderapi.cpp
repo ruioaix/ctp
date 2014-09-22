@@ -159,12 +159,13 @@ int CTraderApi::ReqOrderInsert(int OrderRef,\
 	request.UserForceClose = 0;
 	//TODO we don't use swap oder.
 	request.IsSwapOrder = 0;
-	//TODO we don't use CombOffsetFlag & CombHedgeFlag & GTDDate & BusinessUnit & RequestID.
+	//TODO we don't use GTDDate & BusinessUnit & RequestID.
 	//request.GTDDate, request.BusinessUnit, request.RequestID is initial with zero.
+
+	/**set mannully******************************************************************************************/
 	strcpy(request.CombOffsetFlag, "0");
 	strcpy(request.CombHedgeFlag, "1");
 
-	/**set mannully******************************************************************************************/
 	//buy or sell
 	request.Direction = Direction;
 
@@ -192,6 +193,29 @@ int CTraderApi::ReqOrderInsert(int OrderRef,\
 	}
 
 	printtlb("api reqorder insert");
+	printtlc("BrokerID: %s", request.BrokerID);
+	printtlc("InvestorID: %s", request.InvestorID);
+	printtlc("InstrumentID: %s", request.InstrumentID);
+	printtlc("OrderRef: %s", request.OrderRef);
+	printtlc("UserID: %s", request.UserID);
+	printtlc("OrderPriceType: %c", request.OrderPriceType);
+	printtlc("Direction: %c", request.Direction);
+	printtlc("CombOffsetFlag: %s", request.CombOffsetFlag);
+	printtlc("CombHedgeFlag: %s", request.CombHedgeFlag);
+	printtlc("LimitPrice: %f", request.LimitPrice);
+	printtlc("VolumeTotalOriginal: %d", request.VolumeTotalOriginal);
+	printtlc("TimeCondition: %c", request.TimeCondition);
+	printtlc("GTDDate: %s", request.GTDDate);
+	printtlc("VolumeCondition: %c", request.VolumeCondition);
+	printtlc("MinVolume: %d", request.MinVolume);
+	printtlc("ContingentCondition: %c", request.ContingentCondition);
+	printtlc("StopPrice: %f", request.StopPrice);
+	printtlc("ForceCloseReason: %c", request.ForceCloseReason);
+	printtlc("IsAutoSuspend: %d", request.IsAutoSuspend);
+	printtlc("BusinessUnit: %s", request.BusinessUnit);
+	printtlc("RequestID: %d", request.RequestID);
+	printtlc("UserForceClose: %d", request.UserForceClose);
+	printtlc("IsSwapOrder: %d", request.IsSwapOrder);
 	return api->ReqOrderInsert(&request, ++m_nRequestID);
 }
 void CTraderApi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {

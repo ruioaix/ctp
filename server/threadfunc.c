@@ -155,10 +155,11 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 				 ((hour >= 13 ) &&
 				  (hour < 15 || (hour==15 && minute<15) || (hour==15 && minute==15 && second==0)))
 			   ){
-				TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 1, 0, THOST_FTDC_OPT_AnyPrice, THOST_FTDC_TC_GFD,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
+				TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 1, pDepthMarketData->BidPrice1, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_TC_GFD,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
 			}
 			else {
-				TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 1, 0, THOST_FTDC_OPT_AnyPrice, THOST_FTDC_TC_GFD,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
+				TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 1, pDepthMarketData->BidPrice1, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_TC_GFD,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
+				return NULL;
 			}
 		}
 		usleep(2000);
