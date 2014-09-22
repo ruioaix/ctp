@@ -23,7 +23,7 @@
 #define printtld(format, ...) ((void)0)
 
 #define MD_VERBOSE_LEVEL 0
-#define TD_VERBOSE_LEVEL 2
+#define TD_VERBOSE_LEVEL 3
 
 #if MD_VERBOSE_LEVEL >= 1
 #undef printmlb

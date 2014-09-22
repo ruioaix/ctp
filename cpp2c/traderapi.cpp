@@ -191,7 +191,7 @@ int CTraderApi::ReqOrderInsert(int OrderRef,\
 		sprintf(request.OrderRef, "%d", OrderRef);
 	}
 
-	printtlb("td api req order insert");
+	printtlb("api reqorder insert");
 	return api->ReqOrderInsert(&request, ++m_nRequestID);
 }
 void CTraderApi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
@@ -326,6 +326,44 @@ void CTraderApi::OnRtnTrade(CThostFtdcTradeField *pTrade) {
 	printtlc("SettlementID: %d", pTrade->SettlementID);
 	printtlc("BrokerOrderSeq: %d", pTrade->BrokerOrderSeq);
 	printtlc("TradeSource: %c", pTrade->TradeSource);
+}
+void CTraderApi::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo) {
+	//verbose
+	printtlb("td OnErrRtnOrderInsert called.");
+	if (pRspInfo != NULL) {
+		printtlc("td pRspInfo->ErrorID: %x, pRspInfo->ErrorMsg: %s", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+	}
+	else {
+		printtlc("td pRspInfo is NULL");
+	}
+	if (pInputOrder != NULL) {
+		printtlc("BrokerID: %s", pInputOrder->BrokerID);
+		printtlc("InvestorID: %s", pInputOrder->InvestorID);
+		printtlc("InstrumentID: %s", pInputOrder->InstrumentID);
+		printtlc("OrderRef: %s", pInputOrder->OrderRef);
+		printtlc("UserID: %s", pInputOrder->UserID);
+		printtlc("OrderPriceType: %c", pInputOrder->OrderPriceType);
+		printtlc("Direction: %c", pInputOrder->Direction);
+		printtlc("CombOffsetFlag: %s", pInputOrder->CombOffsetFlag);
+		printtlc("CombHedgeFlag: %s", pInputOrder->CombHedgeFlag);
+		printtlc("LimitPrice: %f", pInputOrder->LimitPrice);
+		printtlc("VolumeTotalOriginal: %d", pInputOrder->VolumeTotalOriginal);
+		printtlc("TimeCondition: %c", pInputOrder->TimeCondition);
+		printtlc("GTDDate: %s", pInputOrder->GTDDate);
+		printtlc("VolumeCondition: %c", pInputOrder->VolumeCondition);
+		printtlc("MinVolume: %d", pInputOrder->MinVolume);
+		printtlc("ContingentCondition: %c", pInputOrder->ContingentCondition);
+		printtlc("StopPrice: %f", pInputOrder->StopPrice);
+		printtlc("ForceCloseReason: %c", pInputOrder->ForceCloseReason);
+		printtlc("IsAutoSuspend: %d", pInputOrder->IsAutoSuspend);
+		printtlc("BusinessUnit: %s", pInputOrder->BusinessUnit);
+		printtlc("RequestID: %d", pInputOrder->RequestID);
+		printtlc("UserForceClose: %d", pInputOrder->UserForceClose);
+		printtlc("IsSwapOrder: %d", pInputOrder->IsSwapOrder);
+	}
+	else {
+		printtlc("td pInputOrder is NULL");
+	}
 }
 
 /********************************************************************************************************/

@@ -10,6 +10,7 @@
 #include <mongoc.h>
 
 int main(int argc, char **argv) {
+	setbuf(stdout, (char *) 0);
 	char *file;
 	if (argc == 1) {
 		file = "others/xxx_2";
@@ -82,7 +83,7 @@ int main(int argc, char **argv) {
 	MongoAPI_unglue_collections(mcollections, InstrumentNum);
 	MongoAPI_destory_client(client);
 
-	//MD_free(md);
-	sleep(2);
+	MD_free(md);
+	MD_free(td);
 	_exit(0);
 }
