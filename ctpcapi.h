@@ -316,6 +316,7 @@ extern "C" {
 	void TD_init(void *td);
 	const char *TD_getTradingDay(void *td);
 	int TD_reqOrderInsert(void *td, int OrderRef, char *InstrumentID, TThostFtdcDirectionType Direction,\
+			int CombOffsetFlag,\
 			TThostFtdcVolumeType VolumeTotalOriginal,\
 			TThostFtdcPriceType LimitPrice,\
 			TThostFtdcOrderPriceTypeType OrderPriceType,\
@@ -323,6 +324,8 @@ extern "C" {
 			TThostFtdcContingentConditionType ContingentCondition,\
 			TThostFtdcPriceType StopPrice,\
 			TThostFtdcVolumeConditionType VolumeCondition);
+	int TD_reqOrderInsert_ljsj(void *td, char *InstrumentID, TThostFtdcDirectionType Direction, int CombOffsetFlag, TThostFtdcVolumeType VolumeTotalOriginal);
+	int TD_reqOrderInsert_ljxj(void *td, char *InstrumentID, TThostFtdcDirectionType Direction, int CombOffsetFlag, TThostFtdcVolumeType VolumeTotalOriginal, TThostFtdcPriceType LimitPrice);
 	int TD_reqQryInstrumentMarginRate(void *td, char *InstrumentID);
 	int TD_reqQrySettlementInfo(void *td);
 	int TD_reqQryInstrument(void *td);

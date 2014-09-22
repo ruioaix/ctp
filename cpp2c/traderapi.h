@@ -22,6 +22,7 @@ public:
 			int OrderRef,\
 		   	char *InstrumentID,\
 			TThostFtdcDirectionType Direction,\
+			int CombOffsetFlag,\
 			TThostFtdcVolumeType VolumeTotalOriginal,\
 			TThostFtdcPriceType LimitPrice,\
 			TThostFtdcOrderPriceTypeType OrderPriceType,\

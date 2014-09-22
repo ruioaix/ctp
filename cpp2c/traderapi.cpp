@@ -133,6 +133,7 @@ void CTraderApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 int CTraderApi::ReqOrderInsert(int OrderRef,\
 	   	char *InstrumentID,\
 		TThostFtdcDirectionType Direction,\
+		int CombOffsetFlag,\
 		TThostFtdcVolumeType VolumeTotalOriginal,\
 		TThostFtdcPriceType LimitPrice,\
 		TThostFtdcOrderPriceTypeType OrderPriceType,\
@@ -161,13 +162,14 @@ int CTraderApi::ReqOrderInsert(int OrderRef,\
 	request.IsSwapOrder = 0;
 	//TODO we don't use GTDDate & BusinessUnit & RequestID.
 	//request.GTDDate, request.BusinessUnit, request.RequestID is initial with zero.
-
-	/**set mannully******************************************************************************************/
-	strcpy(request.CombOffsetFlag, "0");
+	//TODO now we only touji.
 	strcpy(request.CombHedgeFlag, "1");
 
+	/**set mannully******************************************************************************************/
 	//buy or sell
 	request.Direction = Direction;
+	
+	sprintf(request.CombOffsetFlag, "%d", CombOffsetFlag);
 
 	//volume type: 1=THOST_FTDC_VC_AV=any, 2=THOST_FTDC_VC_MV=min, 3=THOST_FTDC_VC_CV=all
 	//order price type: 16kinds
