@@ -133,7 +133,7 @@ void CTraderApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 int CTraderApi::ReqOrderInsert(int OrderRef,\
 	   	char *InstrumentID,\
 		TThostFtdcOrderPriceTypeType OrderPriceType,\
-		int CombOffsetFlag,\
+		TThostFtdcOffsetFlagType CombOffsetFlag,\
 		TThostFtdcDirectionType Direction,\
 		TThostFtdcVolumeType VolumeTotalOriginal,\
 		TThostFtdcPriceType LimitPrice,\
@@ -171,7 +171,7 @@ int CTraderApi::ReqOrderInsert(int OrderRef,\
 	//buy or sell
 	request.Direction = Direction;
 	
-	sprintf(request.CombOffsetFlag, "%d", CombOffsetFlag);
+	request.CombOffsetFlag[0] = CombOffsetFlag;
 
 	//volume type: 1=THOST_FTDC_VC_AV=any, 2=THOST_FTDC_VC_MV=min, 3=THOST_FTDC_VC_CV=all
 	//order price type: 16kinds

@@ -189,7 +189,7 @@ const char *TD_getTradingDay(void *td) {
 
 int TD_reqOrderInsert(void *td, int OrderRef, char *InstrumentID, \
 		TThostFtdcOrderPriceTypeType OrderPriceType,\
-		int CombOffsetFlag,\
+		TThostFtdcOffsetFlagType CombOffsetFlag,\
 		TThostFtdcDirectionType Direction,\
 		TThostFtdcVolumeType VolumeTotalOriginal,\
 		TThostFtdcPriceType LimitPrice,\
@@ -200,6 +200,26 @@ int TD_reqOrderInsert(void *td, int OrderRef, char *InstrumentID, \
 		return TD_GetApi(td)->ReqOrderInsert(OrderRef, InstrumentID, OrderPriceType, CombOffsetFlag, Direction, VolumeTotalOriginal, LimitPrice, TimeCondition, VolumeCondition);
 	}
 	return -1;
+}
+
+int TD_limitOrder_open_buy(void *td, int OrderRef, char *InstrumentID, TThostFtdcVolumeType volume, TThostFtdcPriceType limitprice, TThostFtdcTimeConditionType timecond, TThostFtdcVolumeConditionType volumecond) {
+	return TD_reqOrderInsert(td, OrderRef, InstrumentID, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_OF_Open, THOST_FTDC_D_Buy, volume, limitprice, timecond, volumecond);
+}
+int TD_limitOrder_sell_closeToday(void *td, int OrderRef, char *InstrumentID, TThostFtdcVolumeType volume, TThostFtdcPriceType limitprice, TThostFtdcTimeConditionType timecond, TThostFtdcVolumeConditionType volumecond) {
+	return TD_reqOrderInsert(td, OrderRef, InstrumentID, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_OF_CloseToday, THOST_FTDC_D_Sell, volume, limitprice, timecond, volumecond);
+}
+int TD_limitOrder_sell_closeYesterday(void *td, int OrderRef, char *InstrumentID, TThostFtdcVolumeType volume, TThostFtdcPriceType limitprice, TThostFtdcTimeConditionType timecond, TThostFtdcVolumeConditionType volumecond) {
+	return TD_reqOrderInsert(td, OrderRef, InstrumentID, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_OF_Close, THOST_FTDC_D_Sell, volume, limitprice, timecond, volumecond);
+}
+
+int TD_limitOrder_open_sell(void *td, int OrderRef, char *InstrumentID, TThostFtdcVolumeType volume, TThostFtdcPriceType limitprice, TThostFtdcTimeConditionType timecond, TThostFtdcVolumeConditionType volumecond) {
+	return TD_reqOrderInsert(td, OrderRef, InstrumentID, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_OF_Open, THOST_FTDC_D_Sell, volume, limitprice, timecond, volumecond);
+}
+int TD_limitOrder_buy_closeToday(void *td, int OrderRef, char *InstrumentID, TThostFtdcVolumeType volume, TThostFtdcPriceType limitprice, TThostFtdcTimeConditionType timecond, TThostFtdcVolumeConditionType volumecond) {
+	return TD_reqOrderInsert(td, OrderRef, InstrumentID, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_OF_CloseToday, THOST_FTDC_D_Buy, volume, limitprice, timecond, volumecond);
+}
+int TD_limitOrder_buy_closeYesterday(void *td, int OrderRef, char *InstrumentID, TThostFtdcVolumeType volume, TThostFtdcPriceType limitprice, TThostFtdcTimeConditionType timecond, TThostFtdcVolumeConditionType volumecond) {
+	return TD_reqOrderInsert(td, OrderRef, InstrumentID, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_OF_Close, THOST_FTDC_D_Buy, volume, limitprice, timecond, volumecond);
 }
 
 int TD_reqQryInstrumentMarginRate(void *td, char *InstrumentID) {

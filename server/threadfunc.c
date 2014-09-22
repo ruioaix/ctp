@@ -163,12 +163,20 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 				//TD_reqOrderInsert_ljsj(td, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 3);
 				//TD_reqOrderInsert_ljxj(td, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 3, pDepthMarketData->AskPrice1);
 				static int k = 20;
-				TD_reqOrderInsert(td, k, pDepthMarketData->InstrumentID, THOST_FTDC_OPT_LimitPrice, 0, THOST_FTDC_D_Buy, k-3, pDepthMarketData->AskPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV); 
-				sleep(2);
-				k++;
+				//TD_reqOrderInsert(td, k, pDepthMarketData->InstrumentID, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_OF_Open, THOST_FTDC_D_Buy, k-3, pDepthMarketData->AskPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV); 
+				//usleep(50000);
+				//TD_limitOrder_open_buy(td, k, pDepthMarketData->InstrumentID, pDepthMarketData->AskVolume1, pDepthMarketData->AskPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV);
+				//sleep(5);
+				//TD_limitOrder_sell_closeToday(td, k+1, pDepthMarketData->InstrumentID, pDepthMarketData->AskVolume1, pDepthMarketData->AskPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV);
+
+				TD_limitOrder_open_sell(td, k, pDepthMarketData->InstrumentID, pDepthMarketData->BidVolume1, pDepthMarketData->BidPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV);
+				sleep(5);
+				TD_limitOrder_buy_closeToday(td, k+1, pDepthMarketData->InstrumentID, pDepthMarketData->BidVolume1, pDepthMarketData->BidPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV);
+				++k;
 				if (k == 22) {
 				return NULL;
 				}
+				return NULL;
 			}
 		}
 		usleep(2000);

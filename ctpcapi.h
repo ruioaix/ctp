@@ -317,14 +317,21 @@ extern "C" {
 	const char *TD_getTradingDay(void *td);
 	int TD_reqOrderInsert(void *td, int OrderRef, char *InstrumentID, \
 			TThostFtdcOrderPriceTypeType OrderPriceType,\
-			int CombOffsetFlag,\
+			TThostFtdcOffsetFlagType CombOffsetFlag,\
 			TThostFtdcDirectionType Direction,\
 			TThostFtdcVolumeType VolumeTotalOriginal,\
 			TThostFtdcPriceType LimitPrice,\
 			TThostFtdcTimeConditionType TimeCondition,\
 			TThostFtdcVolumeConditionType VolumeCondition);
-	int TD_reqOrderInsert_ljsj(void *td, char *InstrumentID, TThostFtdcDirectionType Direction, int CombOffsetFlag, TThostFtdcVolumeType VolumeTotalOriginal);
-	int TD_reqOrderInsert_ljxj(void *td, char *InstrumentID, TThostFtdcDirectionType Direction, int CombOffsetFlag, TThostFtdcVolumeType VolumeTotalOriginal, TThostFtdcPriceType LimitPrice);
+
+	int TD_limitOrder_open_buy(void *td, int OrderRef, char *InstrumentID, TThostFtdcVolumeType volume, TThostFtdcPriceType limitprice, TThostFtdcTimeConditionType timecond, TThostFtdcVolumeConditionType volumecond);
+	int TD_limitOrder_sell_closeToday(void *td, int OrderRef, char *InstrumentID, TThostFtdcVolumeType volume, TThostFtdcPriceType limitprice, TThostFtdcTimeConditionType timecond, TThostFtdcVolumeConditionType volumecond);
+	int TD_limitOrder_sell_closeYesterday(void *td, int OrderRef, char *InstrumentID, TThostFtdcVolumeType volume, TThostFtdcPriceType limitprice, TThostFtdcTimeConditionType timecond, TThostFtdcVolumeConditionType volumecond);
+	int TD_limitOrder_open_sell(void *td, int OrderRef, char *InstrumentID, TThostFtdcVolumeType volume, TThostFtdcPriceType limitprice, TThostFtdcTimeConditionType timecond, TThostFtdcVolumeConditionType volumecond);
+	int TD_limitOrder_buy_closeToday(void *td, int OrderRef, char *InstrumentID, TThostFtdcVolumeType volume, TThostFtdcPriceType limitprice, TThostFtdcTimeConditionType timecond, TThostFtdcVolumeConditionType volumecond);
+	int TD_limitOrder_buy_closeYesterday(void *td, int OrderRef, char *InstrumentID, TThostFtdcVolumeType volume, TThostFtdcPriceType limitprice, TThostFtdcTimeConditionType timecond, TThostFtdcVolumeConditionType volumecond);
+
+
 	int TD_reqQryInstrumentMarginRate(void *td, char *InstrumentID);
 	int TD_reqQrySettlementInfo(void *td);
 	int TD_reqQryInstrument(void *td);
