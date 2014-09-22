@@ -21,14 +21,12 @@ public:
 	int ReqOrderInsert(\
 			int OrderRef,\
 		   	char *InstrumentID,\
-			TThostFtdcDirectionType Direction,\
+			TThostFtdcOrderPriceTypeType OrderPriceType,\
 			int CombOffsetFlag,\
+			TThostFtdcDirectionType Direction,\
 			TThostFtdcVolumeType VolumeTotalOriginal,\
 			TThostFtdcPriceType LimitPrice,\
-			TThostFtdcOrderPriceTypeType OrderPriceType,\
 			TThostFtdcTimeConditionType TimeCondition,\
-			TThostFtdcContingentConditionType ContingentCondition,\
-			TThostFtdcPriceType StopPrice,\
 			TThostFtdcVolumeConditionType VolumeCondition);
 	int ReqOrderAction(CThostFtdcOrderField *pOrder, TThostFtdcActionFlagType ActionFlag);
 	int ReqQueryMaxOrderVolume(char *InstrumentID, TThostFtdcDirectionType Direction, TThostFtdcOffsetFlagType OffsetFlag, TThostFtdcHedgeFlagType HedgeFlag);

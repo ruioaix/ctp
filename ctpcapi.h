@@ -315,14 +315,13 @@ extern "C" {
 	/*In class CThostFtdcTraderApi, there are 68 api functions.*/
 	void TD_init(void *td);
 	const char *TD_getTradingDay(void *td);
-	int TD_reqOrderInsert(void *td, int OrderRef, char *InstrumentID, TThostFtdcDirectionType Direction,\
+	int TD_reqOrderInsert(void *td, int OrderRef, char *InstrumentID, \
+			TThostFtdcOrderPriceTypeType OrderPriceType,\
 			int CombOffsetFlag,\
+			TThostFtdcDirectionType Direction,\
 			TThostFtdcVolumeType VolumeTotalOriginal,\
 			TThostFtdcPriceType LimitPrice,\
-			TThostFtdcOrderPriceTypeType OrderPriceType,\
 			TThostFtdcTimeConditionType TimeCondition,\
-			TThostFtdcContingentConditionType ContingentCondition,\
-			TThostFtdcPriceType StopPrice,\
 			TThostFtdcVolumeConditionType VolumeCondition);
 	int TD_reqOrderInsert_ljsj(void *td, char *InstrumentID, TThostFtdcDirectionType Direction, int CombOffsetFlag, TThostFtdcVolumeType VolumeTotalOriginal);
 	int TD_reqOrderInsert_ljxj(void *td, char *InstrumentID, TThostFtdcDirectionType Direction, int CombOffsetFlag, TThostFtdcVolumeType VolumeTotalOriginal, TThostFtdcPriceType LimitPrice);

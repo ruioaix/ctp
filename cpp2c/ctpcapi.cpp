@@ -187,31 +187,17 @@ const char *TD_getTradingDay(void *td) {
 	return NULL;
 }
 
-int TD_reqOrderInsert(void *td, int OrderRef, char *InstrumentID, TThostFtdcDirectionType Direction,\
+int TD_reqOrderInsert(void *td, int OrderRef, char *InstrumentID, \
+		TThostFtdcOrderPriceTypeType OrderPriceType,\
 		int CombOffsetFlag,\
+		TThostFtdcDirectionType Direction,\
 		TThostFtdcVolumeType VolumeTotalOriginal,\
 		TThostFtdcPriceType LimitPrice,\
-		TThostFtdcOrderPriceTypeType OrderPriceType,\
 		TThostFtdcTimeConditionType TimeCondition,\
-		TThostFtdcContingentConditionType ContingentCondition,\
-		TThostFtdcPriceType StopPrice,\
 		TThostFtdcVolumeConditionType VolumeCondition) {
 
 	if (td) {
-		return TD_GetApi(td)->ReqOrderInsert(OrderRef, InstrumentID, Direction, CombOffsetFlag, VolumeTotalOriginal, LimitPrice, OrderPriceType, TimeCondition, ContingentCondition, StopPrice, VolumeCondition);
-	}
-	return -1;
-}
-int TD_reqOrderInsert_ljsj(void *td, char *InstrumentID, TThostFtdcDirectionType Direction, int CombOffsetFlag, TThostFtdcVolumeType VolumeTotalOriginal) {
-	if (td) {
-		return TD_GetApi(td)->ReqOrderInsert(-1, InstrumentID, Direction, CombOffsetFlag, VolumeTotalOriginal, 0, THOST_FTDC_OPT_AnyPrice, THOST_FTDC_TC_GTC, THOST_FTDC_CC_Immediately, 0, THOST_FTDC_VC_AV);
-	}
-	return -1;
-}
-
-int TD_reqOrderInsert_ljxj(void *td, char *InstrumentID, TThostFtdcDirectionType Direction, int CombOffsetFlag, TThostFtdcVolumeType VolumeTotalOriginal, TThostFtdcPriceType LimitPrice) {
-	if (td) {
-		return TD_GetApi(td)->ReqOrderInsert(-1, InstrumentID, Direction, CombOffsetFlag, VolumeTotalOriginal, LimitPrice, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_TC_GFD, THOST_FTDC_CC_Immediately, 0, THOST_FTDC_VC_AV);
+		return TD_GetApi(td)->ReqOrderInsert(OrderRef, InstrumentID, OrderPriceType, CombOffsetFlag, Direction, VolumeTotalOriginal, LimitPrice, TimeCondition, VolumeCondition);
 	}
 	return -1;
 }

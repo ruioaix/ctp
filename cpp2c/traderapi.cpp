@@ -132,14 +132,12 @@ void CTraderApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 /********************************************************************************************************/
 int CTraderApi::ReqOrderInsert(int OrderRef,\
 	   	char *InstrumentID,\
-		TThostFtdcDirectionType Direction,\
+		TThostFtdcOrderPriceTypeType OrderPriceType,\
 		int CombOffsetFlag,\
+		TThostFtdcDirectionType Direction,\
 		TThostFtdcVolumeType VolumeTotalOriginal,\
 		TThostFtdcPriceType LimitPrice,\
-		TThostFtdcOrderPriceTypeType OrderPriceType,\
 		TThostFtdcTimeConditionType TimeCondition,\
-		TThostFtdcContingentConditionType ContingentCondition,\
-		TThostFtdcPriceType StopPrice,\
 		TThostFtdcVolumeConditionType VolumeCondition) {
 
 	CThostFtdcInputOrderField request; 
@@ -164,6 +162,10 @@ int CTraderApi::ReqOrderInsert(int OrderRef,\
 	//request.GTDDate, request.BusinessUnit, request.RequestID is initial with zero.
 	//TODO now we only touji.
 	strcpy(request.CombHedgeFlag, "1");
+	//TODO ContingentCondition is not implemented in server side.
+	request.ContingentCondition = '1';
+	//TODO StopPrice is not implemented in server side.
+	request.StopPrice = 0;
 
 	/**set mannully******************************************************************************************/
 	//buy or sell
@@ -180,8 +182,6 @@ int CTraderApi::ReqOrderInsert(int OrderRef,\
 	request.OrderPriceType = OrderPriceType;
 	request.LimitPrice = LimitPrice;
 	request.TimeCondition = TimeCondition;
-	request.ContingentCondition = ContingentCondition;
-	request.StopPrice = StopPrice;
 	request.VolumeTotalOriginal = VolumeTotalOriginal;
 
 	//TODO OrderRef need syn

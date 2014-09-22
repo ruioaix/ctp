@@ -155,18 +155,18 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 				 ((hour >= 13 ) &&
 				  (hour < 15 || (hour==15 && minute<15) || (hour==15 && minute==15 && second==0)))
 			   ){
-				TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 1, pDepthMarketData->BidPrice1, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_TC_GFD,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
+				//TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 1, pDepthMarketData->BidPrice1, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_TC_GFD,THOST_FTDC_VC_AV); 
 			}
 			else {
 				//TD_GetApi(td)->ReqOrderInsert(OrderRef, InstrumentID, Direction, CombOffsetFlag, VolumeTotalOriginal, LimitPrice, OrderPriceType, TimeCondition, ContingentCondition, StopPrice, VolumeCondition);
 				//TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 1, pDepthMarketData->BidPrice1, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_TC_GFD,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
-				TD_reqOrderInsert_ljsj(td, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 3);
+				//TD_reqOrderInsert_ljsj(td, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 3);
 				//TD_reqOrderInsert_ljxj(td, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 3, pDepthMarketData->AskPrice1);
-				static int k = 1;
-				//TD_reqOrderInsert(td, k, pDepthMarketData->InstrumentID, THOST_FTDC_D_Sell, 3, 5, pDepthMarketData->AskPrice1, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_TC_GFD,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
+				static int k = 20;
+				TD_reqOrderInsert(td, k, pDepthMarketData->InstrumentID, THOST_FTDC_OPT_LimitPrice, 0, THOST_FTDC_D_Buy, k-3, pDepthMarketData->AskPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV); 
 				sleep(2);
 				k++;
-				if (k == 3) {
+				if (k == 22) {
 				return NULL;
 				}
 			}
