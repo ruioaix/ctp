@@ -4,6 +4,7 @@
 #include "mongoapi.h"
 #include "threadfunc.h"
 #include "verbose.h"
+#include "ta_libc.h"
 
 #include <stdio.h>
 #include <pthread.h>
@@ -11,6 +12,23 @@
 
 int main(int argc, char **argv) {
 	setbuf(stdout, (char *) 0);
+
+
+	TA_RetCode retCode; 
+	retCode = TA_Initialize( );
+
+	if( retCode != TA_SUCCESS ) {
+		printf( "Cannot initialize TA-Lib (%d)!\n", retCode );
+	}
+	TA_Real    closePrice[400];
+	TA_Real    out[400];
+	TA_Integer outBeg;
+	TA_Integer outNbElement;
+	TA_MA( 0, 399, &closePrice[0], 30,TA_MAType_SMA, &outBeg, &outNbElement, &out[0] );
+
+
+
+
 	char *file;
 	if (argc == 1) {
 		file = "others/xxx_2";
@@ -85,5 +103,6 @@ int main(int argc, char **argv) {
 
 	MD_free(md);
 	MD_free(td);
+	TA_Shutdown();
 	_exit(0);
 }
