@@ -32,6 +32,13 @@ int main(int argc, char **argv) {
 	mongoc_client_t *client = MongoAPI_create_client(mongodb_url_port);
 	mongoc_collection_t **mcollections = MongoAPI_glue_collections(client, InstrumentIDs, InstrumentNum, BrokerID, UserID);
 
+	struct BAR *bar = MongoAPI_fetch_bar_1m(mcollections[0], 20140922, 20140922);
+	int i;
+	for (i = 0; i < bar->barsNum; ++i) {
+		printf("i:%d, nN: %d, bN: %d, InID: %s, b-etime: %d-%d, o-cPrice: %f-%f, u-lPrice: %f-%f, vol:%d\n", i, bar->minutesNum, bar->barsNum, bar->InstrumentID, bar->btime[i], bar->etime[i], bar->openPrice[i], bar->closePrice[i], bar->uplimitPrice[i], bar->lowlimitPrice[i], bar->volume[i]);
+	}
+	free(bar);
+
 	int running = 1;
 	struct ThreadIM mim;
 	mim.client = client;
@@ -75,7 +82,6 @@ int main(int argc, char **argv) {
 	free(UserID);
 	free(pd);
 	free(mongodb_url_port);
-	int i;
 	for (i = 0; i < InstrumentNum; ++i) {
 		free(InstrumentIDs[i]);
 	}

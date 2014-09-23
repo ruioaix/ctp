@@ -92,3 +92,136 @@ void MongoAPI_insert_DMD(mongoc_client_t *client, mongoc_collection_t *collectio
 
 }
 
+static void getupdatetime(const char *updatetime, int *hour, int *minute, int *second) {
+	char tt[3];
+	tt[2] = '\0';
+	tt[0] = updatetime[0];
+	tt[1] = updatetime[1];
+	*hour = strtol(tt, NULL, 10);
+	tt[0] = updatetime[3];
+	tt[1] = updatetime[4];
+	*minute = strtol(tt, NULL, 10);
+	tt[0] = updatetime[6];
+	tt[1] = updatetime[7];
+	*second = strtol(tt, NULL, 10);
+}
+static int get_index_bar(int begin_day, int tday, int hour, int minute) {
+	int index = (tday - begin_day)*273;
+	if (hour > 12) {
+		index += (hour-13)*60 + 137 + minute;
+	}
+	else {
+		index += (hour-9)*60 + minute - 14;
+	}
+	return index;
+}
+static int get_hourminute_bar(int begin_day, int index) {
+	int day = index%273;	
+	int tday = index/273 + begin_day;
+	int hour, minute;
+	if (day > 136) {
+		hour = (day-137)/60 + 13;	
+		minute = (day-137)%60;
+	}
+	else {
+		hour = (day+14)/60 + 9;
+		minute = (day+14)%60;
+	}
+	int year = tday%20000000;
+	int time = year*10000 + hour*100 + minute;
+	return time;	
+}
+struct BAR *MongoAPI_fetch_bar_1m(mongoc_collection_t *cll, int begin_day, int end_day) {
+
+	mongoc_cursor_t *cursor;
+	bson_error_t error;
+	const bson_t *doc;
+	char begind[10], endd[10];
+	sprintf(begind, "%d", begin_day);
+	sprintf(endd, "%d", end_day);
+
+	bson_t *query = BCON_NEW (
+			"TradingDay", "{", "$gte", BCON_UTF8(begind), "}",
+			"TradingDay", "{", "$lte", BCON_UTF8(endd), "}"
+			);
+	cursor = mongoc_collection_find(cll, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+
+	struct BAR *bar = calloc(1, sizeof(struct BAR));
+	int daysNum = end_day - begin_day + 1;
+	bar->minutesNum = 1;
+	bar->barsNum = BARSNUM_ONE_MINUTE * daysNum;
+	bar->openPrice = malloc(bar->barsNum * sizeof(double));
+	bar->closePrice = malloc(bar->barsNum * sizeof(double));
+	bar->uplimitPrice = malloc(bar->barsNum * sizeof(double));
+	bar->lowlimitPrice = malloc(bar->barsNum * sizeof(double));
+	bar->volume = malloc(bar->barsNum * sizeof(int));
+	bar->btime = malloc(bar->barsNum * sizeof(int));
+	bar->etime = malloc(bar->barsNum * sizeof(int));
+
+	int *mills = malloc(bar->barsNum * sizeof(int));
+
+	int i;
+	for (i = 0; i < bar->barsNum; ++i) {
+		mills[i] = 10000;
+		bar->btime[i] = bar->etime[i] = get_hourminute_bar(begin_day, i);
+	}
+
+	bson_iter_t iter;
+	int kk = 0;
+	while (mongoc_cursor_next(cursor, &doc)) {
+		int tday, hour, minute, second, millsecond;
+		double lastprice;
+		int volume;
+		tday = hour = minute = second = volume = -1;
+		lastprice = -1;
+		kk++;
+		if (bson_iter_init(&iter, doc)) {
+			//double openPrice, closePrice, uplimitPrice, lowlimitPrice;
+			while(bson_iter_next(&iter)) {
+				const char *key = bson_iter_key(&iter);
+				if (strcmp(key, "Volume") == 0) {
+					volume = (int)bson_iter_int64(&iter);
+					//printf("%s\t%d\n", key, volume);
+				}
+				else if (strcmp(key, "UpdateTime") == 0) {
+					getupdatetime(bson_iter_utf8(&iter, NULL), &hour, &minute, &second);
+					//printf("%s\t%d\t%d\t%d\n", key, hour, minute, second);
+				}
+				else if (strcmp(key, "TradingDay") == 0) {
+					tday = strtol(bson_iter_utf8(&iter,NULL), NULL, 10);
+					//printf("%s\t%d\n", key, tday);
+				}
+				else if (strcmp(key, "LastPrice") == 0) {
+					lastprice = bson_iter_double(&iter);
+					//printf("%s\t%f\n", key, lastprice);
+				}
+				else if (strcmp(key, "UpdateMillisec") == 0) {
+					millsecond = (int)bson_iter_int64(&iter);
+				}
+			}
+		}
+		int index = get_index_bar(begin_day, tday, hour, minute);
+		if (second == 0 && (mills[index] == 10000 || millsecond < mills[index])) {
+			bar->openPrice[index] = lastprice;
+			mills[index] = millsecond;
+		}
+		if (second == 59 && (mills[index] == 10000 || millsecond > mills[index])) {
+			bar->closePrice[index] = lastprice;
+			mills[index] = millsecond;
+		}
+		bar->uplimitPrice[index] = bar->uplimitPrice[index] > lastprice ? bar->uplimitPrice[index] : lastprice;
+		bar->lowlimitPrice[index] = bar->lowlimitPrice[index] > lastprice ? lastprice : bar->lowlimitPrice[index];
+		bar->volume[index] += volume;
+	}
+	printf("/********************************************************************************************************/\n");
+	printf("%d\n", kk);
+
+	if (mongoc_cursor_error (cursor, &error)) {
+		fprintf (stderr, "An error occurred: %s\n", error.message);
+	}
+
+	mongoc_cursor_destroy (cursor);
+	bson_destroy (query);
+
+	return bar;
+}
