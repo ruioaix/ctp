@@ -1,5 +1,6 @@
-.PHONY : all install clean buildcapi server_basic run
+.PHONY : all install clean buildcapi server_basic run test
 
+test: 
 #link in c++ way, because of libctpcapi.so.
 run :  buildcapi server_basic 
 	g++ -g -Wall -Wunused bin/main.o bin/threadfunc.o bin/mongoapi.o bin/io.o bin/bar.o bin/ctphelp.o bin/safe.o -L. -lctpcapi -lthostmduserapi -lthosttraderapi -lrt -lmongoc-1.0 -lbson-1.0 -pthread -lm  -o run
@@ -30,3 +31,7 @@ clean :
 install : 
 	sudo cp cpp_api/thostmduserapi.so /usr/lib64/
 	sudo cp cpp_api/thosttraderapi.so /usr/lib64/
+
+test :  buildcapi server_basic 
+	gcc -g -Wall -Wunused -c server/test.c -I. -I/usr/include/libmongoc-1.0 -I/usr/include/libbson-1.0  -o bin/test.o
+	g++ -g -Wall -Wunused bin/test.o bin/threadfunc.o bin/mongoapi.o bin/io.o bin/bar.o bin/ctphelp.o bin/safe.o -L. -lctpcapi -lthostmduserapi -lthosttraderapi -lrt -lmongoc-1.0 -lbson-1.0 -pthread -lm  -o test

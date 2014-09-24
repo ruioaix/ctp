@@ -1,28 +1,28 @@
 #ifndef CTP_C_API_SERVER_BAR_H
 #define CTP_C_API_SERVER_BAR_H
 
-#define BAR_METADATA_MAX_NUM_ONEDAY 32500
+#define BAR_DAYSNUM_MAX 8192
 
-enum BAR_TYPE {
-	BAR_ONE_M = 1,
-	BAR_FIVE_M = 5,
-	BAR_TEN_M = 10,
-	BAR_TWTENTY_M = 20,
-	BAR_ONE_H = 60,
-	BAR_ONE_D = 1440,
+enum BARTYPE {
+	BARTYPE_1M= 1,
+	BARTYPE_5M = 5,
+	BARTYPE_10M = 10,
+	BARTYPE_20M = 20,
+	BARTYPE_1H = 60,
+	BARTYPE_1D = 1440,
 };
 
-enum BAR_NUM_ONE_DAY {
-	BAR_NUM_ONE_M = 273,
-	BAR_NUM_FIVE_M = 54,
-	BAR_NUM_TEN_M = 28,
-	BAR_NUM_TWTENTY_M = 14,
-	BAR_NUM_ONE_H =	6,
-	BAR_NUM_ONE_D = 1,
+enum BAR1DNUM {
+	BAR1DNUM_1M = 273,
+	BAR1DNUM_5M = 54,
+	BAR1DNUM_10M = 28,
+	BAR1DNUM_20M = 14,
+	BAR1DNUM_1H =	6,
+	BAR1DNUM_1D = 1,
 };
 
 //one day bar element.
-struct BAR_ELEMENT {
+struct BARELEMENT {
 	int isComplete;
 	int YMD;
 	int *btimeHMS;
@@ -35,18 +35,15 @@ struct BAR_ELEMENT {
 };
 
 struct BAR {
-	enum BAR_TYPE type;
-	enum BAR_NUM_ONE_DAY barsNUM;
 	char InstrumentID[16];
+	enum BARTYPE type;
+	enum BAR1DNUM num;
 	int head;
 	int tail;
-	struct BAR_ELEMENT *bar[8192];
+	struct BARELEMENT *bars[BAR_DAYSNUM_MAX];
 };
 
-void BAR_index(struct BAR *bar, int ymd, int hour, int minute, int *i1, int *i2);
-void BAR_ymd_hms(struct BAR *bar, int i1, int i2, int *ymd, int *hms);
-
 #include <mongoc.h>
-struct BAR *create_BAR_F_MongoDB(mongoc_collection_t *cll, enum BAR_TYPE type, int beginYMD, int endYMD);
+struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYMD, int endYMD);
 
 #endif

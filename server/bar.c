@@ -1,147 +1,175 @@
 #include "bar.h"
+#include "mongoapi.h"
+#include "safe.h"
 
-void BAR_index(struct BAR *bar, int ymd, int hour, int minute, int *i1, int *i2) {
-	int i;
-	for (i = bar->head; i <= bar->tail; ++i) {
-		if (bar->bar[i] != NULL && bar->bar[i]->YMD == ymd) {
-			*i1 = i;
-		}	
+static void BAR_ELEMENT_index(struct BARELEMENT *bar, int hour, int minute, int *i2) {
+	if (hour > 12) {
+		*i2 = (hour-13)*60 + (BAR1DNUM_1M-3)/2 + 2 + minute;
 	}
-	if (bar->type == BAR_ONE_M) {
-		if (hour > 12) {
-			*i2 = (hour-13)*60 + (BAR_NUM_ONE_M -3)/2 + 2 + minute;
-		}
-		else {
-			*i2 = (hour-9)*60 + minute - 14;
-		}
+	else {
+		*i2 = (hour-9)*60 + minute - 14;
 	}
 }
 
-void BAR_ymd_hms(struct BAR *bar, int i1, int i2, int *ymd, int *hms) {
-	*ymd = bar->bar[i1]->YMD;
-	if (bar->type == BAR_ONE_M) {
-		int hour, minute;
-		if (i2 > (BAR_NUM_ONE_M - 3)/2 + 1) {
-			hour = (i2 - (BAR_NUM_ONE_M - 3)/2 - 2)/60 + 13;	
-			minute = (i2 - (BAR_NUM_ONE_M - 3)/2 - 2)%60;
+static void BAR_ELEMENT_ymd_hms(struct BARELEMENT *bar, int i2, int *hms) {
+	int hour, minute;
+	if (i2 > (BAR1DNUM_1M - 3)/2 + 1) {
+		hour = (i2 - (BAR1DNUM_1M - 3)/2 - 2)/60 + 13;	
+		minute = (i2 - (BAR1DNUM_1M - 3)/2 - 2)%60;
+	}
+	else {
+		hour = (i2 + 14)/60 + 9;
+		minute = (i2 + 14)%60;
+	}
+	*hms = hour*10000 + minute*100;
+}
+static struct BARELEMENT *create_BAR_ELEMENT(enum BARTYPE type) {
+	struct BARELEMENT *be = smalloc(sizeof(struct BARELEMENT));
+	be->isComplete = 0;
+	be->YMD = 0;
+	enum BAR1DNUM num;
+	switch (type) {
+		case BARTYPE_1M: 
+			num = BAR1DNUM_1M;
+			break;
+		case BARTYPE_5M:
+			num = BAR1DNUM_5M;
+			break;
+		case BARTYPE_10M:
+			num = BAR1DNUM_10M;
+			break;
+		case BARTYPE_20M:
+			num = BAR1DNUM_20M;
+			break;
+		case BARTYPE_1H:
+			num = BAR1DNUM_1H;
+			break;
+		case BARTYPE_1D:
+			num = BAR1DNUM_1D;
+			break;
+		default:
+			isError("wrong");
+	}
+	be->btimeHMS = smalloc(num * sizeof(int));
+	be->etimeHMS = smalloc(num * sizeof(int));
+	be->openPrice = smalloc(num * sizeof(double));
+	be->closePrice = smalloc(num * sizeof(double));
+	be->uplimitPrice = smalloc(num * sizeof(double));
+	be->lowlimitPrice = smalloc(num * sizeof(double));
+	be->volume = smalloc(num * sizeof(int));
+	int i;
+	for (i = 0; i < num; ++i) {
+		int hms;
+		BAR_ELEMENT_ymd_hms(be, i, &hms);
+		be->btimeHMS[i] = hms;
+		be->etimeHMS[i] = hms+59;
+		be->openPrice[i] = be->closePrice[i] = be->uplimitPrice[i] = -1;
+		be->lowlimitPrice[i] = INT_MAX;
+	}
+	int index;
+   	BAR_ELEMENT_index(be, 9, 14, &index);	
+	be->etimeHMS[index] = 91400;
+	BAR_ELEMENT_index(be, 11, 30, &index);	
+	be->etimeHMS[index] = 113000;
+	BAR_ELEMENT_index(be, 15, 15, &index);	
+	be->etimeHMS[index] = 151500;
+	return be;
+}
+static int get_BAR_ELEMENT(struct BAR *bar, int ymd) {
+	if (bar->bars[bar->head] == NULL) {
+		struct BARELEMENT *be = create_BAR_ELEMENT(BAR1DNUM_1M);
+		bar->bars[bar->head] = be;
+		return bar->head;
+	}
+	else {
+		int hymd = bar->bars[bar->head]->YMD;
+		int tymd = bar->bars[bar->tail]->YMD;
+		if (hymd > ymd) {
+			bar->head += ymd-hymd;
+			bar->bars[bar->head] = create_BAR_ELEMENT(BAR1DNUM_1M);
+			return bar->head;
+		}
+		else if (tymd < ymd) {
+			bar->tail += ymd-tymd;
+			bar->bars[bar->tail] = create_BAR_ELEMENT(BAR1DNUM_1M);
+			return bar->tail;
 		}
 		else {
-			hour = (i2 + 14)/60 + 9;
-			minute = (i2 + 14)%60;
+			if (bar->bars[bar->head+ymd-tymd] == NULL) {
+				bar->bars[bar->head+ymd-tymd] = create_BAR_ELEMENT(BAR1DNUM_1M);
+			}
+			return bar->head+ymd-tymd;
 		}
-		*hms = hour*10000 + minute*100;
 	}
 }
+static void insert_BAR_ELEMENT(struct BARELEMENT *be, int ymd, int hour, int minute, int second, int millsecond, int volume, double lastprice, int *mills, int *mills2) {
+	int index;
+	BAR_ELEMENT_index(be, hour, minute, &index);
+	
+	if (second == 0 && (mills[index] == 10000 || millsecond < mills[index])) {
+		be->openPrice[index] = lastprice;
+		mills[index] = millsecond;
+	}
+	if (second == 59 && (mills2[index] == 10000 || millsecond > mills2[index])) {
+		be->closePrice[index] = lastprice;
+		mills2[index] = millsecond;
+	}
+	be->uplimitPrice[index] = be->uplimitPrice[index] > lastprice ? be->uplimitPrice[index] : lastprice;
+	be->lowlimitPrice[index] = be->lowlimitPrice[index] > lastprice ? lastprice : be->lowlimitPrice[index];
+	be->volume[index] += volume;
 
-struct BAR *create_BAR_F_MongoDB(mongoc_collection_t *cll, enum BAR_TYPE type, int beginYMD, int endYMD) {
-	/*
-	struct BAR_METADATA *bmd = MongoAPI_fetch_DMD_FOR_BAR(cll, beginYMD, endYMD);
+}
+struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYMD, int endYMD) {
+	int num, *ymd, *hour, *minute, *second, *millsecond, *volume;
+	double *lastprice;
+	MongoAPI_fetch_DMD_FOR_BAR(cll, beginYMD, endYMD, &num, &ymd, &hour, &minute, &second, &millsecond, &volume, &lastprice);
 
-	//bar 
-	struct BAR *bar = smalloc(sizeof(struct BAR));
-	bar->type = BAR_ONE_M;
-	bar->barsNum = (BARSNUM_ONE_MINUTE_HALFDAY*2 + 3) * (endYMD - beginYMD+ 1);
-	bar->beginYMD = beginYMD;
+	if (num == 0) return NULL;
 
-	bar->YMD = scalloc(bar->barsNum, sizeof(int));
-	bar->btimeHMS = scalloc(bar->barsNum, sizeof(int));
-	bar->etimeHMS = scalloc(bar->barsNum, sizeof(int));
-	bar->openPrice = smalloc(bar->barsNum * sizeof(double));
-	bar->closePrice = smalloc(bar->barsNum * sizeof(double));
-	bar->uplimitPrice = smalloc(bar->barsNum * sizeof(double));
-	bar->lowlimitPrice = smalloc(bar->barsNum * sizeof(double));
-	bar->volume = scalloc(bar->barsNum, sizeof(int));
-
-	int *mills = malloc(bar->barsNum * sizeof(int));
-	int *mills2 = malloc(bar->barsNum * sizeof(int));
-
+	int *mills = smalloc(BAR1DNUM_1M*sizeof(int));
+	int *mills2 = smalloc(BAR1DNUM_1M*sizeof(int));
 	int i;
-	for (i = 0; i < bar->barsNum; ++i) {
+	for (i = 0; i < BAR1DNUM_1M; ++i) {
 		mills[i] = 10000;
 		mills2[i] = 10000;
-		int ymd, hms;
-		BAR_ymd_hms(bar, i, &ymd, &hms);
-		bar->YMD[i] = ymd;
-		bar->btimeHMS[i] = hms;
-		bar->etimeHMS[i] = hms+59;
-		bar->openPrice[i] = bar->closePrice[i] = bar->uplimitPrice[i] = -1;
-		bar->lowlimitPrice[i] = INT_MAX;
+	}
+	
+	struct BAR *bar = smalloc(sizeof(struct BAR));
+	bar->type = BARTYPE_1M;
+	bar->num = BAR1DNUM_1M;
+	bar->head = bar->tail = BAR_DAYSNUM_MAX/2;
+	for (i = 0; i < num; ++i) {
+		int index = get_BAR_ELEMENT(bar, ymd[i]);
+		bar->bars[index]->YMD = ymd[i];
+		insert_BAR_ELEMENT(bar->bars[index], ymd[i], hour[i], minute[i], second[i], millsecond[i], volume[i], lastprice[i], mills, mills2);
 	}
 
-	bson_iter_t iter;
-	int kk = 0;
-	while (mongoc_cursor_next(cursor, &doc)) {
-		int ymd, hour, minute, second, millsecond;
-		double lastprice;
-		int volume;
-		ymd = hour = minute = second = volume = -1;
-		lastprice = -1;
-		kk++;
-		if (bson_iter_init(&iter, doc)) {
-			//double openPrice, closePrice, uplimitPrice, lowlimitPrice;
-			while(bson_iter_next(&iter)) {
-				const char *key = bson_iter_key(&iter);
-				if (strcmp(key, "Volume") == 0) {
-					volume = (int)bson_iter_int64(&iter);
-					//printf("%s\t%d\n", key, volume);
-				}
-				else if (strcmp(key, "UpdateTime") == 0) {
-					CTPHELP_updatetime2HMS(bson_iter_utf8(&iter, NULL), &hour, &minute, &second);
-					//printf("%s\t%d\t%d\t%d\n", key, hour, minute, second);
-				}
-				else if (strcmp(key, "TradingDay") == 0) {
-					ymd = strtol(bson_iter_utf8(&iter,NULL), NULL, 10);
-					//printf("%s\t%d\n", key, tday);
-				}
-				else if (strcmp(key, "LastPrice") == 0) {
-					lastprice = bson_iter_double(&iter);
-					//printf("%s\t%f\n", key, lastprice);
-				}
-				else if (strcmp(key, "UpdateMillisec") == 0) {
-					millsecond = (int)bson_iter_int64(&iter);
-				}
+	int k=0;
+	for (i = bar->head+1; i <= bar->tail; ++i) {
+		if (bar->bars[i] == NULL) {
+			k=i;
+			break;
+		}
+	}
+	if (k!=0) {
+		for (i = k+1; i <= bar->tail; ++i) {
+			if (bar->bars[i] != NULL) {
+				bar->bars[k] = bar->bars[i];
+				bar->bars[i] = NULL;
+				k++;
 			}
 		}
-		int index = BAR_index(bar, ymd, hour, minute);
-		if (second == 0 && (mills[index] == 10000 || millsecond < mills[index])) {
-			bar->openPrice[index] = lastprice;
-			mills[index] = millsecond;
-		}
-		if (second == 59 && (mills2[index] == 10000 || millsecond > mills2[index])) {
-			bar->closePrice[index] = lastprice;
-			mills2[index] = millsecond;
-		}
-		bar->uplimitPrice[index] = bar->uplimitPrice[index] > lastprice ? bar->uplimitPrice[index] : lastprice;
-		bar->lowlimitPrice[index] = bar->lowlimitPrice[index] > lastprice ? lastprice : bar->lowlimitPrice[index];
-		bar->volume[index] += volume;
+		bar->tail = k;
 	}
-
-	for (i = beginYMD; i <= endYMD; ++i) {
-		int index = BAR_index(bar, i, 9, 14);	
-		bar->etimeHMS[index] = 91400;
-		bar->closePrice[index] = bar->openPrice[index];
-		index = BAR_index(bar, i, 11, 30);	
-		bar->etimeHMS[index] = 113000;
-		bar->closePrice[index] = bar->openPrice[index];
-		index = BAR_index(bar, i, 15, 15);	
-		bar->etimeHMS[index] = 151500;
-		bar->closePrice[index] = bar->openPrice[index];
+	for (i = bar->head+1; i <= bar->tail; ++i) {
+		int index;
+		BAR_ELEMENT_index(bar->bars[i], 9, 14, &index);	
+		bar->bars[i]->closePrice[index] = bar->bars[i]->openPrice[index];
+		BAR_ELEMENT_index(bar->bars[i], 11, 30, &index);	
+		bar->bars[i]->closePrice[index] = bar->bars[i]->openPrice[index];
+		BAR_ELEMENT_index(bar->bars[i], 15, 15, &index);	
+		bar->bars[i]->closePrice[index] = bar->bars[i]->openPrice[index];
 	}
-
-
-	free(mills);
-	free(mills2);
-	printf("%d\n", kk);
-
-	if (mongoc_cursor_error (cursor, &error)) {
-		fprintf (stderr, "An error occurred: %s\n", error.message);
-	}
-
-	mongoc_cursor_destroy (cursor);
-	bson_destroy (query);
-
-
 	return bar;
-	*/
-	return NULL;
+
 }

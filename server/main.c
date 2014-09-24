@@ -4,6 +4,7 @@
 #include "mongoapi.h"
 #include "threadfunc.h"
 #include "verbose.h"
+#include "bar.h"
 
 #include <stdio.h>
 #include <pthread.h>
@@ -33,10 +34,14 @@ int main(int argc, char **argv) {
 	mongoc_collection_t **mcollections = MongoAPI_glue_collections(client, InstrumentIDs, InstrumentNum, BrokerID, UserID);
 
 	int i;
-	//struct BAR *bar = MongoAPI_fetch_1mbar(mcollections[0], 20140919, 20140922);
-	//for (i = 0; i < bar->barsNum; ++i) {
-	//	printf("i:%05d, nN: %d, bN: %d, InID: %s, beginYMD: %06d, YMD: %06d, b-etimeHMS: %06d-%06d, o-cPrice: %f-%f, u-lPrice: %f-%f, vol:%d\n", i, bar->type, bar->barsNum, bar->InstrumentID, bar->beginYMD, bar->YMD[i], bar->btimeHMS[i], bar->etimeHMS[i], bar->openPrice[i], bar->closePrice[i], bar->uplimitPrice[i], bar->lowlimitPrice[i], bar->volume[i]);
-	//}
+	struct BAR *bar = create_1MTYPE_BAR_from_MongoDB(mcollections[0], 20140919, 20140922);
+	int k=0;
+	int j;
+	for (i = bar->head; i <= bar->tail; ++i) {
+		for (j = 0; j < BAR1DNUM_1M; ++j) {
+			printf("k:%05d, nN: %d, bN: %d, InID: %s, YMD: %06d, b-etimeHMS: %06d-%06d, o-cPrice: %f-%f, u-lPrice: %f-%f, vol:%d\n", k++, bar->type, bar->num, bar->InstrumentID, bar->bars[i]->YMD, bar->bars[i]->btimeHMS[j], bar->bars[i]->etimeHMS[j], bar->bars[i]->openPrice[j], bar->bars[i]->closePrice[j], bar->bars[i]->uplimitPrice[j], bar->bars[i]->lowlimitPrice[j], bar->bars[i]->volume[j]);
+		}
+	}
 	//free(bar);
 
 	int running = 1;

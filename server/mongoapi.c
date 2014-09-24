@@ -3,6 +3,8 @@
 #include "ctphelp.h"
 #include "bar.h"
 
+#define DMD_METADATA_MAX_NUM_ONEDAY 32500
+
 mongoc_client_t *MongoAPI_create_client(char *url_port) {
 	mongoc_init ();
 	return mongoc_client_new(url_port);
@@ -223,7 +225,7 @@ void MongoAPI_fetch_DMD_FOR_BAR(mongoc_collection_t *cll, int beginYMD, int endY
 	}
 
 	//bar_metadata
-	*num = BAR_METADATA_MAX_NUM_ONEDAY * (endYMD - beginYMD+ 1);
+	*num = DMD_METADATA_MAX_NUM_ONEDAY * (endYMD - beginYMD+ 1);
 	*ymd = scalloc(*num, sizeof(int));
 	*hour = scalloc(*num, sizeof(int)); 
 	*minute = scalloc(*num, sizeof(int)); 
