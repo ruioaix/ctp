@@ -94,6 +94,7 @@ void MongoAPI_insert_DMD(mongoc_client_t *client, mongoc_collection_t *collectio
 
 }
 
+/*
 struct BAR *MongoAPI_fetch_1mbar(mongoc_collection_t *cll, int beginYMD, int endYMD) {
 
 	//mongo find data.
@@ -203,7 +204,6 @@ struct BAR *MongoAPI_fetch_1mbar(mongoc_collection_t *cll, int beginYMD, int end
 
 	free(mills);
 	free(mills2);
-	printf("/********************************************************************************************************/\n");
 	printf("%d\n", kk);
 
 	if (mongoc_cursor_error (cursor, &error)) {
@@ -215,22 +215,22 @@ struct BAR *MongoAPI_fetch_1mbar(mongoc_collection_t *cll, int beginYMD, int end
 
 	return bar;
 }
+*/
 
-struct BAR_METADATA *MongoAPI_fetch_DMD_FOR_BAR(mongoc_collection_t *cll, int beginYMD, int endYMD) {
+void MongoAPI_fetch_DMD_FOR_BAR(mongoc_collection_t *cll, int beginYMD, int endYMD, int *num, int **ymd, int **hour, int **minute, int ** second, int **millsecond, int **volume, double **lastprice) {
 	if (beginYMD > endYMD) {
-		return NULL;
+		return;
 	}
 
 	//bar_metadata
-	struct BAR_METADATA *barmd = smalloc(sizeof(struct BAR_METADATA));
-	barmd->num = BAR_METADATA_MAX_NUM_ONEDAY * (endYMD - beginYMD+ 1);
-	barmd->ymd = scalloc(barmd->num, sizeof(int));
-	barmd->hour = scalloc(barmd->num, sizeof(int)); 
-	barmd->minute = scalloc(barmd->num, sizeof(int)); 
-	barmd->second = scalloc(barmd->num, sizeof(int)); 
-	barmd->millsecond = scalloc(barmd->num, sizeof(int));
-	barmd->volume = scalloc(barmd->num, sizeof(int));
-	barmd->lastprice = scalloc(barmd->num, sizeof(double));
+	*num = BAR_METADATA_MAX_NUM_ONEDAY * (endYMD - beginYMD+ 1);
+	*ymd = scalloc(*num, sizeof(int));
+	*hour = scalloc(*num, sizeof(int)); 
+	*minute = scalloc(*num, sizeof(int)); 
+	*second = scalloc(*num, sizeof(int)); 
+	*millsecond = scalloc(*num, sizeof(int));
+	*volume = scalloc(*num, sizeof(int));
+	*lastprice = scalloc(*num, sizeof(double));
 
 	//mongo find data.
 	mongoc_cursor_t *cursor;
@@ -252,28 +252,28 @@ struct BAR_METADATA *MongoAPI_fetch_DMD_FOR_BAR(mongoc_collection_t *cll, int be
 			while(bson_iter_next(&iter)) {
 				const char *key = bson_iter_key(&iter);
 				if (strcmp(key, "Volume") == 0) {
-					barmd->volume[i] = (int)bson_iter_int64(&iter);
+					(*volume)[i] = (int)bson_iter_int64(&iter);
 					//printf("%s\t%d\n", key, volume);
 				}
 				else if (strcmp(key, "UpdateTime") == 0) {
-					CTPHELP_updatetime2HMS(bson_iter_utf8(&iter, NULL), barmd->hour+i, barmd->minute+i, barmd->second+i);
+					CTPHELP_updatetime2HMS(bson_iter_utf8(&iter, NULL), *hour+i, *minute+i, *second+i);
 					//printf("%s\t%d\t%d\t%d\n", key, hour, minute, second);
 				}
 				else if (strcmp(key, "TradingDay") == 0) {
-					barmd->ymd[i] = strtol(bson_iter_utf8(&iter,NULL), NULL, 10);
+					(*ymd)[i] = strtol(bson_iter_utf8(&iter,NULL), NULL, 10);
 					//printf("%s\t%d\n", key, tday);
 				}
 				else if (strcmp(key, "LastPrice") == 0) {
-					barmd->lastprice[i] = bson_iter_double(&iter);
+					(*lastprice)[i] = bson_iter_double(&iter);
 					//printf("%s\t%f\n", key, lastprice);
 				}
 				else if (strcmp(key, "UpdateMillisec") == 0) {
-					barmd->millsecond[i] = (int)bson_iter_int64(&iter);
+					(*millsecond)[i] = (int)bson_iter_int64(&iter);
 				}
 			}
 			i++;
-			if (i==barmd->num) {
-				isError("something wrong, i should not be barmd->num");
+			if (i==*num) {
+				isError("something wrong, i should not be *num");
 			}
 		}
 	}
@@ -282,6 +282,4 @@ struct BAR_METADATA *MongoAPI_fetch_DMD_FOR_BAR(mongoc_collection_t *cll, int be
 	}
 	mongoc_cursor_destroy (cursor);
 	bson_destroy (query);
-
-	return barmd;
 }
