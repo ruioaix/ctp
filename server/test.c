@@ -35,8 +35,9 @@ int main(int argc, char **argv) {
 	int k=0;
 	int j;
 	for (i = bar->head; i <= bar->tail; ++i) {
-		for (j = 0; j < BAR1DNUM_1M; ++j) {
-			printf("k:%05d, nN: %d, bN: %d, InID: %s, YMD: %06d, b-etimeHMS: %06d-%06d, o-cPrice: %f-%f, u-lPrice: %f-%f, vol:%d\n", k++, bar->type, bar->num, bar->InstrumentID, bar->bars[i]->YMD, bar->bars[i]->btimeHMS[j], bar->bars[i]->etimeHMS[j], bar->bars[i]->openPrice[j], bar->bars[i]->closePrice[j], bar->bars[i]->uplimitPrice[j], bar->bars[i]->lowlimitPrice[j], bar->bars[i]->volume[j]);
+		if (bar->bars[i] == NULL) continue;
+		for (j = 0; j < BARNUM_1MIN1DAY; ++j) {
+			printf("k:%05d, nN: %d, bN: %d, InID: %s, YMD: %06d, b-etimeHMS: %06d-%06d, o-cPrice: %f-%f, u-lPrice: %f-%f, vol:%d\n", k++, bar->barLen, bar->num, bar->InstrumentID, bar->bars[i]->YMD, bar->bars[i]->btimeHMS[j], bar->bars[i]->etimeHMS[j], bar->bars[i]->openPrice[j], bar->bars[i]->closePrice[j], bar->bars[i]->uplimitPrice[j], bar->bars[i]->lowlimitPrice[j], bar->bars[i]->volume[j]);
 		}
 	}
 	//free(bar);

@@ -3,8 +3,6 @@
 #include "ctphelp.h"
 #include "bar.h"
 
-#define DMD_METADATA_MAX_NUM_ONEDAY 32500
-
 mongoc_client_t *MongoAPI_create_client(char *url_port) {
 	mongoc_init ();
 	return mongoc_client_new(url_port);
@@ -219,66 +217,53 @@ struct BAR *MongoAPI_fetch_1mbar(mongoc_collection_t *cll, int beginYMD, int end
 }
 */
 
-void MongoAPI_fetch_DMD_FOR_BAR(mongoc_collection_t *cll, int beginYMD, int endYMD, int *num, int **ymd, int **hour, int **minute, int ** second, int **millsecond, int **volume, double **lastprice) {
-	if (beginYMD > endYMD) {
+void MongoAPI_fetch_DMD_FOR_BAR(mongoc_collection_t *cll, int YMD, int *num, int *memnum, int **hour, int **minute, int ** second, int **millsecond, int **volume, double **lastprice) {
+	char sYMD[16];
+	sprintf(sYMD, "%d", YMD);
+	bson_t *query = BCON_NEW("TradingDay", BCON_UTF8(sYMD));
+
+	mongoc_cursor_t *cursor = mongoc_collection_find(cll, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+	if (!mongoc_cursor_more(cursor)) {
+		mongoc_cursor_destroy (cursor);
+		bson_destroy (query);
+		*num = 0;
 		return;
 	}
 
-	//bar_metadata
-	*num = DMD_METADATA_MAX_NUM_ONEDAY * (endYMD - beginYMD+ 1);
-	*ymd = scalloc(*num, sizeof(int));
-	*hour = scalloc(*num, sizeof(int)); 
-	*minute = scalloc(*num, sizeof(int)); 
-	*second = scalloc(*num, sizeof(int)); 
-	*millsecond = scalloc(*num, sizeof(int));
-	*volume = scalloc(*num, sizeof(int));
-	*lastprice = scalloc(*num, sizeof(double));
-
-	//mongo find data.
-	mongoc_cursor_t *cursor;
-	bson_error_t error;
-	const bson_t *doc;
-	char begind[10], endd[10];
-	sprintf(begind, "%d", beginYMD);
-	sprintf(endd, "%d", endYMD);
-	bson_t *query = BCON_NEW (
-			"TradingDay", "{", "$gte", BCON_UTF8(begind), "}",
-			"TradingDay", "{", "$lte", BCON_UTF8(endd), "}"
-			);
-	cursor = mongoc_collection_find(cll, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
-	bson_iter_t iter;
 	int i = 0;
+	const bson_t *doc;
 	while (mongoc_cursor_next(cursor, &doc)) {
+		bson_iter_t iter;
 		if (bson_iter_init(&iter, doc)) {
-			//double openPrice, closePrice, uplimitPrice, lowlimitPrice;
 			while(bson_iter_next(&iter)) {
 				const char *key = bson_iter_key(&iter);
 				if (strcmp(key, "Volume") == 0) {
-					(*volume)[i] = (int)bson_iter_int64(&iter);
-					//printf("%s\t%d\n", key, volume);
+					(*volume)[i] = (int)bson_iter_int32(&iter);
 				}
 				else if (strcmp(key, "UpdateTime") == 0) {
 					CTPHELP_updatetime2HMS(bson_iter_utf8(&iter, NULL), *hour+i, *minute+i, *second+i);
-					//printf("%s\t%d\t%d\t%d\n", key, hour, minute, second);
 				}
 				else if (strcmp(key, "TradingDay") == 0) {
-					(*ymd)[i] = strtol(bson_iter_utf8(&iter,NULL), NULL, 10);
-					//printf("%s\t%d\n", key, tday);
+					int ymd = strtol(bson_iter_utf8(&iter,NULL), NULL, 10);
+					if (ymd != YMD) {
+						isError("ymd != YMD");
+					}
 				}
 				else if (strcmp(key, "LastPrice") == 0) {
 					(*lastprice)[i] = bson_iter_double(&iter);
-					//printf("%s\t%f\n", key, lastprice);
 				}
 				else if (strcmp(key, "UpdateMillisec") == 0) {
-					(*millsecond)[i] = (int)bson_iter_int64(&iter);
+					(*millsecond)[i] = (int)bson_iter_int32(&iter);
 				}
 			}
 			i++;
-			if (i==*num) {
-				isError("something wrong, i should not be *num");
+			if (i==*memnum) {
+				isError("something wrong, i should not be *memnum");
 			}
 		}
 	}
+	*num = i;
+	bson_error_t error;
 	if (mongoc_cursor_error (cursor, &error)) {
 		fprintf (stderr, "An error occurred: %s\n", error.message);
 	}

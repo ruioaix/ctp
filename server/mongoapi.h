@@ -12,6 +12,6 @@ void MongoAPI_unglue_collections(mongoc_collection_t **mclls, int InstrumentNum)
 void MongoAPI_insert_DMD(mongoc_client_t *client, mongoc_collection_t *collection, CThostFtdcDepthMarketDataField *pd);
 
 //struct BAR *MongoAPI_fetch_1mbar(mongoc_collection_t *cll, int beginYMD, int endYMD);
-void MongoAPI_fetch_DMD_FOR_BAR(mongoc_collection_t *cll, int beginYMD, int endYMD, int *num, int **ymd, int **hour, int **minute, int ** second, int **millsecond, int **volume, double **lastprice);
+void MongoAPI_fetch_DMD_FOR_BAR(mongoc_collection_t *cll, int YMD, int *num, int *memnum, int **hour, int **minute, int ** second, int **millsecond, int **volume, double **lastprice);
 
 #endif
