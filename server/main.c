@@ -32,10 +32,10 @@ int main(int argc, char **argv) {
 	mongoc_client_t *client = MongoAPI_create_client(mongodb_url_port);
 	mongoc_collection_t **mcollections = MongoAPI_glue_collections(client, InstrumentIDs, InstrumentNum, BrokerID, UserID);
 
-	struct BAR *bar = MongoAPI_fetch_bar_1m(mcollections[0], 20140922, 20140922);
+	struct BAR *bar = MongoAPI_fetch_1mbar(mcollections[0], 20140919, 20140922);
 	int i;
 	for (i = 0; i < bar->barsNum; ++i) {
-		printf("i:%d, nN: %d, bN: %d, InID: %s, b-etime: %d-%d, o-cPrice: %f-%f, u-lPrice: %f-%f, vol:%d\n", i, bar->minutesNum, bar->barsNum, bar->InstrumentID, bar->btime[i], bar->etime[i], bar->openPrice[i], bar->closePrice[i], bar->uplimitPrice[i], bar->lowlimitPrice[i], bar->volume[i]);
+		printf("i:%05d, nN: %d, bN: %d, InID: %s, beginYMD: %06d, YMD: %06d, b-etimeHMS: %06d-%06d, o-cPrice: %f-%f, u-lPrice: %f-%f, vol:%d\n", i, bar->type, bar->barsNum, bar->InstrumentID, bar->beginYMD, bar->YMD[i], bar->btimeHMS[i], bar->etimeHMS[i], bar->openPrice[i], bar->closePrice[i], bar->uplimitPrice[i], bar->lowlimitPrice[i], bar->volume[i]);
 	}
 	free(bar);
 

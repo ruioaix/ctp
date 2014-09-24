@@ -4,21 +4,8 @@
 #include "mongoapi.h"
 #include "verbose.h"
 #include "safe.h"
+#include "ctphelp.h"
 #include <string.h>
-
-static void getupdatetime(char *updatetime, int *hour, int *minute, int *second) {
-	char tt[3];
-	tt[2] = '\0';
-	tt[0] = updatetime[0];
-	tt[1] = updatetime[1];
-	*hour = strtol(tt, NULL, 10);
-	tt[0] = updatetime[3];
-	tt[1] = updatetime[4];
-	*minute = strtol(tt, NULL, 10);
-	tt[0] = updatetime[6];
-	tt[1] = updatetime[7];
-	*second = strtol(tt, NULL, 10);
-}
 
 void *DMDMSG_insertIntoMongoDB(void *ThreadIM) {
 	struct ThreadIM *mim = ThreadIM;
@@ -34,7 +21,7 @@ void *DMDMSG_insertIntoMongoDB(void *ThreadIM) {
 		if (pDepthMarketData != NULL) {
 			printtlb("%s: updated time: %s, update mill time : %4d", pDepthMarketData->InstrumentID, pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec);
 			int hour, minute, second;
-			getupdatetime(pDepthMarketData->UpdateTime, &hour, &minute, &second);
+			CTPHELP_updatetime2HMS(pDepthMarketData->UpdateTime, &hour, &minute, &second);
 			if ( ((hour >  9 || (hour== 9 && minute>=14)) &&
 				  (hour < 11 || (hour==11 && minute<30) || (hour==11 && minute==30 && second==0))) ||
 				 ((hour >= 13 ) &&
@@ -148,7 +135,7 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 					ts, tus, tv.tv_sec-ts+(tv.tv_nsec-tus)*1E-9, size);
 
 			int hour, minute, second;
-			getupdatetime(pDepthMarketData->UpdateTime, &hour, &minute, &second);
+			CTPHELP_updatetime2HMS(pDepthMarketData->UpdateTime, &hour, &minute, &second);
 
 			if ( ((hour >  9 || (hour== 9 && minute>=14)) &&
 				  (hour < 11 || (hour==11 && minute<30) || (hour==11 && minute==30 && second==0))) ||
