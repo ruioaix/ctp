@@ -126,12 +126,12 @@ struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYM
 
 	if (num == 0) return NULL;
 
-	int *mills = smalloc(BAR1DNUM_1M*sizeof(int));
-	int *mills2 = smalloc(BAR1DNUM_1M*sizeof(int));
+	int *mills_open = smalloc(BAR1DNUM_1M*sizeof(int));
+	int *mills_close = smalloc(BAR1DNUM_1M*sizeof(int));
 	int i;
 	for (i = 0; i < BAR1DNUM_1M; ++i) {
-		mills[i] = 10000;
-		mills2[i] = 10000;
+		mills_open[i] = 10000;
+		mills_close[i] = 10000;
 	}
 	
 	struct BAR *bar = smalloc(sizeof(struct BAR));
@@ -141,7 +141,7 @@ struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYM
 	for (i = 0; i < num; ++i) {
 		int index = get_BAR_ELEMENT(bar, ymd[i]);
 		bar->bars[index]->YMD = ymd[i];
-		insert_BAR_ELEMENT(bar->bars[index], ymd[i], hour[i], minute[i], second[i], millsecond[i], volume[i], lastprice[i], mills, mills2);
+		insert_BAR_ELEMENT(bar->bars[index], ymd[i], hour[i], minute[i], second[i], millsecond[i], volume[i], lastprice[i], mills_open, mills_close);
 	}
 
 	int k=0;
