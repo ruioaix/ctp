@@ -169,5 +169,28 @@ struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYM
 		be->closePrice[272] = be->openPrice[272];
 	}
 
+	free(hour);free(minute);free(second);
+	free(millsecond);free(volume);free(lastprice);
+	free(mills_open);free(mills_close);
+
 	return bar;
+}
+
+static void free_BARELEMENT(struct BARELEMENT *be) {
+	free(be->btimeHMS);
+	free(be->etimeHMS);
+	free(be->openPrice);
+	free(be->closePrice);
+	free(be->uplimitPrice);
+	free(be->lowlimitPrice);
+	free(be->volume);
+	free(be);
+}
+void free_BAR(struct BAR *bar) {
+	int i;
+	for (i = bar->head; i <= bar->tail; ++i) {
+		if (bar->bars[i] == NULL) continue;	
+		free_BARELEMENT(bar->bars[i]);
+	}
+	free(bar);
 }

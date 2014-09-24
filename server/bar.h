@@ -31,5 +31,6 @@ struct BAR {
 
 #include <mongoc.h>
 struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYMD, int endYMD);
+void free_BAR(struct BAR *bar);
 
 #endif

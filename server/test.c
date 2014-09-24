@@ -32,6 +32,7 @@ int main(int argc, char **argv) {
 
 	int i;
 	struct BAR *bar = create_1MTYPE_BAR_from_MongoDB(mcollections[0], 20140919, 20140922);
+	sprintf(bar->InstrumentID, "%s", InstrumentIDs[0]);
 	int k=0;
 	int j;
 	for (i = bar->head; i <= bar->tail; ++i) {
@@ -42,13 +43,16 @@ int main(int argc, char **argv) {
 	}
 	//free(bar);
 
+	free_BAR(bar);
 	free(mdlogfilepath);
 	free(tdlogfilepath);
 	free(mdserver);
 	free(tdserver);
 	free(BrokerID);
+	free(InvestorID);
 	free(UserID);
 	free(pd);
+	free(UserProductInfo);
 	free(mongodb_url_port);
 	for (i = 0; i < InstrumentNum; ++i) {
 		free(InstrumentIDs[i]);
