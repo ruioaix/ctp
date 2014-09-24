@@ -12,5 +12,6 @@ void MongoAPI_unglue_collections(mongoc_collection_t **mclls, int InstrumentNum)
 void MongoAPI_insert_DMD(mongoc_client_t *client, mongoc_collection_t *collection, CThostFtdcDepthMarketDataField *pd);
 
 struct BAR *MongoAPI_fetch_1mbar(mongoc_collection_t *cll, int beginYMD, int endYMD);
+struct BAR_METADATA *MongoAPI_fetch_DMD_FOR_BAR(mongoc_collection_t *cll, int beginYMD, int endYMD);
 
 #endif

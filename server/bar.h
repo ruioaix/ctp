@@ -2,6 +2,18 @@
 #define CTP_C_API_SERVER_BAR_H
 
 #define BARSNUM_ONE_MINUTE_HALFDAY 135
+#define BAR_METADATA_MAX_NUM_ONEDAY 32500
+
+struct BAR_METADATA {
+	int num;
+	int *ymd;
+	int *hour; 
+	int *minute; 
+	int *second; 
+	int *millsecond;
+	int *volume;
+	double *lastprice;
+};
 
 enum BAR_TYPE {
 	BAR_ONE_M,
@@ -28,5 +40,8 @@ struct BAR {
 
 int BAR_index(struct BAR *bar, int ymd, int hour, int minute);
 void BAR_ymd_hms(struct BAR *bar, int index, int *ymd, int *hms);
+
+#include <mongoc.h>
+struct BAR *create_BAR_F_MongoDB(mongoc_collection_t *cll, enum BAR_TYPE type, int beginYMD, int endYMD);
 
 #endif

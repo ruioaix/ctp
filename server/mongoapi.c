@@ -215,3 +215,73 @@ struct BAR *MongoAPI_fetch_1mbar(mongoc_collection_t *cll, int beginYMD, int end
 
 	return bar;
 }
+
+struct BAR_METADATA *MongoAPI_fetch_DMD_FOR_BAR(mongoc_collection_t *cll, int beginYMD, int endYMD) {
+	if (beginYMD > endYMD) {
+		return NULL;
+	}
+
+	//bar_metadata
+	struct BAR_METADATA *barmd = smalloc(sizeof(struct BAR_METADATA));
+	barmd->num = BAR_METADATA_MAX_NUM_ONEDAY * (endYMD - beginYMD+ 1);
+	barmd->ymd = scalloc(barmd->num, sizeof(int));
+	barmd->hour = scalloc(barmd->num, sizeof(int)); 
+	barmd->minute = scalloc(barmd->num, sizeof(int)); 
+	barmd->second = scalloc(barmd->num, sizeof(int)); 
+	barmd->millsecond = scalloc(barmd->num, sizeof(int));
+	barmd->volume = scalloc(barmd->num, sizeof(int));
+	barmd->lastprice = scalloc(barmd->num, sizeof(double));
+
+	//mongo find data.
+	mongoc_cursor_t *cursor;
+	bson_error_t error;
+	const bson_t *doc;
+	char begind[10], endd[10];
+	sprintf(begind, "%d", beginYMD);
+	sprintf(endd, "%d", endYMD);
+	bson_t *query = BCON_NEW (
+			"TradingDay", "{", "$gte", BCON_UTF8(begind), "}",
+			"TradingDay", "{", "$lte", BCON_UTF8(endd), "}"
+			);
+	cursor = mongoc_collection_find(cll, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+	bson_iter_t iter;
+	int i = 0;
+	while (mongoc_cursor_next(cursor, &doc)) {
+		if (bson_iter_init(&iter, doc)) {
+			//double openPrice, closePrice, uplimitPrice, lowlimitPrice;
+			while(bson_iter_next(&iter)) {
+				const char *key = bson_iter_key(&iter);
+				if (strcmp(key, "Volume") == 0) {
+					barmd->volume[i] = (int)bson_iter_int64(&iter);
+					//printf("%s\t%d\n", key, volume);
+				}
+				else if (strcmp(key, "UpdateTime") == 0) {
+					CTPHELP_updatetime2HMS(bson_iter_utf8(&iter, NULL), barmd->hour+i, barmd->minute+i, barmd->second+i);
+					//printf("%s\t%d\t%d\t%d\n", key, hour, minute, second);
+				}
+				else if (strcmp(key, "TradingDay") == 0) {
+					barmd->ymd[i] = strtol(bson_iter_utf8(&iter,NULL), NULL, 10);
+					//printf("%s\t%d\n", key, tday);
+				}
+				else if (strcmp(key, "LastPrice") == 0) {
+					barmd->lastprice[i] = bson_iter_double(&iter);
+					//printf("%s\t%f\n", key, lastprice);
+				}
+				else if (strcmp(key, "UpdateMillisec") == 0) {
+					barmd->millsecond[i] = (int)bson_iter_int64(&iter);
+				}
+			}
+			i++;
+			if (i==barmd->num) {
+				isError("something wrong, i should not be barmd->num");
+			}
+		}
+	}
+	if (mongoc_cursor_error (cursor, &error)) {
+		fprintf (stderr, "An error occurred: %s\n", error.message);
+	}
+	mongoc_cursor_destroy (cursor);
+	bson_destroy (query);
+
+	return barmd;
+}
