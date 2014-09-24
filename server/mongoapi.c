@@ -115,9 +115,8 @@ struct BAR *MongoAPI_fetch_1mbar(mongoc_collection_t *cll, int beginYMD, int end
 	bar->barsNum = (BARSNUM_ONE_MINUTE_HALFDAY*2 + 3) * (endYMD - beginYMD+ 1);
 	bar->beginYMD = beginYMD;
 
-	bar->btimeYMD = scalloc(bar->barsNum, sizeof(int));
+	bar->YMD = scalloc(bar->barsNum, sizeof(int));
 	bar->btimeHMS = scalloc(bar->barsNum, sizeof(int));
-	bar->etimeYMD = scalloc(bar->barsNum, sizeof(int));
 	bar->etimeHMS = scalloc(bar->barsNum, sizeof(int));
 	bar->openPrice = smalloc(bar->barsNum * sizeof(double));
 	bar->closePrice = smalloc(bar->barsNum * sizeof(double));
@@ -134,7 +133,7 @@ struct BAR *MongoAPI_fetch_1mbar(mongoc_collection_t *cll, int beginYMD, int end
 		mills2[i] = 10000;
 		int ymd, hms;
 		BAR_ymd_hms(bar, i, &ymd, &hms);
-		bar->btimeYMD[i] = bar->etimeYMD[i] = ymd;
+		bar->YMD[i] = ymd;
 		bar->btimeHMS[i] = hms;
 		bar->etimeHMS[i] = hms+59;
 		bar->openPrice[i] = bar->closePrice[i] = bar->uplimitPrice[i] = -1;
@@ -202,6 +201,8 @@ struct BAR *MongoAPI_fetch_1mbar(mongoc_collection_t *cll, int beginYMD, int end
 	}
 
 
+	free(mills);
+	free(mills2);
 	printf("/********************************************************************************************************/\n");
 	printf("%d\n", kk);
 
