@@ -1,31 +1,33 @@
 #include "bar.h"
 
-int BAR_index(struct BAR *bar, int ymd, int hour, int minute) {
+void BAR_index(struct BAR *bar, int ymd, int hour, int minute, int *i1, int *i2) {
+	int i;
+	for (i = bar->head; i <= bar->tail; ++i) {
+		if (bar->bar[i] != NULL && bar->bar[i]->YMD == ymd) {
+			*i1 = i;
+		}	
+	}
 	if (bar->type == BAR_ONE_M) {
-		int index = (ymd - bar->beginYMD) * (BARSNUM_ONE_MINUTE_HALFDAY*2 + 3);
 		if (hour > 12) {
-			index += (hour-13)*60 + BARSNUM_ONE_MINUTE_HALFDAY + 2 + minute;
+			*i2 = (hour-13)*60 + (BAR_NUM_ONE_M -3)/2 + 2 + minute;
 		}
 		else {
-			index += (hour-9)*60 + minute - 14;
+			*i2 = (hour-9)*60 + minute - 14;
 		}
-		return index;
 	}
-	return -1;
 }
 
-void BAR_ymd_hms(struct BAR *bar, int index, int *ymd, int *hms) {
+void BAR_ymd_hms(struct BAR *bar, int i1, int i2, int *ymd, int *hms) {
+	*ymd = bar->bar[i1]->YMD;
 	if (bar->type == BAR_ONE_M) {
-		int hmsIndex = index%(BARSNUM_ONE_MINUTE_HALFDAY*2 + 3);
-		*ymd = index/(BARSNUM_ONE_MINUTE_HALFDAY*2 + 3) + bar->beginYMD;
 		int hour, minute;
-		if (hmsIndex > BARSNUM_ONE_MINUTE_HALFDAY + 1) {
-			hour = (hmsIndex - BARSNUM_ONE_MINUTE_HALFDAY - 2)/60 + 13;	
-			minute = (hmsIndex - BARSNUM_ONE_MINUTE_HALFDAY - 2)%60;
+		if (i2 > (BAR_NUM_ONE_M - 3)/2 + 1) {
+			hour = (i2 - (BAR_NUM_ONE_M - 3)/2 - 2)/60 + 13;	
+			minute = (i2 - (BAR_NUM_ONE_M - 3)/2 - 2)%60;
 		}
 		else {
-			hour = (hmsIndex+14)/60 + 9;
-			minute = (hmsIndex+14)%60;
+			hour = (i2 + 14)/60 + 9;
+			minute = (i2 + 14)%60;
 		}
 		*hms = hour*10000 + minute*100;
 	}
