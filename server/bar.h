@@ -29,8 +29,10 @@ struct BAR {
 	struct BARELEMENT *bars[BAR_DAYSNUM_MAX];
 };
 
+void free_BAR(struct BAR *bar);
+
 #include <mongoc.h>
 struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYMD, int endYMD);
-void free_BAR(struct BAR *bar);
+struct BAR *create_BAR(int barLen, mongoc_collection_t *cll, int beginYMD, int endYMD);
 
 #endif
