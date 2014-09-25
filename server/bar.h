@@ -2,9 +2,6 @@
 #define CTP_C_API_SERVER_BAR_H
 
 #define BAR_DAYSNUM_MAX 8192
-#define BAR_METADATA_1DNUM_MAX 32500
-#define BARNUM_1MIN1DAY 273
-#define BARNUM_1MIN1DAY_HALF 135
 
 //one day bar element.
 struct BARELEMENT {

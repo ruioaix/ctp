@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
 	int j;
 	for (i = bar->head; i <= bar->tail; ++i) {
 		if (bar->bars[i] == NULL) continue;
-		for (j = 0; j < BARNUM_1MIN1DAY; ++j) {
+		for (j = 0; j < bar->num; ++j) {
 			printf("k:%05d, nN: %d, bN: %d, InID: %s, YMD: %06d, b-etimeHMS: %06d-%06d, o-cPrice: %f-%f, u-lPrice: %f-%f, vol:%d\n", k++, bar->barLen, bar->num, bar->InstrumentID, bar->bars[i]->YMD, bar->bars[i]->btimeHMS[j], bar->bars[i]->etimeHMS[j], bar->bars[i]->openPrice[j], bar->bars[i]->closePrice[j], bar->bars[i]->uplimitPrice[j], bar->bars[i]->lowlimitPrice[j], bar->bars[i]->volume[j]);
 		}
 	}
