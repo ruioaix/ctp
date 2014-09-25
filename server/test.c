@@ -1,5 +1,5 @@
 #include "ctpcapi.h"
- 
+
 #include "io.h"
 #include "mongoapi.h"
 #include "threadfunc.h"
@@ -35,24 +35,74 @@ int main(int argc, char **argv) {
 	sprintf(bar->InstrumentID, "%s", InstrumentIDs[0]);
 	int k=0;
 	int j;
+	int ovolume[10000] = {0};
 	for (i = bar->head; i <= bar->tail; ++i) {
 		if (bar->bars[i] == NULL) continue;
 		for (j = 0; j < BARNUM_1MIN1DAY; ++j) {
 			printf("k:%05d, nN: %d, bN: %d, InID: %s, YMD: %06d, b-etimeHMS: %06d-%06d, o-cPrice: %f-%f, u-lPrice: %f-%f, vol:%d\n", k++, bar->barLen, bar->num, bar->InstrumentID, bar->bars[i]->YMD, bar->bars[i]->btimeHMS[j], bar->bars[i]->etimeHMS[j], bar->bars[i]->openPrice[j], bar->bars[i]->closePrice[j], bar->bars[i]->uplimitPrice[j], bar->bars[i]->lowlimitPrice[j], bar->bars[i]->volume[j]);
+			ovolume[i] += bar->bars[i]->volume[j];
 		}
 	}
 	free_BAR(bar);
-	bar = create_BAR(4, mcollections[0], 20140919, 20140922);
+
+	int tvolume[10000] = {0};
+	int kk;
+	for (kk = 2; kk <= 60; ++kk) {
+		bar = create_BAR(kk, mcollections[0], 20140919, 20140922);
+		sprintf(bar->InstrumentID, "%s", InstrumentIDs[0]);
+		for (i = bar->head; i <= bar->tail; ++i) {
+			if (bar->bars[i] == NULL) continue;
+			tvolume[i] = 0;
+			for (j = 0; j < bar->num; ++j) {
+				printf("k:%05d, nN: %d, bN: %d, InID: %s, YMD: %06d, b-etimeHMS: %06d-%06d, o-cPrice: %f-%f, u-lPrice: %f-%f, vol:%d\n", k++, bar->barLen, bar->num, bar->InstrumentID, bar->bars[i]->YMD, bar->bars[i]->btimeHMS[j], bar->bars[i]->etimeHMS[j], bar->bars[i]->openPrice[j], bar->bars[i]->closePrice[j], bar->bars[i]->uplimitPrice[j], bar->bars[i]->lowlimitPrice[j], bar->bars[i]->volume[j]);
+				tvolume[i] += bar->bars[i]->volume[j];
+			}
+			printf("%d---%d\n", tvolume[i], ovolume[i]);
+			if (tvolume[i] != ovolume[i]) {
+				isError("xx");
+			}
+		}
+		free_BAR(bar);
+	}
+
+	bar = create_BAR(135, mcollections[0], 20140919, 20140922);
 	sprintf(bar->InstrumentID, "%s", InstrumentIDs[0]);
 	for (i = bar->head; i <= bar->tail; ++i) {
 		if (bar->bars[i] == NULL) continue;
+		tvolume[i] = 0;
 		for (j = 0; j < bar->num; ++j) {
 			printf("k:%05d, nN: %d, bN: %d, InID: %s, YMD: %06d, b-etimeHMS: %06d-%06d, o-cPrice: %f-%f, u-lPrice: %f-%f, vol:%d\n", k++, bar->barLen, bar->num, bar->InstrumentID, bar->bars[i]->YMD, bar->bars[i]->btimeHMS[j], bar->bars[i]->etimeHMS[j], bar->bars[i]->openPrice[j], bar->bars[i]->closePrice[j], bar->bars[i]->uplimitPrice[j], bar->bars[i]->lowlimitPrice[j], bar->bars[i]->volume[j]);
+			tvolume[i] += bar->bars[i]->volume[j];
+		}
+		printf("%d---%d\n", tvolume[i], ovolume[i]);
+		if (tvolume[i] != ovolume[i]) {
+			isError("xx");
 		}
 	}
-	//free(bar);
-
 	free_BAR(bar);
+
+	bar = create_BAR(273, mcollections[0], 20140919, 20140922);
+	sprintf(bar->InstrumentID, "%s", InstrumentIDs[0]);
+	for (i = bar->head; i <= bar->tail; ++i) {
+		if (bar->bars[i] == NULL) continue;
+		tvolume[i] = 0;
+		for (j = 0; j < bar->num; ++j) {
+			printf("k:%05d, nN: %d, bN: %d, InID: %s, YMD: %06d, b-etimeHMS: %06d-%06d, o-cPrice: %f-%f, u-lPrice: %f-%f, vol:%d\n", k++, bar->barLen, bar->num, bar->InstrumentID, bar->bars[i]->YMD, bar->bars[i]->btimeHMS[j], bar->bars[i]->etimeHMS[j], bar->bars[i]->openPrice[j], bar->bars[i]->closePrice[j], bar->bars[i]->uplimitPrice[j], bar->bars[i]->lowlimitPrice[j], bar->bars[i]->volume[j]);
+			tvolume[i] += bar->bars[i]->volume[j];
+		}
+		printf("%d---%d\n", tvolume[i], ovolume[i]);
+		if (tvolume[i] != ovolume[i]) {
+			isError("xx");
+		}
+	}
+	free_BAR(bar);
+
+	
+	//int barLen[12] = {1, 2, 3, 4, 5, 10, 15, 20, 40, 60, 135, 273};
+	//struct BAR *barA[12];
+	//create_Multi_BAR(10, barLen, mcollections[0], 20140919, 20140922, barA);
+
+
 	free(mdlogfilepath);
 	free(tdlogfilepath);
 	free(mdserver);

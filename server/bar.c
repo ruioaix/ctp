@@ -196,17 +196,59 @@ struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYM
 	return bar;
 }
 
-struct BAR *create_BAR(int barLen, mongoc_collection_t *cll, int beginYMD, int endYMD) {
-	struct BAR *bar = create_1MTYPE_BAR_from_MongoDB(cll, beginYMD, endYMD);
-	if (barLen == 1) return bar;
-	if (barLen > 135) {
-		//TODO return 1d bar.
+static struct BAR *create_BAR_function_halfday(struct BAR *bar) {
+	if (bar->barLen != 1) return NULL;
+	int i, j;
+	for (i = bar->head; i <= bar->tail; ++i) {
+		if (bar->bars[i] == NULL) continue;
+		struct BARELEMENT *be = bar->bars[i];
+		//morning
+		be->etimeHMS[0] = be->etimeHMS[136];
+		be->closePrice[0] = be->closePrice[136];
+		for (j = 1; j < 137; ++j) {
+			be->uplimitPrice[0] = be->uplimitPrice[0] > be->uplimitPrice[j] ? be->uplimitPrice[0] : be->uplimitPrice[j];
+			be->lowlimitPrice[0] = be->lowlimitPrice[0] < be->lowlimitPrice[j] ? be->lowlimitPrice[0] : be->lowlimitPrice[j];
+			be->volume[0] += be->volume[j];
+		}
+		//afternoon
+		be->btimeHMS[1] = be->btimeHMS[137];
+		be->etimeHMS[1] = be->etimeHMS[272];
+		be->openPrice[1] = be->openPrice[137];
+		be->closePrice[1] = be->closePrice[272];
+		be->uplimitPrice[1] = be->uplimitPrice[137];
+		be->lowlimitPrice[1] = be->lowlimitPrice[272];
+		be->volume[1] = be->volume[137];
+		for (j = 138; j < 273; ++j) {
+			be->uplimitPrice[1] = be->uplimitPrice[1] > be->uplimitPrice[j] ? be->uplimitPrice[1] : be->uplimitPrice[j];
+			be->lowlimitPrice[1] = be->lowlimitPrice[1] < be->lowlimitPrice[j] ? be->lowlimitPrice[1] : be->lowlimitPrice[j];
+			be->volume[1] += be->volume[j];
+		}
+
 	}
-	else if (barLen > 60) {
-		//TODO return 0.5d bar.
+	bar->barLen = BARNUM_1MIN1DAY_HALF;
+	bar->num = 2;
+	return bar;
+}
+static struct BAR *create_BAR_function_1day(struct BAR *bar) {
+	int i, j;
+	for (i = bar->head; i <= bar->tail; ++i) {
+		if (bar->bars[i] == NULL) continue;
+		struct BARELEMENT *be = bar->bars[i];
+		be->etimeHMS[0] = be->etimeHMS[bar->num-1];
+		be->closePrice[0] = be->closePrice[bar->num-1];
+		for (j = 1; j < bar->num; ++j) {
+			be->uplimitPrice[0] = be->uplimitPrice[0] > be->uplimitPrice[j] ? be->uplimitPrice[0] : be->uplimitPrice[j];
+			be->lowlimitPrice[0] = be->lowlimitPrice[0] < be->lowlimitPrice[j] ? be->lowlimitPrice[0] : be->lowlimitPrice[j];
+			be->volume[0] += be->volume[j];
+		}
 	}
-	//TODO the others are normal min bar.
-	//now bar->num at least 6
+	bar->barLen = BARNUM_1MIN1DAY;
+	bar->num = 1;
+	return bar;
+}
+static struct BAR *create_BAR_function_notlarge60m(struct BAR *bar, int barLen) {
+	if (bar->barLen != 1) return NULL;
+
 	bar->num = BARELEMENT_num(barLen);
 
 	int i,j,k;
@@ -245,7 +287,7 @@ struct BAR *create_BAR(int barLen, mongoc_collection_t *cll, int beginYMD, int e
 		be->uplimitPrice[j] = be->uplimitPrice[barLen*j+1];
 		be->lowlimitPrice[j] = be->lowlimitPrice[barLen*j+1];
 		be->volume[j] = be->volume[barLen*j+1];
-		for (k =2; k <= barLen && j*barLen + k < 137; ++k) {
+		for (k =2; j*barLen + k < 137; ++k) {
 			be->uplimitPrice[j] = be->uplimitPrice[j] > be->uplimitPrice[j*barLen+k] ? be->uplimitPrice[j] : be->uplimitPrice[j*barLen + k];
 			be->lowlimitPrice[j] = be->lowlimitPrice[j] < be->lowlimitPrice[j*barLen + k] ? be->lowlimitPrice[j] : be->lowlimitPrice[j*barLen + k];
 			be->volume[j] += be->volume[j*barLen + k];
@@ -276,11 +318,116 @@ struct BAR *create_BAR(int barLen, mongoc_collection_t *cll, int beginYMD, int e
 		be->uplimitPrice[j] = be->uplimitPrice[startpoint];
 		be->lowlimitPrice[j] = be->lowlimitPrice[startpoint];
 		be->volume[j] = be->volume[startpoint];
-		for (k =1; k < barLen && startpoint + k < 273; ++k) {
+		for (k =1; startpoint + k < 273; ++k) {
 			be->uplimitPrice[j] = be->uplimitPrice[j] > be->uplimitPrice[startpoint + k] ? be->uplimitPrice[j] : be->uplimitPrice[startpoint + k];
 			be->lowlimitPrice[j] = be->lowlimitPrice[j] < be->lowlimitPrice[startpoint + k] ? be->lowlimitPrice[j] : be->lowlimitPrice[startpoint + k];
 			be->volume[j] += be->volume[startpoint + k];
 		}
 	}
+	bar->barLen = barLen;
 	return bar;
 }
+struct BAR *create_BAR(int barLen, mongoc_collection_t *cll, int beginYMD, int endYMD) {
+	struct BAR *bar = create_1MTYPE_BAR_from_MongoDB(cll, beginYMD, endYMD);
+	if (barLen == 1) return bar;
+	if (barLen > 135) {
+		return create_BAR_function_1day(bar);
+	}
+	else if (barLen > 60) {
+		return create_BAR_function_halfday(bar);
+	}
+	return create_BAR_function_notlarge60m(bar, barLen);
+}
+
+/*
+struct BAR *create_Multi_BAR_function_notlarge60m(struct BAR *bar1m, int barLen) {
+	if (bar->barLen != 1) return NULL;
+
+	struct BAR *bar = 
+
+	bar->num = BARELEMENT_num(barLen);
+
+	int i,j,k;
+	for (i = bar->head; i <= bar->tail; ++i) {
+		if (bar->bars[i] == NULL) continue;
+		struct BARELEMENT *be = bar->bars[i];
+		//morning first
+		be->etimeHMS[0] = be->etimeHMS[barLen];
+		be->closePrice[0] = be->closePrice[barLen];
+		for (j = 1; j < barLen+1; ++j) {
+			be->uplimitPrice[0] = be->uplimitPrice[0] > be->uplimitPrice[j] ? be->uplimitPrice[0] : be->uplimitPrice[j];
+			be->lowlimitPrice[0] = be->lowlimitPrice[0] < be->lowlimitPrice[j] ? be->lowlimitPrice[0] : be->lowlimitPrice[j];
+			be->volume[0] += be->volume[j];
+		}
+		//morning middle
+		for (j = 1; j < bar->num/2 - 1; ++j) {
+			be->btimeHMS[j] = be->btimeHMS[barLen*j+1];
+			be->etimeHMS[j] = be->etimeHMS[barLen*(1+j)];
+			be->openPrice[j] = be->openPrice[barLen*j+1];
+			be->closePrice[j] = be->closePrice[barLen*(1+j)];
+			be->uplimitPrice[j] = be->uplimitPrice[barLen*j+1];
+			be->lowlimitPrice[j] = be->lowlimitPrice[barLen*j+1];
+			be->volume[j] = be->volume[barLen*j+1];
+			for (k =2; k <= barLen; ++k) {
+				be->uplimitPrice[j] = be->uplimitPrice[j] > be->uplimitPrice[j*barLen+k] ? be->uplimitPrice[j] : be->uplimitPrice[j*barLen + k];
+				be->lowlimitPrice[j] = be->lowlimitPrice[j] < be->lowlimitPrice[j*barLen + k] ? be->lowlimitPrice[j] : be->lowlimitPrice[j*barLen + k];
+				be->volume[j] += be->volume[j*barLen + k];
+			}
+		}
+		//morning last
+		j = bar->num/2 - 1;
+		be->btimeHMS[j] = be->btimeHMS[barLen*j+1];
+		be->etimeHMS[j] = be->etimeHMS[136];
+		be->openPrice[j] = be->openPrice[barLen*j+1];
+		be->closePrice[j] = be->closePrice[136];
+		be->uplimitPrice[j] = be->uplimitPrice[barLen*j+1];
+		be->lowlimitPrice[j] = be->lowlimitPrice[barLen*j+1];
+		be->volume[j] = be->volume[barLen*j+1];
+		for (k =2; j*barLen + k < 137; ++k) {
+			be->uplimitPrice[j] = be->uplimitPrice[j] > be->uplimitPrice[j*barLen+k] ? be->uplimitPrice[j] : be->uplimitPrice[j*barLen + k];
+			be->lowlimitPrice[j] = be->lowlimitPrice[j] < be->lowlimitPrice[j*barLen + k] ? be->lowlimitPrice[j] : be->lowlimitPrice[j*barLen + k];
+			be->volume[j] += be->volume[j*barLen + k];
+		}
+		//afternoon first and middle
+		for (j = bar->num/2; j < bar->num-1; ++j) {
+			int startpoint = 137+barLen*(j-bar->num/2);
+			be->btimeHMS[j] = be->btimeHMS[startpoint];
+			be->etimeHMS[j] = be->etimeHMS[startpoint+barLen - 1];
+			be->openPrice[j] = be->openPrice[startpoint];
+			be->closePrice[j] = be->closePrice[startpoint + barLen - 1];
+			be->uplimitPrice[j] = be->uplimitPrice[startpoint];
+			be->lowlimitPrice[j] = be->lowlimitPrice[startpoint];
+			be->volume[j] = be->volume[startpoint];
+			for (k =1; k < barLen; ++k) {
+				be->uplimitPrice[j] = be->uplimitPrice[j] > be->uplimitPrice[startpoint + k] ? be->uplimitPrice[j] : be->uplimitPrice[startpoint + k];
+				be->lowlimitPrice[j] = be->lowlimitPrice[j] < be->lowlimitPrice[startpoint + k] ? be->lowlimitPrice[j] : be->lowlimitPrice[startpoint + k];
+				be->volume[j] += be->volume[startpoint + k];
+			}
+		}
+		//afternoon last
+		j = bar->num - 1;
+		int startpoint = 137 + barLen*(bar->num/2 - 1);
+		be->btimeHMS[j] = be->btimeHMS[startpoint];
+		be->etimeHMS[j] = be->etimeHMS[272];
+		be->openPrice[j] = be->openPrice[startpoint];
+		be->closePrice[j] = be->closePrice[272];
+		be->uplimitPrice[j] = be->uplimitPrice[startpoint];
+		be->lowlimitPrice[j] = be->lowlimitPrice[startpoint];
+		be->volume[j] = be->volume[startpoint];
+		for (k =1; startpoint + k < 273; ++k) {
+			be->uplimitPrice[j] = be->uplimitPrice[j] > be->uplimitPrice[startpoint + k] ? be->uplimitPrice[j] : be->uplimitPrice[startpoint + k];
+			be->lowlimitPrice[j] = be->lowlimitPrice[j] < be->lowlimitPrice[startpoint + k] ? be->lowlimitPrice[j] : be->lowlimitPrice[startpoint + k];
+			be->volume[j] += be->volume[startpoint + k];
+		}
+	}
+	bar->barLen = barLen;
+	return bar;
+}
+void create_Multi_BAR(int num, int *barLenA, mongoc_collection_t *cll, int beginYMD, int endYMD, struct BAR *barA[]) {
+	struct BAR *bar = create_1MTYPE_BAR_from_MongoDB(cll, beginYMD, endYMD);
+	int i;
+	for (i = 0; i < num; ++i) {
+		int barLen = barLenA[i];	
+	}
+}
+*/
