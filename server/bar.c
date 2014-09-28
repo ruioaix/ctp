@@ -482,26 +482,43 @@ static struct BAR *create_Multi_BAR_function_1day(struct BAR *bar) {
 	newbar->num = 1;
 	return newbar;
 }
-void create_Multi_BAR(int num, int *barLenA, mongoc_collection_t *cll, int beginYMD, int endYMD, struct BAR *barA[]) {
-	struct BAR *bar = create_1MTYPE_BAR_from_MongoDB(cll, beginYMD, endYMD);
+void create_Multi_BAR(int num, int *barLenA, mongoc_collection_t *cll, int beginYMD, int endYMD, struct BAR ***barA, int *barANum) {
+	*barA = smalloc(63*sizeof(struct BAR **));
 	int i;
+	for (i = 0; i < 63; ++i) {
+		(*barA)[i] = NULL;	
+	}
+	struct BAR *bar = create_1MTYPE_BAR_from_MongoDB(cll, beginYMD, endYMD);
 	for (i = 0; i < num; ++i) {
 		int barLen = barLenA[i];	
 		if (barLen > 135) {
-			barA[i] = create_Multi_BAR_function_1day(bar);
+			if ((*barA)[62] == NULL) {
+				(*barA)[62] = create_Multi_BAR_function_1day(bar);
+			}
 		}
 		else if (barLen > 60) {
-			barA[i] = create_Multi_BAR_function_halfday(bar);
+			if ((*barA)[61] == NULL) {
+				(*barA)[61] = create_Multi_BAR_function_halfday(bar);
+			}
 		}
 		else if (barLen > 1) {
-			barA[i] = create_Multi_BAR_function_notlarge60m(bar, barLen);
+			if ((*barA)[barLen] == NULL) {
+				(*barA)[barLen] = create_Multi_BAR_function_notlarge60m(bar, barLen);
+			}
 		}
 		else if (barLen == 1) {
-			barA[i] = bar;
+			if ((*barA)[1] == NULL) {
+				(*barA)[1] = bar;
+			}
 		}
-		else {
-			barA[i] = NULL;
+	}
+	if ((*barA)[1] == NULL) {
+		free_BAR(bar);
+	}
+	*barANum = 0;
+	for (i = 0; i < 63; ++i) {
+		if ((*barA)[i] != NULL) {
+			(*barA)[(*barANum)++] = (*barA)[i];
 		}
 	}
 }
-
