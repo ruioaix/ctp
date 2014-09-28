@@ -482,7 +482,7 @@ static struct BAR *create_Multi_BAR_function_1day(struct BAR *bar) {
 	newbar->num = 1;
 	return newbar;
 }
-void create_Multi_BAR(int num, int *barLenA, mongoc_collection_t *cll, int beginYMD, int endYMD, struct BAR ***barA, int *barANum) {
+void create_Multi_BAR(int num, int *barLenA, mongoc_collection_t *cll, int beginYMD, int endYMD, struct BAR ***barA) {
 	*barA = smalloc(63*sizeof(struct BAR **));
 	int i;
 	for (i = 0; i < 63; ++i) {
@@ -514,11 +514,5 @@ void create_Multi_BAR(int num, int *barLenA, mongoc_collection_t *cll, int begin
 	}
 	if ((*barA)[1] == NULL) {
 		free_BAR(bar);
-	}
-	*barANum = 0;
-	for (i = 0; i < 63; ++i) {
-		if ((*barA)[i] != NULL) {
-			(*barA)[(*barANum)++] = (*barA)[i];
-		}
 	}
 }

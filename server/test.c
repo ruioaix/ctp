@@ -100,10 +100,9 @@ int main(int argc, char **argv) {
 	
 	int barLen[12] = {1, 2, 3, 4, 5, 10, 15, 20, 40, 60, 135, 273};
 	struct BAR **barA;
-	int barANum;
-	create_Multi_BAR(12, barLen, mcollections[0], 20140919, 20140922, &barA, &barANum);
+	create_Multi_BAR(12, barLen, mcollections[0], 20140919, 20140922, &barA);
 	int kk;
-	for (kk = 0; kk < barANum; ++kk) {
+	for (kk = 0; kk < 63; ++kk) {
 		struct BAR *bar = barA[kk];
 		if (bar == NULL) continue;
 		sprintf(bar->InstrumentID, "%s", InstrumentIDs[0]);
