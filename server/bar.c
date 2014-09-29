@@ -182,8 +182,15 @@ static struct BARELEMENT *BAR_find_BE(struct BAR *bar, int ymd) {
 	}
 	return bar->bars[bar->head+ymd-hymd];
 }
-static void BARELEMENT_fill(struct BARELEMENT *be, int index, int hour, int minute, int second, int millsecond, int volume, double lastprice) {
-	int HMS = hour * 10000 + minute * 100 + second;
+//if one dmdmsg has been filled twice, nothing happen. it's ok.
+void BARELEMENT_fill(struct BARELEMENT *be, int hour, int minute, int second, int millsecond, int volume, double lastprice) {
+	int index = BARELEMENT_index(1, hour[j], minute[j]);
+	be->workingIndex = be->workingIndex > index ? be->workingIndex : index;
+
+	int HMSM = hour[j]*ONEE7 + minute[j]*ONEE5 + second[j]*ONEE3 + millsecond[j];
+	be->lastHMSM = be->lastHMSM > HMSM ? be->lastHMSM : HMSM;
+
+	int HMS = HMSM/1000;
 	int bMill = be->btimeHMSM[index]%1000; 
 	int eMill = be->etimeHMSM[index]%1000;
 	if (second == 0 && millsecond < bMill) {
@@ -324,11 +331,7 @@ struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYM
 		//get here, means there is valid dmdmsg. so workingIndex will not be -1 anymore, lastHMSM too.
 		struct BARELEMENT *be = BAR_find_BE(bar, i);
 		for (j = 0; j < num; ++j) {
-			int index = BARELEMENT_index(1, hour[j], minute[j]);
-			BARELEMENT_fill(be, index, hour[j], minute[j], second[j], millsecond[j], volume[j], lastprice[j]);
-			be->workingIndex = be->workingIndex > index ? be->workingIndex : index;
-			int tmpHMSM = hour[j]*ONEE7 + minute[j]*ONEE5 + second[j]*ONEE3 + millsecond[j];
-			be->lastHMSM = be->lastHMSM > tmpHMSM ? be->lastHMSM : tmpHMSM;
+			BARELEMENT_fill(be, hour[j], minute[j], second[j], millsecond[j], volume[j], lastprice[j]);
 		}
 		if (be->lastHMSM >= 151500000) {
 			be->workingIndex = BARNUM_1MIN1DAY;

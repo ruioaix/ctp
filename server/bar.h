@@ -38,6 +38,7 @@ struct BAR {
 void free_BAR(struct BAR *bar);
 
 #include <mongoc.h>
+void BARELEMENT_fill(struct BARELEMENT *be, int hour, int minute, int second, int millsecond, int volume, double lastprice);
 //when: in [beginYMD, endYMD], no data in mongodb, return a empty bar.(bar->head == bar->tail && bar->bars[bar->head] == NULL)
 struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYMD, int endYMD);
 struct BAR *create_BAR(int barLen, mongoc_collection_t *cll, int beginYMD, int endYMD);

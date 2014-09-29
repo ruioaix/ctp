@@ -116,6 +116,10 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 	void *td = mim->td;
 	mongoc_collection_t **mcollections = mim->mcollections;
 
+	while (!TD_isready(td)) {
+		sleep(1);
+	}
+
 	time_t timer;  
 	struct tm *tblock;  
 	timer=time(NULL);  
@@ -124,24 +128,18 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 
 	struct BAR *bar = create_1MTYPE_BAR_from_MongoDB(mcollections[0], 20140919, todayYMD);
 	if (bar->bars[bar->tail]==NULL) return NULL;
-	int lastHMSM = bar->bars[bar->tail]->lastHMSM;
 
 	long ts;
 	long tus;
 	int size;
 	CThostFtdcDepthMarketDataField *pDepthMarketData;;
+	struct BARELEMENT *be = bar->bars[bar->tail];
 	while ((pDepthMarketData  = MD_getOneDMDmsg(md, &ts, &tus, &size)) != NULL) {
 		int hour, minute, second;
 		CTPHELP_updatetime2HMS(pDepthMarketData->UpdateTime, &hour, &minute, &second);
 		int HMSM = hour*10000000 + minute*100000 + second*1000 + pDepthMarketData->UpdateMillisec;
-		if (HMSM <= lastHMSM) continue;
-		//struct BARELEMENT *be = bar->bars[bar->tail];
-		//int index = BARELEMENT_index(1, hour[j], minute[j]);
-		//BARELEMENT_fill(be, index, second, pDepthMarketData->UpdateMillisec, pDepthMarketData->volume, pDepthMarketData->lastprice, );	
-	}
-
-	while (!TD_isready(td)) {
-		sleep(1);
+		if (HMSM <= be->lastHMSM) continue;
+		BARELEMENT_fill(be, hour, minute, second, pDepthMarketData->UpdateMillisec, pDepthMarketData->volume, pDepthMarketData->lastprice);	
 	}
 
 	while (*(mim->running)) {
