@@ -184,10 +184,10 @@ static struct BARELEMENT *BAR_find_BE(struct BAR *bar, int ymd) {
 }
 //if one dmdmsg has been filled twice, nothing happen. it's ok.
 void BARELEMENT_fill(struct BARELEMENT *be, int hour, int minute, int second, int millsecond, int volume, double lastprice) {
-	int index = BARELEMENT_index(1, hour[j], minute[j]);
+	int index = BARELEMENT_index(1, hour, minute);
 	be->workingIndex = be->workingIndex > index ? be->workingIndex : index;
 
-	int HMSM = hour[j]*ONEE7 + minute[j]*ONEE5 + second[j]*ONEE3 + millsecond[j];
+	int HMSM = hour*ONEE7 + minute*ONEE5 + second*ONEE3 + millsecond;
 	be->lastHMSM = be->lastHMSM > HMSM ? be->lastHMSM : HMSM;
 
 	int HMS = HMSM/1000;

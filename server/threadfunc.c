@@ -6,6 +6,7 @@
 #include "safe.h"
 #include "ctphelp.h"
 #include "bar.h"
+#include "metrics.h"
 #include <string.h>
 
 void *DMDMSG_insertIntoMongoDB(void *ThreadIM) {
@@ -128,6 +129,7 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 
 	struct BAR *bar = create_1MTYPE_BAR_from_MongoDB(mcollections[0], 20140919, todayYMD);
 	if (bar->bars[bar->tail]==NULL) return NULL;
+	struct EMABAR *eb = create_EMABAR(bar, 12, 20, 40);
 
 	long ts;
 	long tus;
@@ -139,7 +141,21 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 		CTPHELP_updatetime2HMS(pDepthMarketData->UpdateTime, &hour, &minute, &second);
 		int HMSM = hour*10000000 + minute*100000 + second*1000 + pDepthMarketData->UpdateMillisec;
 		if (HMSM <= be->lastHMSM) continue;
-		BARELEMENT_fill(be, hour, minute, second, pDepthMarketData->UpdateMillisec, pDepthMarketData->volume, pDepthMarketData->lastprice);	
+		int index = be->workingIndex;
+		BARELEMENT_fill(be, hour, minute, second, pDepthMarketData->UpdateMillisec, pDepthMarketData->Volume, pDepthMarketData->LastPrice);	
+		if (index != be->workingIndex) {
+			EMABAR_syn(eb, index);
+		}
+	}
+
+	while ((pDepthMarketData  = MD_getOneDMDmsg(md, &ts, &tus, &size)) != NULL) {
+		int index = be->workingIndex;
+		int hour, minute, second;
+		CTPHELP_updatetime2HMS(pDepthMarketData->UpdateTime, &hour, &minute, &second);
+		BARELEMENT_fill(be, hour, minute, second, pDepthMarketData->UpdateMillisec, pDepthMarketData->Volume, pDepthMarketData->LastPrice);	
+		if (index != be->workingIndex) {
+
+		}
 	}
 
 	while (*(mim->running)) {

@@ -8,6 +8,7 @@ struct BARELEMENT {
 	//if workingIndex == num, means this BARELEMENT is complete: one day complete data.
 	//else if workingIndex >=0, means the workingIndex is the index of the bar which is not finish.
 	//else, workingIndex is -1, means the BARELEMENT just being inited.
+	//!!!only the last be's workingIndex can be different with num. usually it's today's be.
 	int workingIndex; 
 	//default is 0, only when workingIndex >0 && workingVolume < num, the value is the sum of the [0, workingIndex-1] bar's volume.
 	int workingVolume;

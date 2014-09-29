@@ -11,5 +11,6 @@ struct EMABAR {
 };
 
 struct EMABAR *create_EMABAR(struct BAR *bar, int longnum, int medinum, int shotnum);
+void EMABAR_syn(struct EMABAR *eb, int index);
 
 #endif
