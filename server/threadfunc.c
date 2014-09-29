@@ -120,7 +120,7 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 	struct tm *tblock;  
 	timer=time(NULL);  
 	tblock=localtime(&timer);  
-	int todayYMD = (tblock->tm_year+1900)*1E4 + tblock->tm_mon*1E2 + tblock->tm_mday;
+	int todayYMD = (tblock->tm_year+1900)*10000 + tblock->tm_mon*100 + tblock->tm_mday;
 
 	struct BAR *bar = create_1MTYPE_BAR_from_MongoDB(mcollections[0], 20140919, todayYMD);
 	if (bar->bars[bar->tail]==NULL) return NULL;
@@ -133,7 +133,7 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 	while ((pDepthMarketData  = MD_getOneDMDmsg(md, &ts, &tus, &size)) != NULL) {
 		int hour, minute, second;
 		CTPHELP_updatetime2HMS(pDepthMarketData->UpdateTime, &hour, &minute, &second);
-		int HMSM = hour*1E7 + minute*1E5 + second*1E3 + pDepthMarketData->UpdateMillisec;
+		int HMSM = hour*10000000 + minute*100000 + second*1000 + pDepthMarketData->UpdateMillisec;
 		if (HMSM <= lastHMSM) continue;
 		//struct BARELEMENT *be = bar->bars[bar->tail];
 		//int index = BARELEMENT_index(1, hour[j], minute[j]);

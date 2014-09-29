@@ -8,9 +8,13 @@
 #define BARLEN_HALFDAY_MIN 60
 #define BARLEN_1DAY_MIN 135
 
+#define ONEE3 1000
+#define ONEE5 100000
+#define ONEE7 10000000
+
 static void free_BARELEMENT(struct BARELEMENT *be) {
-	free(be->btimeHMS);
-	free(be->etimeHMS);
+	free(be->btimeHMSM);
+	free(be->etimeHMSM);
 	free(be->openPrice);
 	free(be->closePrice);
 	free(be->uplimitPrice);
@@ -138,8 +142,8 @@ static struct BARELEMENT *create_BARELEMENT(int barLen, int ymd) {
 	be->lastHMSM = -1;
 	be->YMD = ymd;
 	int num = BARELEMENT_num(barLen);
-	be->btimeHMS = smalloc(num * sizeof(int));
-	be->etimeHMS = smalloc(num * sizeof(int));
+	be->btimeHMSM = smalloc(num * sizeof(int));
+	be->etimeHMSM = smalloc(num * sizeof(int));
 	be->openPrice = smalloc(num * sizeof(double));
 	be->closePrice = smalloc(num * sizeof(double));
 	be->uplimitPrice = smalloc(num * sizeof(double));
@@ -149,8 +153,8 @@ static struct BARELEMENT *create_BARELEMENT(int barLen, int ymd) {
 	for (i = 0; i < num; ++i) {
 		int bhms, ehms;
 	   	BARELEMENT_hms(barLen, i, &bhms, &ehms);
-		be->btimeHMS[i] = bhms;
-		be->etimeHMS[i] = ehms;
+		be->btimeHMSM[i] = bhms*1000 + 999;
+		be->etimeHMSM[i] = ehms*1000;
 		be->openPrice[i] = be->closePrice[i] = be->uplimitPrice[i] = -1;
 		be->lowlimitPrice[i] = INT_MAX;
 	}
@@ -178,18 +182,25 @@ static struct BARELEMENT *BAR_find_BE(struct BAR *bar, int ymd) {
 	}
 	return bar->bars[bar->head+ymd-hymd];
 }
-static void BARELEMENT_fill(struct BARELEMENT *be, int index, int second, int millsecond, int volume, double lastprice, int *mills_open, int *mills_close) {
-	if (second == 0 && (mills_open[index] == 10000 || millsecond < mills_open[index])) {
+static void BARELEMENT_fill(struct BARELEMENT *be, int index, int hour, int minute, int second, int millsecond, int volume, double lastprice) {
+	int HMS = hour * 10000 + minute * 100 + second;
+	int bMill = be->btimeHMSM[index]%1000; 
+	int eMill = be->etimeHMSM[index]%1000;
+	if (second == 0 && millsecond < bMill) {
 		be->openPrice[index] = lastprice;
-		mills_open[index] = millsecond;
+		be->btimeHMSM[index] += millsecond - bMill;
 	}
-	if (second == 59 && (mills_close[index] == 10000 || millsecond > mills_close[index])) {
+	if (second == 59 && millsecond > eMill) {
 		be->closePrice[index] = lastprice;
-		mills_close[index] = millsecond;
+		be->etimeHMSM[index] += millsecond - eMill;
 	}
 	be->uplimitPrice[index] = be->uplimitPrice[index] > lastprice ? be->uplimitPrice[index] : lastprice;
 	be->lowlimitPrice[index] = be->lowlimitPrice[index] > lastprice ? lastprice : be->lowlimitPrice[index];
 	be->volume[index] = be->volume[index] > volume ? be->volume[index] : volume;
+	if (HMS == 91400 || HMS == 113000 || HMS == 151500) {
+		be->closePrice[index] = lastprice;
+		be->etimeHMSM[index] += millsecond - eMill;
+	}
 }
 //from and to may point to the same BE
 //suppose: barLen is between [2, 60]
@@ -201,8 +212,8 @@ static void BARELEMENT_evolution(struct BARELEMENT *from, struct BARELEMENT *to,
 	int j,k;
 	//morning first
 	//91400 is included, so totally use barLen+1.
-	to->btimeHMS[0] = from->btimeHMS[0];
-	to->etimeHMS[0] = from->etimeHMS[barLen];
+	to->btimeHMSM[0] = from->btimeHMSM[0];
+	to->etimeHMSM[0] = from->etimeHMSM[barLen];
 	to->openPrice[0] = from->openPrice[0];
 	to->closePrice[0] = from->closePrice[barLen];
 	to->uplimitPrice[0] = from->uplimitPrice[0];
@@ -216,8 +227,8 @@ static void BARELEMENT_evolution(struct BARELEMENT *from, struct BARELEMENT *to,
 	//morning middle
 	//totally use barLen.
 	for (j = 1; j < num/2 - 1; ++j) {
-		to->btimeHMS[j] = from->btimeHMS[barLen*j+1];
-		to->etimeHMS[j] = from->etimeHMS[barLen*(1+j)];
+		to->btimeHMSM[j] = from->btimeHMSM[barLen*j+1];
+		to->etimeHMSM[j] = from->etimeHMSM[barLen*(1+j)];
 		to->openPrice[j] = from->openPrice[barLen*j+1];
 		to->closePrice[j] = from->closePrice[barLen*(1+j)];
 		to->uplimitPrice[j] = from->uplimitPrice[barLen*j+1];
@@ -233,8 +244,8 @@ static void BARELEMENT_evolution(struct BARELEMENT *from, struct BARELEMENT *to,
 	//113000 is included.
 	//totally use 2~(barLen+1).
 	j = num/2 - 1;
-	to->btimeHMS[j] = from->btimeHMS[barLen*j+1];
-	to->etimeHMS[j] = from->etimeHMS[136];
+	to->btimeHMSM[j] = from->btimeHMSM[barLen*j+1];
+	to->etimeHMSM[j] = from->etimeHMSM[136];
 	to->openPrice[j] =  from->openPrice[barLen*j+1];
 	to->closePrice[j] = from->closePrice[136];
 	to->uplimitPrice[j] =  from->uplimitPrice[barLen*j+1];
@@ -249,8 +260,8 @@ static void BARELEMENT_evolution(struct BARELEMENT *from, struct BARELEMENT *to,
 	//totally use barLen
 	for (j = num/2; j < num-1; ++j) {
 		int startpoint = 137+barLen*(j-num/2);
-		to->btimeHMS[j] = from->btimeHMS[startpoint];
-		to->etimeHMS[j] = from->etimeHMS[startpoint + barLen - 1];
+		to->btimeHMSM[j] = from->btimeHMSM[startpoint];
+		to->etimeHMSM[j] = from->etimeHMSM[startpoint + barLen - 1];
 		to->openPrice[j] = from->openPrice[startpoint];
 		to->closePrice[j] = from->closePrice[startpoint + barLen - 1];
 		to->uplimitPrice[j] = from->uplimitPrice[startpoint];
@@ -266,8 +277,8 @@ static void BARELEMENT_evolution(struct BARELEMENT *from, struct BARELEMENT *to,
 	//totally use 2~(barLen+1).
 	j = num - 1;
 	int startpoint = 137 + barLen*(num/2 - 1);
-	to->btimeHMS[j] = from->btimeHMS[startpoint];
-	to->etimeHMS[j] = from->etimeHMS[272];
+	to->btimeHMSM[j] = from->btimeHMSM[startpoint];
+	to->etimeHMSM[j] = from->etimeHMSM[272];
 	to->openPrice[j] = from->openPrice[startpoint];
 	to->closePrice[j] = from->closePrice[272];
 	to->uplimitPrice[j] = from->uplimitPrice[startpoint];
@@ -302,8 +313,6 @@ struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYM
 	millsecond = scalloc(memnum, sizeof(int));
 	volume = scalloc(memnum, sizeof(int));
 	lastprice = smalloc(memnum * sizeof(double));
-	int *mills_open = smalloc(BARNUM_1MIN1DAY*sizeof(int));
-	int *mills_close = smalloc(BARNUM_1MIN1DAY*sizeof(int));
 
 	int i,j;
 	for (i = beginYMD; i <= endYMD; ++i) {
@@ -314,15 +323,11 @@ struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYM
 		if (num == 0) continue;
 		//get here, means there is valid dmdmsg. so workingIndex will not be -1 anymore, lastHMSM too.
 		struct BARELEMENT *be = BAR_find_BE(bar, i);
-		for (j = 0; j < BARNUM_1MIN1DAY; ++j) {
-			mills_open[j] = 10000;
-			mills_close[j] = 10000;
-		}
 		for (j = 0; j < num; ++j) {
 			int index = BARELEMENT_index(1, hour[j], minute[j]);
-			BARELEMENT_fill(be, index, second[j], millsecond[j], volume[j], lastprice[j], mills_open, mills_close);
+			BARELEMENT_fill(be, index, hour[j], minute[j], second[j], millsecond[j], volume[j], lastprice[j]);
 			be->workingIndex = be->workingIndex > index ? be->workingIndex : index;
-			int tmpHMSM = hour[j]*1E7 + minute[j]*1E5 + second[j]*1E3 + millsecond[j];
+			int tmpHMSM = hour[j]*ONEE7 + minute[j]*ONEE5 + second[j]*ONEE3 + millsecond[j];
 			be->lastHMSM = be->lastHMSM > tmpHMSM ? be->lastHMSM : tmpHMSM;
 		}
 		if (be->lastHMSM >= 151500000) {
@@ -335,14 +340,10 @@ struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYM
 		for (j = be->workingIndex-1; j > 0; --j) {
 			be->volume[j] -= be->volume[j-1];
 		}
-		be->closePrice[0] = be->openPrice[0];
-		be->closePrice[136] = be->openPrice[136];
-		be->closePrice[272] = be->openPrice[272];
 	}
 
 	free(hour);free(minute);free(second);
 	free(millsecond);free(volume);free(lastprice);
-	free(mills_open);free(mills_close);
 
 	return bar;
 }
@@ -352,8 +353,8 @@ struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYM
 //suppose: to is halfdaybe or 1mbe
 static void BARELEMENT_evolution_halfday(struct BARELEMENT *from, struct BARELEMENT *to) {
 	//morning
-	to->btimeHMS[0] = from->btimeHMS[0];
-	to->etimeHMS[0] = from->etimeHMS[136];
+	to->btimeHMSM[0] = from->btimeHMSM[0];
+	to->etimeHMSM[0] = from->etimeHMSM[136];
 	to->openPrice[0] = from->openPrice[0];
 	to->closePrice[0] = from->closePrice[136];
 	to->uplimitPrice[0] = from->uplimitPrice[0];
@@ -366,8 +367,8 @@ static void BARELEMENT_evolution_halfday(struct BARELEMENT *from, struct BARELEM
 		to->volume[0] += from->volume[j];
 	}
 	//afternoon
-	to->btimeHMS[1] = from->btimeHMS[137];
-	to->etimeHMS[1] = from->etimeHMS[272];
+	to->btimeHMSM[1] = from->btimeHMSM[137];
+	to->etimeHMSM[1] = from->etimeHMSM[272];
 	to->openPrice[1] = from->openPrice[137];
 	to->closePrice[1] = from->closePrice[272];
 	to->uplimitPrice[1] = from->uplimitPrice[137];
@@ -395,8 +396,8 @@ static struct BAR *create_BAR_function_halfday(struct BAR *bar) {
 //suppose: from is a 1m be
 //suppose: to is 1daybe or 1mbe
 static void BARELEMENT_evolution_1day(struct BARELEMENT *from, struct BARELEMENT *to) {
-	to->btimeHMS[0] = from->btimeHMS[0];
-	to->etimeHMS[0] = from->etimeHMS[272];
+	to->btimeHMSM[0] = from->btimeHMSM[0];
+	to->etimeHMSM[0] = from->etimeHMSM[272];
 	to->openPrice[0] = from->openPrice[0];
 	to->closePrice[0] = from->closePrice[272];
 	to->volume[0] = from->volume[0];

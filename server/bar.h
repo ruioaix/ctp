@@ -17,8 +17,8 @@ struct BARELEMENT {
 	int lastHMSM;
 
 	int YMD;
-	int *btimeHMS;
-	int *etimeHMS;
+	int *btimeHMSM;
+	int *etimeHMSM;
 	double *openPrice;
 	double *closePrice;
 	double *uplimitPrice;
