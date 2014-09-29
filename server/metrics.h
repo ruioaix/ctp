@@ -1,0 +1,15 @@
+#ifndef CTP_C_API_SERVER_METRICS_H
+#define CTP_C_API_SERVER_METRICS_H
+
+#include "bar.h"
+
+struct EMABAR {
+	struct BAR *bar;
+	double *longEMA[BAR_DAYSNUM_MAX];
+	double *mediEMA[BAR_DAYSNUM_MAX];
+	double *shotEMA[BAR_DAYSNUM_MAX];
+};
+
+struct EMABAR *create_EMABAR(struct BAR *bar, int longnum, int medinum, int shotnum);
+
+#endif
