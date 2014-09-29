@@ -133,7 +133,6 @@ static int BARELEMENT_index(int barLen, int hour, int minute) {
 //suppose barLen > 0
 static struct BARELEMENT *create_BARELEMENT(int barLen, int ymd) {
 	struct BARELEMENT *be = smalloc(sizeof(struct BARELEMENT));
-	be->isComplete = 0;
 	be->YMD = ymd;
 	int num = BARELEMENT_num(barLen);
 	be->btimeHMS = smalloc(num * sizeof(int));
@@ -324,6 +323,61 @@ struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYM
 	free(mills_open);free(mills_close);
 
 	return bar;
+}
+void create_1MTYPE_BAR_from_MongoDB_today(mongoc_collection_t *cll, struct BAR **barP, int *lastHMSM) {
+	int num, memnum, *hour, *minute, *second, *millsecond, *volume;
+	double *lastprice;
+	memnum = BAR_METADATA_1DNUM_MAX;
+	hour = scalloc(memnum, sizeof(int)); 
+	minute = scalloc(memnum, sizeof(int)); 
+	second = scalloc(memnum, sizeof(int)); 
+	millsecond = scalloc(memnum, sizeof(int));
+	volume = scalloc(memnum, sizeof(int));
+	lastprice = smalloc(memnum * sizeof(double));
+
+	struct BAR *bar = smalloc(sizeof(struct BAR));
+	*barP = bar;
+	bar->barLen = 1;
+	bar->num = BARNUM_1MIN1DAY;
+	bar->head = bar->tail = BAR_DAYSNUM_MAX/2;
+	int *mills_open = smalloc(BARNUM_1MIN1DAY*sizeof(int));
+	int *mills_close = smalloc(BARNUM_1MIN1DAY*sizeof(int));
+	int i;
+	for (i = 0; i < BAR_DAYSNUM_MAX; ++i) {
+		bar->bars[i] = NULL;	
+	}
+	int j;
+	*lastHMSM = 0;
+
+	time_t timer;  
+	struct tm *tblock;  
+	timer=time(NULL);  
+	tblock=localtime(&timer); 
+	int todayYMD = (tblock->tm_year + 1900)*10000 + tblock->tm_mon*100 + tblock->tm_mday;
+
+	MongoAPI_fetch_DMD_FOR_BAR(cll, todayYMD, &num, &memnum, &hour, &minute, &second, &millsecond, &volume, &lastprice);
+	if (num != 0) {
+		struct BARELEMENT *be = BAR_find_BE(bar, todayYMD);
+		for (j = 0; j < BARNUM_1MIN1DAY; ++j) {
+			mills_open[j] = 10000;
+			mills_close[j] = 10000;
+		}
+		for (j = 0; j < num; ++j) {
+			BARELEMENT_fill(be, 1, hour[j], minute[j], second[j], millsecond[j], volume[j], lastprice[j], mills_open, mills_close);
+			int tmpHMSM = hour[j]*1E7 + minute[j]*1E5 + second[j]*1E3 + millsecond[j];
+			*lastHMSM = (*lastHMSM)>tmpHMSM ? (*lastHMSM) : tmpHMSM;
+		}
+		for (j = BARNUM_1MIN1DAY - 1; j > 0; --j) {
+			be->volume[j] -= be->volume[j-1];
+		}
+		be->closePrice[0] = be->openPrice[0];
+		be->closePrice[136] = be->openPrice[136];
+		be->closePrice[272] = be->openPrice[272];
+	}
+
+	free(hour);free(minute);free(second);
+	free(millsecond);free(volume);free(lastprice);
+	free(mills_open);free(mills_close);
 }
 
 //from and to may point to the same BE

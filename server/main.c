@@ -33,17 +33,6 @@ int main(int argc, char **argv) {
 	mongoc_client_t *client = MongoAPI_create_client(mongodb_url_port);
 	mongoc_collection_t **mcollections = MongoAPI_glue_collections(client, InstrumentIDs, InstrumentNum, BrokerID, UserID);
 
-	int i;
-	struct BAR *bar = create_1MTYPE_BAR_from_MongoDB(mcollections[0], 20140919, 20140922);
-	int k=0;
-	int j;
-	for (i = bar->head; i <= bar->tail; ++i) {
-		if (bar->bars[i] == NULL) continue;
-		for (j = 0; j < bar->num; ++j) {
-			printf("k:%05d, nN: %d, bN: %d, InID: %s, YMD: %06d, b-etimeHMS: %06d-%06d, o-cPrice: %f-%f, u-lPrice: %f-%f, vol:%d\n", k++, bar->barLen, bar->num, bar->InstrumentID, bar->bars[i]->YMD, bar->bars[i]->btimeHMS[j], bar->bars[i]->etimeHMS[j], bar->bars[i]->openPrice[j], bar->bars[i]->closePrice[j], bar->bars[i]->uplimitPrice[j], bar->bars[i]->lowlimitPrice[j], bar->bars[i]->volume[j]);
-		}
-	}
-	//free(bar);
 
 	int running = 1;
 	struct ThreadIM mim;
@@ -88,6 +77,7 @@ int main(int argc, char **argv) {
 	free(UserID);
 	free(pd);
 	free(mongodb_url_port);
+	int i;
 	for (i = 0; i < InstrumentNum; ++i) {
 		free(InstrumentIDs[i]);
 	}

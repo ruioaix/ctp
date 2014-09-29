@@ -5,7 +5,6 @@
 
 //one day bar element.
 struct BARELEMENT {
-	int isComplete;
 	int YMD;
 	int *btimeHMS;
 	int *etimeHMS;
@@ -30,6 +29,7 @@ void free_BAR(struct BAR *bar);
 
 #include <mongoc.h>
 struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYMD, int endYMD);
+void create_1MTYPE_BAR_from_MongoDB_today(mongoc_collection_t *cll, struct BAR **bar, int *lastHMSM);
 struct BAR *create_BAR(int barLen, mongoc_collection_t *cll, int beginYMD, int endYMD);
 void create_Multi_BAR(int num, int *barLen, mongoc_collection_t *cll, int beginYMD, int endYMD, struct BAR ***barA);
 

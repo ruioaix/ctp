@@ -5,6 +5,7 @@
 #include "verbose.h"
 #include "safe.h"
 #include "ctphelp.h"
+#include "bar.h"
 #include <string.h>
 
 void *DMDMSG_insertIntoMongoDB(void *ThreadIM) {
@@ -111,9 +112,26 @@ void *INSTRMENT_revise(void *ThreadIM) {
 
 void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 	struct ThreadIM *mim = ThreadIM;
-
 	void *md = mim->md;
 	void *td = mim->td;
+	mongoc_collection_t **mcollections = mim->mcollections;
+
+	sleep(3);
+	struct BAR *bar;
+	int lastHMSM;
+   	create_1MTYPE_BAR_from_MongoDB_today(mcollections[0], &bar, &lastHMSM);
+
+	long ts;
+	long tus;
+	int size;
+	CThostFtdcDepthMarketDataField *pDepthMarketData;;
+	while ((pDepthMarketData  = MD_getOneDMDmsg(md, &ts, &tus, &size)) != NULL) {
+		int hour, minute, second;
+		CTPHELP_updatetime2HMS(pDepthMarketData->UpdateTime, &hour, &minute, &second);
+		int HMSM = hour*1E7 + minute*1E5 + second*1E3 + pDepthMarketData->UpdateMillisec;
+		if (HMSM <= lastHMSM) continue;
+		//BAR_fill(pDepthMarketData);	
+	}
 
 	while (!TD_isready(td)) {
 		sleep(1);

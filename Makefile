@@ -1,6 +1,5 @@
 .PHONY : all install clean buildcapi server_basic run test
 
-test: 
 #link in c++ way, because of libctpcapi.so.
 run :  buildcapi server_basic 
 	g++ -g -Wall -Wunused bin/main.o bin/threadfunc.o bin/mongoapi.o bin/io.o bin/bar.o bin/ctphelp.o bin/safe.o -L. -lctpcapi -lthostmduserapi -lthosttraderapi -lrt -lmongoc-1.0 -lbson-1.0 -pthread -lm  -o run
