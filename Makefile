@@ -17,6 +17,7 @@ server_basic :
 	gcc -g -Wall -Wunused -c server/main.c -I. -I/usr/include/libmongoc-1.0 -I/usr/include/libbson-1.0  -o bin/main.o
 	gcc -g -Wall -Wunused -c server/safe.c -o bin/safe.o
 	gcc -g -Wall -Wunused -c server/io.c -o bin/io.o
+	gcc -g -Wall -Wunused -c server/metrics.c -I. -I/usr/include/libmongoc-1.0 -I/usr/include/libbson-1.0 -o bin/metrics.o
 	gcc -g -Wall -Wunused -c server/bar.c -I. -I/usr/include/libmongoc-1.0 -I/usr/include/libbson-1.0 -o bin/bar.o
 	gcc -g -Wall -Wunused -c server/ctphelp.c -o bin/ctphelp.o
 	gcc -g -Wall -Wunused -c server/threadfunc.c -I. -I/usr/include/libmongoc-1.0 -I/usr/include/libbson-1.0 -o bin/threadfunc.o

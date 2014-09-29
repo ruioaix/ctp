@@ -133,6 +133,9 @@ static int BARELEMENT_index(int barLen, int hour, int minute) {
 //suppose barLen > 0
 static struct BARELEMENT *create_BARELEMENT(int barLen, int ymd) {
 	struct BARELEMENT *be = smalloc(sizeof(struct BARELEMENT));
+	be->workingIndex = -1;
+	be->workingVolume = 0;
+	be->lastHMSM = -1;
 	be->YMD = ymd;
 	int num = BARELEMENT_num(barLen);
 	be->btimeHMS = smalloc(num * sizeof(int));
@@ -175,8 +178,7 @@ static struct BARELEMENT *BAR_find_BE(struct BAR *bar, int ymd) {
 	}
 	return bar->bars[bar->head+ymd-hymd];
 }
-static void BARELEMENT_fill(struct BARELEMENT *be, int barLen, int hour, int minute, int second, int millsecond, int volume, double lastprice, int *mills_open, int *mills_close) {
-	int index = BARELEMENT_index(barLen, hour, minute);
+static void BARELEMENT_fill(struct BARELEMENT *be, int index, int second, int millsecond, int volume, double lastprice, int *mills_open, int *mills_close) {
 	if (second == 0 && (mills_open[index] == 10000 || millsecond < mills_open[index])) {
 		be->openPrice[index] = lastprice;
 		mills_open[index] = millsecond;
@@ -277,7 +279,20 @@ static void BARELEMENT_evolution(struct BARELEMENT *from, struct BARELEMENT *to,
 		to->volume[j] += from->volume[startpoint + k];
 	}
 }
+static struct BAR *init_BAR(int barLen) {
+	struct BAR *bar = smalloc(sizeof(struct BAR));
+	bar->barLen = barLen;
+	bar->num = BARELEMENT_num(barLen);
+	bar->head = bar->tail = BAR_DAYSNUM_MAX/2;
+	int i;
+	for (i = 0; i < BAR_DAYSNUM_MAX; ++i) {
+		bar->bars[i] = NULL;	
+	}
+	return bar;
+}
 struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYMD, int endYMD) {
+	struct BAR *bar = init_BAR(1);
+
 	int num, memnum, *hour, *minute, *second, *millsecond, *volume;
 	double *lastprice;
 	memnum = BAR_METADATA_1DNUM_MAX;
@@ -287,30 +302,37 @@ struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYM
 	millsecond = scalloc(memnum, sizeof(int));
 	volume = scalloc(memnum, sizeof(int));
 	lastprice = smalloc(memnum * sizeof(double));
-
-	struct BAR *bar = smalloc(sizeof(struct BAR));
-	bar->barLen = 1;
-	bar->num = BARNUM_1MIN1DAY;
-	bar->head = bar->tail = BAR_DAYSNUM_MAX/2;
 	int *mills_open = smalloc(BARNUM_1MIN1DAY*sizeof(int));
 	int *mills_close = smalloc(BARNUM_1MIN1DAY*sizeof(int));
-	int i;
-	for (i = 0; i < BAR_DAYSNUM_MAX; ++i) {
-		bar->bars[i] = NULL;	
-	}
-	int j;
+
+	int i,j;
 	for (i = beginYMD; i <= endYMD; ++i) {
+		//always try to fetch oneday's dmdmsg data.
+		//if the i is today, the dmdmsg is not complete oneday dmdmsg data.
+		//if the i is any date before today, the dmdmsg is 100% complete oneday dmdmsg data.
 		MongoAPI_fetch_DMD_FOR_BAR(cll, i, &num, &memnum, &hour, &minute, &second, &millsecond, &volume, &lastprice);
 		if (num == 0) continue;
+		//get here, means there is valid dmdmsg. so workingIndex will not be -1 anymore, lastHMSM too.
 		struct BARELEMENT *be = BAR_find_BE(bar, i);
 		for (j = 0; j < BARNUM_1MIN1DAY; ++j) {
 			mills_open[j] = 10000;
 			mills_close[j] = 10000;
 		}
 		for (j = 0; j < num; ++j) {
-			BARELEMENT_fill(be, 1, hour[j], minute[j], second[j], millsecond[j], volume[j], lastprice[j], mills_open, mills_close);
+			int index = BARELEMENT_index(1, hour[j], minute[j]);
+			BARELEMENT_fill(be, index, second[j], millsecond[j], volume[j], lastprice[j], mills_open, mills_close);
+			be->workingIndex = be->workingIndex > index ? be->workingIndex : index;
+			int tmpHMSM = hour[j]*1E7 + minute[j]*1E5 + second[j]*1E3 + millsecond[j];
+			be->lastHMSM = be->lastHMSM > tmpHMSM ? be->lastHMSM : tmpHMSM;
 		}
-		for (j = BARNUM_1MIN1DAY - 1; j > 0; --j) {
+		if (be->lastHMSM >= 151500000) {
+			be->workingIndex = BARNUM_1MIN1DAY;
+			be->workingVolume = 0;
+		}
+		if (be->workingIndex != 0) {
+			be->workingVolume = be->volume[be->workingIndex - 1];
+		}
+		for (j = be->workingIndex-1; j > 0; --j) {
 			be->volume[j] -= be->volume[j-1];
 		}
 		be->closePrice[0] = be->openPrice[0];
@@ -323,61 +345,6 @@ struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYM
 	free(mills_open);free(mills_close);
 
 	return bar;
-}
-void create_1MTYPE_BAR_from_MongoDB_today(mongoc_collection_t *cll, struct BAR **barP, int *lastHMSM) {
-	int num, memnum, *hour, *minute, *second, *millsecond, *volume;
-	double *lastprice;
-	memnum = BAR_METADATA_1DNUM_MAX;
-	hour = scalloc(memnum, sizeof(int)); 
-	minute = scalloc(memnum, sizeof(int)); 
-	second = scalloc(memnum, sizeof(int)); 
-	millsecond = scalloc(memnum, sizeof(int));
-	volume = scalloc(memnum, sizeof(int));
-	lastprice = smalloc(memnum * sizeof(double));
-
-	struct BAR *bar = smalloc(sizeof(struct BAR));
-	*barP = bar;
-	bar->barLen = 1;
-	bar->num = BARNUM_1MIN1DAY;
-	bar->head = bar->tail = BAR_DAYSNUM_MAX/2;
-	int *mills_open = smalloc(BARNUM_1MIN1DAY*sizeof(int));
-	int *mills_close = smalloc(BARNUM_1MIN1DAY*sizeof(int));
-	int i;
-	for (i = 0; i < BAR_DAYSNUM_MAX; ++i) {
-		bar->bars[i] = NULL;	
-	}
-	int j;
-	*lastHMSM = 0;
-
-	time_t timer;  
-	struct tm *tblock;  
-	timer=time(NULL);  
-	tblock=localtime(&timer); 
-	int todayYMD = (tblock->tm_year + 1900)*10000 + tblock->tm_mon*100 + tblock->tm_mday;
-
-	MongoAPI_fetch_DMD_FOR_BAR(cll, todayYMD, &num, &memnum, &hour, &minute, &second, &millsecond, &volume, &lastprice);
-	if (num != 0) {
-		struct BARELEMENT *be = BAR_find_BE(bar, todayYMD);
-		for (j = 0; j < BARNUM_1MIN1DAY; ++j) {
-			mills_open[j] = 10000;
-			mills_close[j] = 10000;
-		}
-		for (j = 0; j < num; ++j) {
-			BARELEMENT_fill(be, 1, hour[j], minute[j], second[j], millsecond[j], volume[j], lastprice[j], mills_open, mills_close);
-			int tmpHMSM = hour[j]*1E7 + minute[j]*1E5 + second[j]*1E3 + millsecond[j];
-			*lastHMSM = (*lastHMSM)>tmpHMSM ? (*lastHMSM) : tmpHMSM;
-		}
-		for (j = BARNUM_1MIN1DAY - 1; j > 0; --j) {
-			be->volume[j] -= be->volume[j-1];
-		}
-		be->closePrice[0] = be->openPrice[0];
-		be->closePrice[136] = be->openPrice[136];
-		be->closePrice[272] = be->openPrice[272];
-	}
-
-	free(hour);free(minute);free(second);
-	free(millsecond);free(volume);free(lastprice);
-	free(mills_open);free(mills_close);
 }
 
 //from and to may point to the same BE
