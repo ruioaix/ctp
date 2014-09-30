@@ -15,6 +15,7 @@ public:
 	//md object. 2 api functions: CreateFtdcMdApi & Release are included in the following two.
 	CMdUserApi(char *flowpath, char *servername, char *bid, char *iid, char *pd, char **InstrumentIDs, int InstrumentNum);
 	//11 api functions, come from MdApi
+	int IsReady();
 	void Init();
 	void Join();
 	const char *GetTradingDay();
@@ -69,6 +70,8 @@ private:
 
 	char **m_InstrumentIDs;
 	int m_InstrumentNum;
+
+	int ready;
 
 	fnOnFrontConnected m_fnOnFrontConnected;
 	fnOnFrontDisconnected m_fnOnFrontDisconnected;

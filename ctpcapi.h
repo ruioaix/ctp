@@ -259,6 +259,7 @@ extern "C" {
 	/*2 functions, MD object, create & free.*/
 	void* MD_create(char *flowpath, char *servername, char *bid, char *iid, char *pd, char **InstrumentIDs, int InstrumentNum);
 	void MD_free(void* md);
+	int MD_isready(void *md);
 	/*In class CThostFtdcMdApi, there are 11 api functions.*/
 	void MD_init(void *md);
 	void MD_join(void *md);

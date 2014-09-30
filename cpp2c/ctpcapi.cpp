@@ -19,6 +19,13 @@ void MD_free(void* md) {
 	}
 }
 
+int MD_isready(void *md) {
+	if (md) {
+		return MD_GetApi(md)->IsReady();
+	}
+	return 0;
+}
+
 void MD_init(void* md) {
 	if(md) {
 		MD_GetApi(md)->Init();

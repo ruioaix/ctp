@@ -9,6 +9,7 @@ using namespace std;
 //create
 CMdUserApi::CMdUserApi(char *flowpath, char *servername, char *brokerid, char *inverstorid, char *password, char ** InstrumentIDs, int InstrumentNum)
 {
+	ready = 0;
 	m_nRequestID = 0;
 	m_logFilePath = flowpath;
 	m_server = servername;
@@ -88,6 +89,10 @@ CMdUserApi::~CMdUserApi(void)
 	free(m_intime_usecond);
 	free(m_current_size);
 	printmlb("free md");
+}
+
+int CMdUserApi::IsReady() {
+	return ready;
 }
 
 /***11 functions, merge api functions in MdApi class to MdSpi class****************************************************/
@@ -203,6 +208,7 @@ void CMdUserApi::OnFrontDisconnected(int nReason)
 	}
 
 	printmlb("connected failed, nReason: %d", nReason);
+	ready = 0;
 }
 
 void CMdUserApi::OnHeartBeatWarning(int nTimeLapse) {
@@ -297,6 +303,7 @@ void CMdUserApi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecific
 	if (m_fnOnRspSubMarketData != NULL) {
 		(*m_fnOnRspSubMarketData)(this, pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
 	}
+	ready = 1;
 
 	//verbose
 	printmlb("OnRspSubMarketData called.");
