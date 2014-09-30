@@ -115,6 +115,7 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 	struct ThreadIM *mim = ThreadIM;
 	void *md = mim->md;
 	void *td = mim->td;
+	int mcollectionsNum = mim->mcollectionsNum;
 	mongoc_collection_t **mcollections = mim->mcollections;
 	int barLen = mim->barLen;
 
@@ -133,7 +134,7 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 	//get all needed data from mongodb.
 	//mongodb's data is got from mdserver, the data before this second(the time this statement is executed) should be there.
 	//so before this statement executed, another thread which receive dmdmsg in this server should already running for 1 second or more.
-	struct BAR *bar = create_BAR_from_MongoDB(barLen, mcollections[0], 20140919, todayYMD);
+	struct BAR *bar = create_BAR_from_MongoDB(barLen, mcollections[mcollectionsNum], 20140919, todayYMD);
 	struct EMABAR *eb = create_EMABAR(bar, 12, 20, 40);
 
 	//join mongodb data and realtime data.
@@ -149,6 +150,7 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 		int HMSM = hour*10000000 + minute*100000 + second*1000 + pDepthMarketData->UpdateMillisec;
 
 		struct BARELEMENT *be = BAR_find_BE(bar, YMD);
+		printf("%d\t%d\n", HMSM, be->lastHMSM);
 		if (HMSM <= be->lastHMSM) {
 			joinprefect = 1;
 			continue;

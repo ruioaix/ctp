@@ -47,14 +47,15 @@ int main(int argc, char **argv) {
 
 	pthread_t insert_dmdmsg;
 	pthread_create(&insert_dmdmsg, NULL, DMDMSG_insertIntoMongoDB, &mim);
-	sleep(3);
 	pthread_t revise_instrment;
 	pthread_create(&revise_instrment, NULL, INSTRMENT_revise, &mim);
+	TD_init(td);
+	MD_init(md);
+	sleep(3);
+
 	pthread_t wait_event;
 	pthread_create(&wait_event, NULL, EVENT_500ms_dmdmsg, &mim);
 
-	TD_init(td);
-	MD_init(md);
 
 	//fflush(stdout);
 	//_exit(0);
