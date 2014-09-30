@@ -5,7 +5,7 @@
 
 //one day bar element.
 struct BARELEMENT {
-	//if workingIndex == num, means this BARELEMENT is complete: one day complete data.
+	//if workingIndex == bar->num, means this BARELEMENT is complete: one day complete data.
 	//else if workingIndex >=0, means the workingIndex is the index of the bar which is not finish.
 	//else, workingIndex is -1, means the BARELEMENT just being inited.
 	//!!!only the last be's workingIndex can be different with num. usually it's today's be.
@@ -39,10 +39,11 @@ struct BAR {
 void free_BAR(struct BAR *bar);
 
 #include <mongoc.h>
-void BARELEMENT_fill(struct BARELEMENT *be, int hour, int minute, int second, int millsecond, int volume, double lastprice);
+void BARELEMENT_fill(struct BARELEMENT *be, int barLen, int hour, int minute, int second, int millsecond, int volume, double lastprice);
+struct BARELEMENT *BAR_find_BE(struct BAR *bar, int ymd);
 //when: in [beginYMD, endYMD], no data in mongodb, return a empty bar.(bar->head == bar->tail && bar->bars[bar->head] == NULL)
-struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYMD, int endYMD);
-struct BAR *create_BAR(int barLen, mongoc_collection_t *cll, int beginYMD, int endYMD);
+struct BAR *create_BAR_from_MongoDB(int barLen, mongoc_collection_t *cll, int beginYMD, int endYMD);
+struct BAR *convert_BAR_from_1MBAR(int barLen, struct BAR *bar);
 void create_Multi_BAR(int num, int *barLen, mongoc_collection_t *cll, int beginYMD, int endYMD, struct BAR ***barA);
 
 #endif

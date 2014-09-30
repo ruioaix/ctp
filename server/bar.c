@@ -12,6 +12,7 @@
 #define ONEE5 100000
 #define ONEE7 10000000
 
+//free bar
 static void free_BARELEMENT(struct BARELEMENT *be) {
 	free(be->btimeHMSM);
 	free(be->etimeHMSM);
@@ -31,6 +32,8 @@ void free_BAR(struct BAR *bar) {
 	free(bar);
 }
 
+//this BARELEMENT_num function is the core logic in BAR's divide.
+//need to taste.
 //suppose: barLen > 0
 static int BARELEMENT_num(int barLen) {
 	if (barLen > BARLEN_1DAY_MIN) return 1;
@@ -44,6 +47,8 @@ static int BARELEMENT_num(int barLen) {
 }
 //suppose: barLen > 0 && index is always valid.
 //return the index's btimeHMS.
+//this BARELEMENT_hms function is also the core logic in BAR's divide.
+//and more clear than BARELEMENT_num
 static void BARELEMENT_hms(int barLen, int index, int *bHMS, int *eHMS) {
 	if (barLen > BARLEN_1DAY_MIN) {
 		*bHMS = 91400;
@@ -108,6 +113,7 @@ static void BARELEMENT_hms(int barLen, int index, int *bHMS, int *eHMS) {
 	*eHMS = *bHMS + (barLen-1)*100 + 59;
 	return;
 }
+//this BARELEMENT_index function is also the core logic in BAR's divide.
 //suppose barLen > 0 && hour&minute is valid
 static int BARELEMENT_index(int barLen, int hour, int minute) {
 	if (barLen > BARLEN_1DAY_MIN) return 0;
@@ -160,7 +166,7 @@ static struct BARELEMENT *create_BARELEMENT(int barLen, int ymd) {
 	}
 	return be;
 }
-static struct BARELEMENT *BAR_find_BE(struct BAR *bar, int ymd) {
+struct BARELEMENT *BAR_find_BE(struct BAR *bar, int ymd) {
 	if (bar->bars[bar->head] == NULL) {
 		bar->bars[bar->head] = create_BARELEMENT(bar->barLen, ymd);
 		return bar->bars[bar->head];
@@ -183,31 +189,31 @@ static struct BARELEMENT *BAR_find_BE(struct BAR *bar, int ymd) {
 	return bar->bars[bar->head+ymd-hymd];
 }
 //if one dmdmsg has been filled twice, nothing happen. it's ok.
-void BARELEMENT_fill(struct BARELEMENT *be, int hour, int minute, int second, int millsecond, int volume, double lastprice) {
-	int index = BARELEMENT_index(1, hour, minute);
+void BARELEMENT_fill(struct BARELEMENT *be, int barLen, int hour, int minute, int second, int millsecond, int volume, double lastprice) {
+	//get index
+	int index = BARELEMENT_index(barLen, hour, minute);
+	//get workingIndex index, default is -1.
 	be->workingIndex = be->workingIndex > index ? be->workingIndex : index;
-
+	//get dmdmsg's HMSM.
 	int HMSM = hour*ONEE7 + minute*ONEE5 + second*ONEE3 + millsecond;
+	//get be's lastHMSM
 	be->lastHMSM = be->lastHMSM > HMSM ? be->lastHMSM : HMSM;
-
-	int HMS = HMSM/1000;
-	int bMill = be->btimeHMSM[index]%1000; 
-	int eMill = be->etimeHMSM[index]%1000;
-	if (second == 0 && millsecond < bMill) {
+	//by default, btimeHMSM is xxxxxx999.
+	if (HMSM <= be->btimeHMSM[index]) {
 		be->openPrice[index] = lastprice;
-		be->btimeHMSM[index] += millsecond - bMill;
+		be->btimeHMSM[index] = HMSM;
 	}
-	if (second == 59 && millsecond > eMill) {
+	//by default, etimeHMSM is xxxxxx000.
+	if (HMSM >= be->etimeHMSM[index]) {
 		be->closePrice[index] = lastprice;
-		be->etimeHMSM[index] += millsecond - eMill;
+		be->etimeHMSM[index] = HMSM;
 	}
+	//uplimitPrice default is -1.
 	be->uplimitPrice[index] = be->uplimitPrice[index] > lastprice ? be->uplimitPrice[index] : lastprice;
+	//lowlimitPrice default is INT_MAX.
 	be->lowlimitPrice[index] = be->lowlimitPrice[index] > lastprice ? lastprice : be->lowlimitPrice[index];
+	//volume default is 0.
 	be->volume[index] = be->volume[index] > volume ? be->volume[index] : volume;
-	if (HMS == 91400 || HMS == 113000 || HMS == 151500) {
-		be->closePrice[index] = lastprice;
-		be->etimeHMSM[index] += millsecond - eMill;
-	}
 }
 //from and to may point to the same BE
 //suppose: barLen is between [2, 60]
@@ -229,7 +235,7 @@ static void BARELEMENT_evolution(struct BARELEMENT *from, struct BARELEMENT *to,
 	for (j = 1; j < barLen+1; ++j) {
 		to->uplimitPrice[0] = to->uplimitPrice[0] > from->uplimitPrice[j] ? to->uplimitPrice[0] : from->uplimitPrice[j];
 		to->lowlimitPrice[0] = to->lowlimitPrice[0] < from->lowlimitPrice[j] ? to->lowlimitPrice[0] : from->lowlimitPrice[j];
-		to->volume[0] += from->volume[j];
+		to->volume[0] = to->volume[0] > from->volume[j] ? to->volume[0] : from->volume[j];
 	}
 	//morning middle
 	//totally use barLen.
@@ -244,7 +250,7 @@ static void BARELEMENT_evolution(struct BARELEMENT *from, struct BARELEMENT *to,
 		for (k =2; k <= barLen; ++k) {
 			to->uplimitPrice[j] = to->uplimitPrice[j] > from->uplimitPrice[j*barLen+k] ? to->uplimitPrice[j] : from->uplimitPrice[j*barLen + k];
 			to->lowlimitPrice[j] = to->lowlimitPrice[j] < from->lowlimitPrice[j*barLen + k] ? to->lowlimitPrice[j] : from->lowlimitPrice[j*barLen + k];
-			to->volume[j] += from->volume[j*barLen + k];
+			to->volume[j] = to->volume[j] > from->volume[j*barLen + k] ? to->volume[j] : from->volume[j*barLen + k];
 		}
 	}
 	//morning last
@@ -261,7 +267,7 @@ static void BARELEMENT_evolution(struct BARELEMENT *from, struct BARELEMENT *to,
 	for (k =2; j*barLen + k < 137; ++k) {
 		to->uplimitPrice[j] = to->uplimitPrice[j] > from->uplimitPrice[j*barLen+k] ? to->uplimitPrice[j] : from->uplimitPrice[j*barLen + k];
 		to->lowlimitPrice[j] = to->lowlimitPrice[j] < from->lowlimitPrice[j*barLen + k] ? to->lowlimitPrice[j] : from->lowlimitPrice[j*barLen + k];
-		to->volume[j] += from->volume[j*barLen + k];
+		to->volume[j] = to->volume[j] > from->volume[j*barLen + k] ? to->volume[j] : from->volume[j*barLen + k];
 	}
 	//afternoon first and middle
 	//totally use barLen
@@ -277,7 +283,7 @@ static void BARELEMENT_evolution(struct BARELEMENT *from, struct BARELEMENT *to,
 		for (k =1; k < barLen; ++k) {
 			to->uplimitPrice[j] = to->uplimitPrice[j] > from->uplimitPrice[startpoint + k] ? to->uplimitPrice[j] : from->uplimitPrice[startpoint + k];
 			to->lowlimitPrice[j] = to->lowlimitPrice[j] < from->lowlimitPrice[startpoint + k] ? to->lowlimitPrice[j] : from->lowlimitPrice[startpoint + k];
-			to->volume[j] += from->volume[startpoint + k];
+			to->volume[j] = to->volume[j] > from->volume[startpoint + k] ? to->volume[j] : from->volume[startpoint + k];
 		}
 	}
 	//afternoon last
@@ -294,7 +300,55 @@ static void BARELEMENT_evolution(struct BARELEMENT *from, struct BARELEMENT *to,
 	for (k =1; startpoint + k < 273; ++k) {
 		to->uplimitPrice[j] = to->uplimitPrice[j] > from->uplimitPrice[startpoint + k] ? to->uplimitPrice[j] : from->uplimitPrice[startpoint + k];
 		to->lowlimitPrice[j] = to->lowlimitPrice[j] < from->lowlimitPrice[startpoint + k] ? to->lowlimitPrice[j] : from->lowlimitPrice[startpoint + k];
-		to->volume[j] += from->volume[startpoint + k];
+		to->volume[j] = to->volume[j] > from->volume[startpoint + k] ? to->volume[j] : from->volume[startpoint + k];
+	}
+}
+//from and to may point to the same BE
+//suppose: from is a 1m be
+//suppose: to is halfdaybe or 1mbe
+static void BARELEMENT_evolution_halfday(struct BARELEMENT *from, struct BARELEMENT *to) {
+	//morning
+	to->btimeHMSM[0] = from->btimeHMSM[0];
+	to->etimeHMSM[0] = from->etimeHMSM[136];
+	to->openPrice[0] = from->openPrice[0];
+	to->closePrice[0] = from->closePrice[136];
+	to->uplimitPrice[0] = from->uplimitPrice[0];
+	to->lowlimitPrice[0] = from->lowlimitPrice[0];
+	to->volume[0] = from->volume[0];
+	int j;
+	for (j = 1; j < 137; ++j) {
+		to->uplimitPrice[0] = to->uplimitPrice[0] > from->uplimitPrice[j] ? to->uplimitPrice[0] : from->uplimitPrice[j];
+		to->lowlimitPrice[0] = to->lowlimitPrice[0] < from->lowlimitPrice[j] ? to->lowlimitPrice[0] : from->lowlimitPrice[j];
+		to->volume[0] = to->volume[0] > from->volume[j] ? to->volume[0] : from->volume[j];
+	}
+	//afternoon
+	to->btimeHMSM[1] = from->btimeHMSM[137];
+	to->etimeHMSM[1] = from->etimeHMSM[272];
+	to->openPrice[1] = from->openPrice[137];
+	to->closePrice[1] = from->closePrice[272];
+	to->uplimitPrice[1] = from->uplimitPrice[137];
+	to->lowlimitPrice[1] = from->lowlimitPrice[272];
+	to->volume[1] = from->volume[137];
+	for (j = 138; j < 273; ++j) {
+		to->uplimitPrice[1] = to->uplimitPrice[1] > from->uplimitPrice[j] ? to->uplimitPrice[1] : from->uplimitPrice[j];
+		to->lowlimitPrice[1] = to->lowlimitPrice[1] < from->lowlimitPrice[j] ? to->lowlimitPrice[1] : from->lowlimitPrice[j];
+		to->volume[1] = to->volume[1] > from->volume[j] ? to->volume[1] : from->volume[j];
+	}
+}
+//from and to may point to the same BE
+//suppose: from is a 1m be
+//suppose: to is 1daybe or 1mbe
+static void BARELEMENT_evolution_1day(struct BARELEMENT *from, struct BARELEMENT *to) {
+	to->btimeHMSM[0] = from->btimeHMSM[0];
+	to->etimeHMSM[0] = from->etimeHMSM[272];
+	to->openPrice[0] = from->openPrice[0];
+	to->closePrice[0] = from->closePrice[272];
+	to->volume[0] = from->volume[0];
+	int j;
+	for (j = 1; j < 273; ++j) {
+		to->uplimitPrice[0] = to->uplimitPrice[0] > from->uplimitPrice[j] ? to->uplimitPrice[0] : from->uplimitPrice[j];
+		to->lowlimitPrice[0] = to->lowlimitPrice[0] < from->lowlimitPrice[j] ? to->lowlimitPrice[0] : from->lowlimitPrice[j];
+		to->volume[0] = to->volume[0] > from->volume[j] ? to->volume[0] : from->volume[j];
 	}
 }
 static struct BAR *init_BAR(int barLen) {
@@ -308,9 +362,9 @@ static struct BAR *init_BAR(int barLen) {
 	}
 	return bar;
 }
-struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYMD, int endYMD) {
-	struct BAR *bar = init_BAR(1);
-
+struct BAR *create_BAR_from_MongoDB(int barLen, mongoc_collection_t *cll, int beginYMD, int endYMD) {
+	struct BAR *bar = init_BAR(barLen);
+	
 	int num, memnum, *hour, *minute, *second, *millsecond, *volume;
 	double *lastprice;
 	memnum = BAR_METADATA_1DNUM_MAX;
@@ -331,58 +385,18 @@ struct BAR *create_1MTYPE_BAR_from_MongoDB(mongoc_collection_t *cll, int beginYM
 		//get here, means there is valid dmdmsg. so workingIndex will not be -1 anymore, lastHMSM too.
 		struct BARELEMENT *be = BAR_find_BE(bar, i);
 		for (j = 0; j < num; ++j) {
-			BARELEMENT_fill(be, hour[j], minute[j], second[j], millsecond[j], volume[j], lastprice[j]);
+			BARELEMENT_fill(be, barLen, hour[j], minute[j], second[j], millsecond[j], volume[j], lastprice[j]);
 		}
 		if (be->lastHMSM >= 151500000) {
 			be->workingIndex = BARNUM_1MIN1DAY;
 			be->workingVolume = 0;
 		}
-		if (be->workingIndex != 0) {
-			be->workingVolume = be->volume[be->workingIndex - 1];
-		}
-		for (j = be->workingIndex-1; j > 0; --j) {
-			be->volume[j] -= be->volume[j-1];
-		}
 	}
-
 	free(hour);free(minute);free(second);
 	free(millsecond);free(volume);free(lastprice);
-
 	return bar;
 }
 
-//from and to may point to the same BE
-//suppose: from is a 1m be
-//suppose: to is halfdaybe or 1mbe
-static void BARELEMENT_evolution_halfday(struct BARELEMENT *from, struct BARELEMENT *to) {
-	//morning
-	to->btimeHMSM[0] = from->btimeHMSM[0];
-	to->etimeHMSM[0] = from->etimeHMSM[136];
-	to->openPrice[0] = from->openPrice[0];
-	to->closePrice[0] = from->closePrice[136];
-	to->uplimitPrice[0] = from->uplimitPrice[0];
-	to->lowlimitPrice[0] = from->lowlimitPrice[0];
-	to->volume[0] = from->volume[0];
-	int j;
-	for (j = 1; j < 137; ++j) {
-		to->uplimitPrice[0] = to->uplimitPrice[0] > from->uplimitPrice[j] ? to->uplimitPrice[0] : from->uplimitPrice[j];
-		to->lowlimitPrice[0] = to->lowlimitPrice[0] < from->lowlimitPrice[j] ? to->lowlimitPrice[0] : from->lowlimitPrice[j];
-		to->volume[0] += from->volume[j];
-	}
-	//afternoon
-	to->btimeHMSM[1] = from->btimeHMSM[137];
-	to->etimeHMSM[1] = from->etimeHMSM[272];
-	to->openPrice[1] = from->openPrice[137];
-	to->closePrice[1] = from->closePrice[272];
-	to->uplimitPrice[1] = from->uplimitPrice[137];
-	to->lowlimitPrice[1] = from->lowlimitPrice[272];
-	to->volume[1] = from->volume[137];
-	for (j = 138; j < 273; ++j) {
-		to->uplimitPrice[1] = to->uplimitPrice[1] > from->uplimitPrice[j] ? to->uplimitPrice[1] : from->uplimitPrice[j];
-		to->lowlimitPrice[1] = to->lowlimitPrice[1] < from->lowlimitPrice[j] ? to->lowlimitPrice[1] : from->lowlimitPrice[j];
-		to->volume[1] += from->volume[j];
-	}
-}
 //suppose: bar argument's barLen == 1 
 static struct BAR *create_BAR_function_halfday(struct BAR *bar) {
 	int i;
@@ -394,22 +408,6 @@ static struct BAR *create_BAR_function_halfday(struct BAR *bar) {
 	bar->barLen = BARNUM_1MIN1DAY_HALF;
 	bar->num = 2;
 	return bar;
-}
-//from and to may point to the same BE
-//suppose: from is a 1m be
-//suppose: to is 1daybe or 1mbe
-static void BARELEMENT_evolution_1day(struct BARELEMENT *from, struct BARELEMENT *to) {
-	to->btimeHMSM[0] = from->btimeHMSM[0];
-	to->etimeHMSM[0] = from->etimeHMSM[272];
-	to->openPrice[0] = from->openPrice[0];
-	to->closePrice[0] = from->closePrice[272];
-	to->volume[0] = from->volume[0];
-	int j;
-	for (j = 1; j < 273; ++j) {
-		to->uplimitPrice[0] = to->uplimitPrice[0] > from->uplimitPrice[j] ? to->uplimitPrice[0] : from->uplimitPrice[j];
-		to->lowlimitPrice[0] = to->lowlimitPrice[0] < from->lowlimitPrice[j] ? to->lowlimitPrice[0] : from->lowlimitPrice[j];
-		to->volume[0] += from->volume[j];
-	}
 }
 //suppose: bar argument's barLen == 1 
 static struct BAR *create_BAR_function_1day(struct BAR *bar) {
@@ -435,8 +433,7 @@ static struct BAR *create_BAR_function_notlarge60m(struct BAR *bar, int barLen) 
 	bar->num = BARELEMENT_num(barLen);
 	return bar;
 }
-struct BAR *create_BAR(int barLen, mongoc_collection_t *cll, int beginYMD, int endYMD) {
-	struct BAR *bar = create_1MTYPE_BAR_from_MongoDB(cll, beginYMD, endYMD);
+struct BAR *convert_BAR_from_1MBAR(int barLen, struct BAR *bar) {
 	if (barLen > 135) {
 		return create_BAR_function_1day(bar);
 	}
@@ -450,6 +447,7 @@ struct BAR *create_BAR(int barLen, mongoc_collection_t *cll, int beginYMD, int e
 	return NULL;
 }
 
+/****until here, all functions is not limit to "barLen == 1"*********************************************/
 //suppose: bar argument's barLen == 1
 static struct BAR *create_Multi_BAR_function_notlarge60m(struct BAR *bar, int barLen) {
 	struct BAR *newbar = smalloc(sizeof(struct BAR));
@@ -513,7 +511,7 @@ void create_Multi_BAR(int num, int *barLenA, mongoc_collection_t *cll, int begin
 	for (i = 0; i < 63; ++i) {
 		(*barA)[i] = NULL;	
 	}
-	struct BAR *bar = create_1MTYPE_BAR_from_MongoDB(cll, beginYMD, endYMD);
+	struct BAR *bar = create_BAR_from_MongoDB(1, cll, beginYMD, endYMD);
 	for (i = 0; i < num; ++i) {
 		int barLen = barLenA[i];	
 		if (barLen > 135) {

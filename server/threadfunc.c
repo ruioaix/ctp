@@ -120,39 +120,45 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 	while (!TD_isready(td)) {
 		sleep(1);
 	}
+	//get here, means td system is ready to work.
 
+	//today's YMD
 	time_t timer;  
 	struct tm *tblock;  
 	timer=time(NULL);  
 	tblock=localtime(&timer);  
 	int todayYMD = (tblock->tm_year+1900)*10000 + tblock->tm_mon*100 + tblock->tm_mday;
 
-	struct BAR *bar = create_1MTYPE_BAR_from_MongoDB(mcollections[0], 20140919, todayYMD);
-	if (bar->bars[bar->tail]==NULL) return NULL;
+	//get all needed data from mongodb.
+	//mongodb's data is got from mdserver, the data before this second(the time this statement is executed) should be there.
+	//so before this statement executed, another thread which receive dmdmsg in this server should already running for 1 second or more.
+	struct BAR *bar = create_BAR_from_MongoDB(1, mcollections[0], 20140919, todayYMD);
 	struct EMABAR *eb = create_EMABAR(bar, 12, 20, 40);
 
 	long ts;
 	long tus;
 	int size;
 	CThostFtdcDepthMarketDataField *pDepthMarketData;;
-	struct BARELEMENT *be = bar->bars[bar->tail];
 	while ((pDepthMarketData  = MD_getOneDMDmsg(md, &ts, &tus, &size)) != NULL) {
+		int YMD = strtol(pDepthMarketData->TradingDay, NULL, 10);
+		struct BARELEMENT *be = BAR_find_BE(bar, YMD);
 		int hour, minute, second;
 		CTPHELP_updatetime2HMS(pDepthMarketData->UpdateTime, &hour, &minute, &second);
 		int HMSM = hour*10000000 + minute*100000 + second*1000 + pDepthMarketData->UpdateMillisec;
 		if (HMSM <= be->lastHMSM) continue;
 		int index = be->workingIndex;
-		BARELEMENT_fill(be, hour, minute, second, pDepthMarketData->UpdateMillisec, pDepthMarketData->Volume, pDepthMarketData->LastPrice);	
+		BARELEMENT_fill(be, 1, hour, minute, second, pDepthMarketData->UpdateMillisec, pDepthMarketData->Volume, pDepthMarketData->LastPrice);	
 		if (index != be->workingIndex) {
 			EMABAR_syn(eb, index);
 		}
 	}
 
 	while ((pDepthMarketData  = MD_getOneDMDmsg(md, &ts, &tus, &size)) != NULL) {
+		struct BARELEMENT *be = BAR_find_BE(bar, 1);
 		int index = be->workingIndex;
 		int hour, minute, second;
 		CTPHELP_updatetime2HMS(pDepthMarketData->UpdateTime, &hour, &minute, &second);
-		BARELEMENT_fill(be, hour, minute, second, pDepthMarketData->UpdateMillisec, pDepthMarketData->Volume, pDepthMarketData->LastPrice);	
+		BARELEMENT_fill(be, 1, hour, minute, second, pDepthMarketData->UpdateMillisec, pDepthMarketData->Volume, pDepthMarketData->LastPrice);	
 		if (index != be->workingIndex) {
 
 		}
