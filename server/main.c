@@ -11,6 +11,7 @@
 #include <mongoc.h>
 
 int main(int argc, char **argv) {
+	//prepare md,td,mongodb.
 	setbuf(stdout, (char *) 0);
 	char *file;
 	if (argc == 1) {
@@ -33,7 +34,21 @@ int main(int argc, char **argv) {
 	mongoc_client_t *client = MongoAPI_create_client(mongodb_url_port);
 	mongoc_collection_t **mcollections = MongoAPI_glue_collections(client, InstrumentIDs, InstrumentNum, BrokerID, UserID);
 
+	//connect and login to md server.
+	//if ok, begin to receive dmdmsg.
+	//		all the dmdmsg will be store in the queue in md.
+	//		size of queue in md is 8192, it costs one hour to fill the queue.
+	//if fail, most possible, it's because of the server is not open, it's ok.
+	//		just wait, this function will open two thread.
+	//		when the md server is open, the md server will call one thread and say:I am open.
+	//		then, the other thread will connect and login to md server again.
+	MD_init(md);
 
+	//connect and login to td server
+	//it's quite similar to md server's logic.
+	TD_init(td);
+
+	//prepare thread's param.
 	int running = 1;
 	struct ThreadIM mim;
 	mim.client = client;
@@ -45,33 +60,15 @@ int main(int argc, char **argv) {
 	mim.running = &running;
 	mim.barLen = 5;
 
-	pthread_t insert_dmdmsg;
-	pthread_create(&insert_dmdmsg, NULL, DMDMSG_insertIntoMongoDB, &mim);
-	pthread_t revise_instrment;
-	pthread_create(&revise_instrment, NULL, INSTRMENT_revise, &mim);
-	TD_init(td);
-	MD_init(md);
-	sleep(3);
-
+	//open the thread.
+	//this thread is core.
 	pthread_t wait_event;
 	pthread_create(&wait_event, NULL, EVENT_500ms_dmdmsg, &mim);
 
-
-	//fflush(stdout);
-	//_exit(0);
-	//TD_reqQryInstrumentMarginRate(td, "IF1410");
-	//sleep(2);
-	//TD_reqQrySettlementInfo(td);
-	//sleep(2);
-	//TD_reqQryInstrument(td);
-
-	//sleep(20);
-	//running = 0;
-
-	pthread_join(insert_dmdmsg, NULL);
-	pthread_join(revise_instrment, NULL);
+	//wait here.
 	pthread_join(wait_event, NULL);
 
+	//free
 	free(mdlogfilepath);
 	free(tdlogfilepath);
 	free(mdserver);
@@ -84,10 +81,8 @@ int main(int argc, char **argv) {
 	for (i = 0; i < InstrumentNum; ++i) {
 		free(InstrumentIDs[i]);
 	}
-	
 	MongoAPI_unglue_collections(mcollections, InstrumentNum);
 	MongoAPI_destory_client(client);
-
 	MD_free(md);
 	MD_free(td);
 	_exit(0);

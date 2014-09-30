@@ -60,6 +60,7 @@ void CTraderApi::OnFrontConnected() {
 	ReqUserLogin();
 }
 void CTraderApi::OnFrontDisconnected(int nReason) {
+	ready = 0;
 	printtlb("connected failed, nReason: %d", nReason);
 }
 
