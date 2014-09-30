@@ -8,6 +8,9 @@ struct EMABAR {
 	double *longEMA[BAR_DAYSNUM_MAX];
 	double *mediEMA[BAR_DAYSNUM_MAX];
 	double *shotEMA[BAR_DAYSNUM_MAX];
+	int longNum;
+	int mediNum;
+	int shotNum;
 };
 
 struct EMABAR *create_EMABAR(struct BAR *bar, int longnum, int medinum, int shotnum);

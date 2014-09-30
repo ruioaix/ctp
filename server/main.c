@@ -43,6 +43,7 @@ int main(int argc, char **argv) {
 	mim.md = md;
 	mim.td = td;
 	mim.running = &running;
+	mim.barLen = 5;
 
 	pthread_t insert_dmdmsg;
 	pthread_create(&insert_dmdmsg, NULL, DMDMSG_insertIntoMongoDB, &mim);

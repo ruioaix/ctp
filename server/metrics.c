@@ -9,6 +9,9 @@ struct EMABAR *create_EMABAR(struct BAR *bar, int longnum, int medinum, int shot
 	for (i = 0; i < BAR_DAYSNUM_MAX; ++i) {
 		eb->shotEMA[i] = eb->mediEMA[i] = eb->longEMA[i] = NULL;	
 	}
+	eb->longNum = longnum;
+	eb->mediNum = medinum;
+	eb->shotNum = shotnum;
 	if (bar->bars[bar->head] == NULL) return eb;
 	double *lEMA = smalloc(bar->num * sizeof(double));
 	double *mEMA = smalloc(bar->num * sizeof(double));
@@ -58,9 +61,11 @@ struct EMABAR *create_EMABAR(struct BAR *bar, int longnum, int medinum, int shot
 }
 
 void EMABAR_syn(struct EMABAR *eb, int index) {
-	//struct BARELEMENT *be = eb->bar->bars[eb->bar->tail];
-	//double *lema = eb->longEMA[eb->bar->tail];
-	//double *mema = eb->mediEMA[eb->bar->tail];
-	//double *sema = eb->shotEMA[eb->bar->tail];
-	//lema[be->workingIndex] = lema[be->workingIndex-1] + I
+	struct BARELEMENT *be = eb->bar->bars[eb->bar->tail];
+	double *lema = eb->longEMA[eb->bar->tail];
+	double *mema = eb->mediEMA[eb->bar->tail];
+	double *sema = eb->shotEMA[eb->bar->tail];
+	lema[index] = lema[index - 1] + (be->closePrice[index] - lema[index - 1]) * 2 / (eb->longNum + 1);
+	mema[index] = mema[index - 1] + (be->closePrice[index] - mema[index - 1]) * 2 / (eb->mediNum + 1);
+	sema[index] = sema[index - 1] + (be->closePrice[index] - sema[index - 1]) * 2 / (eb->shotNum + 1);
 }

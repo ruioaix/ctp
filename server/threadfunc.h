@@ -12,6 +12,7 @@ struct ThreadIM {
 	int mcollectionsNum;
 	char **InstrumentIDs;	
 	int *running;
+	int barLen;
 };
 
 void *DMDMSG_insertIntoMongoDB(void *ThreadIM);

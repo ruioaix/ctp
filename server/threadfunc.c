@@ -116,6 +116,7 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 	void *md = mim->md;
 	void *td = mim->td;
 	mongoc_collection_t **mcollections = mim->mcollections;
+	int barLen = mim->barLen;
 
 	while (!TD_isready(td)) {
 		sleep(1);
@@ -132,84 +133,84 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 	//get all needed data from mongodb.
 	//mongodb's data is got from mdserver, the data before this second(the time this statement is executed) should be there.
 	//so before this statement executed, another thread which receive dmdmsg in this server should already running for 1 second or more.
-	struct BAR *bar = create_BAR_from_MongoDB(1, mcollections[0], 20140919, todayYMD);
+	struct BAR *bar = create_BAR_from_MongoDB(barLen, mcollections[0], 20140919, todayYMD);
 	struct EMABAR *eb = create_EMABAR(bar, 12, 20, 40);
 
+	//join mongodb data and realtime data.
 	long ts;
 	long tus;
 	int size;
+	int joinprefect = 0;
 	CThostFtdcDepthMarketDataField *pDepthMarketData;;
 	while ((pDepthMarketData  = MD_getOneDMDmsg(md, &ts, &tus, &size)) != NULL) {
 		int YMD = strtol(pDepthMarketData->TradingDay, NULL, 10);
-		struct BARELEMENT *be = BAR_find_BE(bar, YMD);
 		int hour, minute, second;
 		CTPHELP_updatetime2HMS(pDepthMarketData->UpdateTime, &hour, &minute, &second);
 		int HMSM = hour*10000000 + minute*100000 + second*1000 + pDepthMarketData->UpdateMillisec;
-		if (HMSM <= be->lastHMSM) continue;
+
+		struct BARELEMENT *be = BAR_find_BE(bar, YMD);
+		if (HMSM <= be->lastHMSM) {
+			joinprefect = 1;
+			continue;
+		}
+		if (joinprefect == 0) isError("db data and realtime data: join wrong");
 		int index = be->workingIndex;
-		BARELEMENT_fill(be, 1, hour, minute, second, pDepthMarketData->UpdateMillisec, pDepthMarketData->Volume, pDepthMarketData->LastPrice);	
+		BARELEMENT_fill(be, barLen, hour, minute, second, pDepthMarketData->UpdateMillisec, pDepthMarketData->Volume, pDepthMarketData->LastPrice);	
 		if (index != be->workingIndex) {
 			EMABAR_syn(eb, index);
 		}
 	}
 
-	while ((pDepthMarketData  = MD_getOneDMDmsg(md, &ts, &tus, &size)) != NULL) {
-		struct BARELEMENT *be = BAR_find_BE(bar, 1);
-		int index = be->workingIndex;
-		int hour, minute, second;
-		CTPHELP_updatetime2HMS(pDepthMarketData->UpdateTime, &hour, &minute, &second);
-		BARELEMENT_fill(be, 1, hour, minute, second, pDepthMarketData->UpdateMillisec, pDepthMarketData->Volume, pDepthMarketData->LastPrice);	
-		if (index != be->workingIndex) {
-
-		}
-	}
-
+	//run strategy
 	while (*(mim->running)) {
-		long ts;
-		long tus;
-		int size;
 		CThostFtdcDepthMarketDataField *pDepthMarketData = MD_getOneDMDmsg(md, &ts, &tus, &size);
 		if (pDepthMarketData != NULL) {
-			struct timespec tv;
-			clock_gettime(CLOCK_REALTIME, &tv);
+			//int YMD = strtol(pDepthMarketData->TradingDay, NULL, 10);
+			//int hour, minute, second;
+			//CTPHELP_updatetime2HMS(pDepthMarketData->UpdateTime, &hour, &minute, &second);
+			//int HMSM = hour*10000000 + minute*100000 + second*1000 + pDepthMarketData->UpdateMillisec;
 
-			printtlc("%s: updated time: %s, update mill time : %4d, arrive: %ld.%09ld, delay: %.10f, valid size: %3d",\
-				   	pDepthMarketData->InstrumentID, \
-					pDepthMarketData->UpdateTime, \
-					pDepthMarketData->UpdateMillisec, \
-					ts, tus, tv.tv_sec-ts+(tv.tv_nsec-tus)*1E-9, size);
+			//struct BARELEMENT *be = BAR_find_BE(bar, YMD);
+			//int index = be->workingIndex;
 
-			int hour, minute, second;
-			CTPHELP_updatetime2HMS(pDepthMarketData->UpdateTime, &hour, &minute, &second);
+			//BARELEMENT_fill(be, barLen, hour, minute, second, pDepthMarketData->UpdateMillisec, pDepthMarketData->Volume, pDepthMarketData->LastPrice);	
+			//if (index != be->workingIndex) {
 
-			if ( ((hour >  9 || (hour== 9 && minute>=14)) &&
-				  (hour < 11 || (hour==11 && minute<30) || (hour==11 && minute==30 && second==0))) ||
-				 ((hour >= 13 ) &&
-				  (hour < 15 || (hour==15 && minute<15) || (hour==15 && minute==15 && second==0)))
-			   ){
-				//TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 1, pDepthMarketData->BidPrice1, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_TC_GFD,THOST_FTDC_VC_AV); 
-			}
-			else {
-				//TD_GetApi(td)->ReqOrderInsert(OrderRef, InstrumentID, Direction, CombOffsetFlag, VolumeTotalOriginal, LimitPrice, OrderPriceType, TimeCondition, ContingentCondition, StopPrice, VolumeCondition);
-				//TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 1, pDepthMarketData->BidPrice1, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_TC_GFD,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
-				//TD_reqOrderInsert_ljsj(td, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 3);
-				//TD_reqOrderInsert_ljxj(td, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 3, pDepthMarketData->AskPrice1);
-				static int k = 20;
-				//TD_reqOrderInsert(td, k, pDepthMarketData->InstrumentID, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_OF_Open, THOST_FTDC_D_Buy, k-3, pDepthMarketData->AskPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV); 
-				//usleep(50000);
-				//TD_limitOrder_open_buy(td, k, pDepthMarketData->InstrumentID, pDepthMarketData->AskVolume1, pDepthMarketData->AskPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV);
-				//sleep(5);
-				//TD_limitOrder_sell_closeToday(td, k+1, pDepthMarketData->InstrumentID, pDepthMarketData->AskVolume1, pDepthMarketData->AskPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV);
+			//TODO do the strategy.
+			//struct timespec tv;
+			//clock_gettime(CLOCK_REALTIME, &tv);
 
-				TD_limitOrder_open_sell(td, k, pDepthMarketData->InstrumentID, pDepthMarketData->BidVolume1, pDepthMarketData->BidPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV);
-				sleep(5);
-				TD_limitOrder_buy_closeToday(td, k+1, pDepthMarketData->InstrumentID, pDepthMarketData->BidVolume1, pDepthMarketData->BidPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV);
-				++k;
-				if (k == 22) {
-				return NULL;
-				}
-				return NULL;
-			}
+			//int hour, minute, second;
+			//CTPHELP_updatetime2HMS(pDepthMarketData->UpdateTime, &hour, &minute, &second);
+
+			//if ( ((hour >  9 || (hour== 9 && minute>=14)) &&
+			//	  (hour < 11 || (hour==11 && minute<30) || (hour==11 && minute==30 && second==0))) ||
+			//	 ((hour >= 13 ) &&
+			//	  (hour < 15 || (hour==15 && minute<15) || (hour==15 && minute==15 && second==0)))
+			//   ){
+			//	//TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 1, pDepthMarketData->BidPrice1, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_TC_GFD,THOST_FTDC_VC_AV); 
+			//}
+			//else {
+			//	//TD_GetApi(td)->ReqOrderInsert(OrderRef, InstrumentID, Direction, CombOffsetFlag, VolumeTotalOriginal, LimitPrice, OrderPriceType, TimeCondition, ContingentCondition, StopPrice, VolumeCondition);
+			//	//TD_reqOrderInsert(td, -1, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 1, pDepthMarketData->BidPrice1, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_TC_GFD,THOST_FTDC_CC_Immediately,0,THOST_FTDC_VC_AV); 
+			//	//TD_reqOrderInsert_ljsj(td, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 3);
+			//	//TD_reqOrderInsert_ljxj(td, pDepthMarketData->InstrumentID, THOST_FTDC_D_Buy, 0, 3, pDepthMarketData->AskPrice1);
+			//	static int k = 20;
+			//	//TD_reqOrderInsert(td, k, pDepthMarketData->InstrumentID, THOST_FTDC_OPT_LimitPrice, THOST_FTDC_OF_Open, THOST_FTDC_D_Buy, k-3, pDepthMarketData->AskPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV); 
+			//	//usleep(50000);
+			//	//TD_limitOrder_open_buy(td, k, pDepthMarketData->InstrumentID, pDepthMarketData->AskVolume1, pDepthMarketData->AskPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV);
+			//	//sleep(5);
+			//	//TD_limitOrder_sell_closeToday(td, k+1, pDepthMarketData->InstrumentID, pDepthMarketData->AskVolume1, pDepthMarketData->AskPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV);
+
+			//	TD_limitOrder_open_sell(td, k, pDepthMarketData->InstrumentID, pDepthMarketData->BidVolume1, pDepthMarketData->BidPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV);
+			//	sleep(5);
+			//	TD_limitOrder_buy_closeToday(td, k+1, pDepthMarketData->InstrumentID, pDepthMarketData->BidVolume1, pDepthMarketData->BidPrice1, THOST_FTDC_TC_GFD, THOST_FTDC_VC_AV);
+			//	++k;
+			//	if (k == 22) {
+			//	return NULL;
+			//	}
+			//	return NULL;
+			//}
 		}
 		usleep(2000);
 	}
