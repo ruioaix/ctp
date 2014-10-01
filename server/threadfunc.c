@@ -121,7 +121,14 @@ void *EVENT_500ms_dmdmsg(void *ThreadIM) {
 
 	while (!TD_isready(td)) {
 		sleep(1);
+		printtlb("wait TD ready");
 	}
+	printtlb("TD is ready");
+	while (!MD_isready(md)) {
+		sleep(1);
+		printmlb("wait MD ready");
+	}
+	printmlb("MD is ready");
 	//get here, means td system is ready to work.
 
 	//today's YMD
